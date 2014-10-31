@@ -2,7 +2,25 @@
 <resources>
 
     <string name="app_name">iArch</string>
+    <string name="hello_world">Hello world!</string>
+    
+    <!-- Buttons -->
+    <string name="camera">Camera</string>
+    <string name="map">Map</string>
+    <string name="project_management">Project Management</string>
+    <string name="options">Options</string>
     <string name="button_send">Connect to Dropbox</string>
+    
+    
+    <!-- Action bar -->
+    <string name="action_home">Home</string>
+    <string name="action_camera">Camera</string>
+    <string name="action_projects">Projects</string>
+    <string name="action_gallery">Gallery</string>
+    <string name="action_upload">Upload</string>
+    <string name="action_export">Export</string>
+    <string name="action_search">Search</string>
     <string name="action_settings">Settings</string>
+ 
 
 </resources>
