@@ -107,6 +107,12 @@ public class MainActivity extends ActionBarActivity {
 		startActivity(intent);
 	}
 	
+	//Map Button OnClick
+	public void sendMessage (View view) {
+		//Do something in response to Button01
+		Intent intent = new Intent(this, DisplayMapActivity.class);
+		startActivity(intent);
+	}
 }
 //testing, delete this comment
 //Now Nick's branch is different'
