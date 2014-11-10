@@ -101,6 +101,12 @@ public class MainActivity extends ActionBarActivity {
 	    }
 	}
 	
+	public void takePicture(View view)
+	{
+		Intent intent = new Intent(this, TakePicture.class);
+		startActivity(intent);
+	}
+	
 }
 //testing, delete this comment
 //Now Nick's branch is different'
