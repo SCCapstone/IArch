@@ -55,3 +55,6 @@ local.properties
 
 # TeXlipse plugin
 .texlipse
+
+# Project properties file
+project.properties
