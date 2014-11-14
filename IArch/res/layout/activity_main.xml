@@ -38,6 +38,7 @@
         android:layout_alignRight="@+id/Button01"
         android:layout_centerVertical="true"
         android:layout_marginTop="20dp"
+        android:onClick="gallery"
         android:text="@string/project_management" />
 
     <Button

@@ -113,6 +113,12 @@ public class MainActivity extends ActionBarActivity {
 		Intent intent = new Intent(this, DisplayMapActivity.class);
 		startActivity(intent);
 	}
+	
+	public void gallery(View view)
+	{
+		Intent intent = new Intent(this,Gallery.class);
+		startActivity(intent);
+	}
 }
 //testing, delete this comment
 //Now Nick's branch is different'
