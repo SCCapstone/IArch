@@ -45,7 +45,8 @@ public class MainActivity extends ActionBarActivity {
 	            // Use Dropbox datastores
 	            mDatastoreManager = DbxDatastoreManager.forAccount(mAccountManager.getLinkedAccount());
 	            // Hide link button
-	            mLinkButton.setVisibility(View.GONE);
+	            //mLinkButton.setVisibility(View.GONE);
+	            mLinkButton.setText("Unlink from Dropbox");
 	        } catch (DbxException.Unauthorized e) {
 	            System.out.println("Account was unlinked remotely");
 	        }
@@ -89,7 +90,8 @@ public class MainActivity extends ActionBarActivity {
 	                // Now use Dropbox datastores
 	                mDatastoreManager = DbxDatastoreManager.forAccount(account);
 	                // Hide link button
-	                mLinkButton.setVisibility(View.GONE);
+	                //mLinkButton.setVisibility(View.GONE);
+	                mLinkButton.setText("Unlink from Dropbox");
 	            } catch (DbxException e) {
 	                e.printStackTrace();
 	            }
