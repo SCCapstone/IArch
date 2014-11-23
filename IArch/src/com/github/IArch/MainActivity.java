@@ -45,7 +45,8 @@ public class MainActivity extends ActionBarActivity {
 	            // Use Dropbox datastores
 	            mDatastoreManager = DbxDatastoreManager.forAccount(mAccountManager.getLinkedAccount());
 	            // Hide link button
-	            mLinkButton.setVisibility(View.GONE);
+	            //mLinkButton.setVisibility(View.GONE);
+	            mLinkButton.setText("Unlink from Dropbox");
 	        } catch (DbxException.Unauthorized e) {
 	            System.out.println("Account was unlinked remotely");
 	        }
@@ -89,7 +90,8 @@ public class MainActivity extends ActionBarActivity {
 	                // Now use Dropbox datastores
 	                mDatastoreManager = DbxDatastoreManager.forAccount(account);
 	                // Hide link button
-	                mLinkButton.setVisibility(View.GONE);
+	                //mLinkButton.setVisibility(View.GONE);
+	                mLinkButton.setText("Unlink from Dropbox");
 	            } catch (DbxException e) {
 	                e.printStackTrace();
 	            }
@@ -101,10 +103,24 @@ public class MainActivity extends ActionBarActivity {
 	    }
 	}
 	
+	public void takePicture(View view)
+	{
+		Intent intent = new Intent(this, TakePicture.class);
+		startActivity(intent);
+	}
+	
 	//Map Button OnClick
 	public void sendMessage (View view) {
 		//Do something in response to Button01
 		Intent intent = new Intent(this, DisplayMapActivity.class);
 		startActivity(intent);
 	}
+	
+	public void gallery(View view)
+	{
+		Intent intent = new Intent(this,Gallery.class);
+		startActivity(intent);
+	}
 }
+//testing, delete this comment
+//Now Nick's branch is different'
