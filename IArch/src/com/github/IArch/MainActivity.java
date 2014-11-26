@@ -3,24 +3,22 @@ package com.github.IArch;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
-
 import com.dropbox.sync.android.DbxAccount;
 import com.dropbox.sync.android.DbxAccountManager;
 import com.dropbox.sync.android.DbxDatastoreManager;
 import com.dropbox.sync.android.DbxException;
 
-public class MainActivity extends ActionBarActivity {
+public class MainActivity extends Activity {
 
 	static final int REQUEST_LINK_TO_DBX = 0;
 	
 	private Button mLinkButton;
-	private DbxAccountManager mAccountManager;
+	static DbxAccountManager mAccountManager;
 	private DbxDatastoreManager mDatastoreManager;
 	
 	@Override
@@ -44,8 +42,6 @@ public class MainActivity extends ActionBarActivity {
 	        try {
 	            // Use Dropbox datastores
 	            mDatastoreManager = DbxDatastoreManager.forAccount(mAccountManager.getLinkedAccount());
-	            // Hide link button
-	            //mLinkButton.setVisibility(View.GONE);
 	            mLinkButton.setText("Unlink from Dropbox");
 	        } catch (DbxException.Unauthorized e) {
 	            System.out.println("Account was unlinked remotely");
@@ -58,7 +54,7 @@ public class MainActivity extends ActionBarActivity {
 	        mLinkButton.setVisibility(View.VISIBLE);
 	    }
 		
-	}
+	}//onCreate
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
@@ -116,11 +112,10 @@ public class MainActivity extends ActionBarActivity {
 		startActivity(intent);
 	}
 	
-	public void gallery(View view)
+	/*public void gallery(View view)
 	{
 		Intent intent = new Intent(this,Gallery.class);
 		startActivity(intent);
 	}
+	*/
 }
-//testing, delete this comment
-//Now Nick's branch is different'

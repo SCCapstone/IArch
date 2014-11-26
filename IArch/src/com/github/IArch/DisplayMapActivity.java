@@ -2,7 +2,7 @@ package com.github.IArch;
 
 import android.location.Location;
 import android.os.Bundle;
-import android.support.v7.app.ActionBarActivity;
+import android.support.v4.app.FragmentActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.TextView;
@@ -23,7 +23,7 @@ import com.google.android.gms.maps.model.LatLng;
 
 
 
-public class DisplayMapActivity extends ActionBarActivity
+public class DisplayMapActivity extends FragmentActivity
 	implements
 	ConnectionCallbacks,
 	OnConnectionFailedListener,

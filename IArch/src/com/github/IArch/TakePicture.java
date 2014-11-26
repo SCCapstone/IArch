@@ -1,10 +1,21 @@
 package com.github.IArch;
 
 import java.io.File;
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import com.dropbox.sync.android.DbxAccountManager;
+import com.dropbox.sync.android.DbxException;
+import com.dropbox.sync.android.DbxException.Unauthorized;
+import com.dropbox.sync.android.DbxFile;
+import com.dropbox.sync.android.DbxFileSystem;
+import com.dropbox.sync.android.DbxPath;
+import com.dropbox.sync.android.DbxPath.InvalidPathException;
+
+import android.app.Activity;
 import android.content.Intent;
+import android.media.ExifInterface;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -14,12 +25,14 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
-public class TakePicture extends ActionBarActivity {
+public class TakePicture extends Activity {
 
 	public static final int MEDIA_TYPE_IMAGE = 1;
 	private static final int CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE = 100;
 	private Uri fileUri;
+	String fileLocation = null;
 	
+
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -33,6 +46,19 @@ public class TakePicture extends ActionBarActivity {
 		
 		startActivityForResult(intent,CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE);
 		
+		//store file path to variable
+		fileLocation = fileUri.getPath(); 
+		
+		dropboxStuff("file1.txt");
+		/*
+		try {
+			ExifInterface exif = new ExifInterface(fileLocation);
+			System.out.println("Made it to the exif stuff");
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		*/
 	}
 
 	@Override
@@ -86,5 +112,29 @@ public class TakePicture extends ActionBarActivity {
 		}
 		
 		return mediaFile;
+	}
+	void dropboxStuff(String file) {
+		try {
+			DbxFileSystem dbxFs = DbxFileSystem.forAccount(MainActivity.mAccountManager.getLinkedAccount());
+			DbxFile testFile = dbxFs.create(new DbxPath(file));
+			//DbxFile testFile = dbxFs.;
+			try {
+			    testFile.writeString("Hello Dropbox!");
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} finally {
+			    testFile.close();
+			}
+			} catch (Unauthorized e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (InvalidPathException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (DbxException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 	}
 }
