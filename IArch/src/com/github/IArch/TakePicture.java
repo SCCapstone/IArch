@@ -31,6 +31,7 @@ public class TakePicture extends Activity {
 	private static final int CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE = 100;
 	private Uri fileUri;
 	String fileLocation = null;
+	File fileVar;
 	
 
 	
@@ -48,8 +49,9 @@ public class TakePicture extends Activity {
 		
 		//store file path to variable
 		fileLocation = fileUri.getPath(); 
+		fileVar = new File(fileLocation);
 		
-		dropboxStuff("file1.txt");
+		dropboxStuff(fileLocation);
 		/*
 		try {
 			ExifInterface exif = new ExifInterface(fileLocation);
@@ -113,13 +115,17 @@ public class TakePicture extends Activity {
 		
 		return mediaFile;
 	}
+	
 	void dropboxStuff(String file) {
 		try {
 			DbxFileSystem dbxFs = DbxFileSystem.forAccount(MainActivity.mAccountManager.getLinkedAccount());
 			DbxFile testFile = dbxFs.create(new DbxPath(file));
 			//DbxFile testFile = dbxFs.;
+		
 			try {
-			    testFile.writeString("Hello Dropbox!");
+			    //testFile.writeString("Hello Dropbox!");
+			    File fileVar = new File("");
+			    testFile.writeFromExistingFile(fileVar, true);
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -136,5 +142,6 @@ public class TakePicture extends Activity {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
+		
 	}
 }
