@@ -31,26 +31,29 @@ public class TakePicture extends Activity {
 	private static final int CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE = 100;
 	private Uri fileUri;
 	String fileLocation = null;
-	File fileVar;
 	
-
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_take_picture);
 		
-		Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+		Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
 		
-		fileUri = getOutputMediaFileUri(MEDIA_TYPE_IMAGE);
-		intent.putExtra(MediaStore.EXTRA_OUTPUT, fileUri);
-		
-		startActivityForResult(intent,CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE);
+		//Ensure there is a camera activity to handle intent
+		if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
+			//create file where photo should go
+			fileUri = getOutputMediaFileUri(MEDIA_TYPE_IMAGE);
+			
+			//continue only if file was successfully created
+			takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, fileUri);
+			startActivityForResult(takePictureIntent,CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE);
+		}
+			
 		
 		//store file path to variable
 		fileLocation = fileUri.getPath(); 
-		fileVar = new File(fileLocation);
-		
+		//sync file with dropbox
 		dropboxStuff(fileLocation);
 		/*
 		try {
@@ -121,11 +124,14 @@ public class TakePicture extends Activity {
 			DbxFileSystem dbxFs = DbxFileSystem.forAccount(MainActivity.mAccountManager.getLinkedAccount());
 			DbxFile testFile = dbxFs.create(new DbxPath(file));
 			//DbxFile testFile = dbxFs.;
+			
 		
 			try {
 			    //testFile.writeString("Hello Dropbox!");
-			    File fileVar = new File("");
-			    testFile.writeFromExistingFile(fileVar, true);
+			    File fileVar = new File(fileLocation);
+			    
+			    testFile.writeFromExistingFile(fileVar, false);
+			    System.out.println(testFile);
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -144,4 +150,5 @@ public class TakePicture extends Activity {
 			}
 		
 	}
+	
 }
