@@ -15,6 +15,7 @@ import com.dropbox.sync.android.DbxPath.InvalidPathException;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.media.ExifInterface;
 import android.net.Uri;
 import android.os.Bundle;
@@ -24,13 +25,14 @@ import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.ImageView;
 
 public class TakePicture extends Activity {
 
 	public static final int MEDIA_TYPE_IMAGE = 1;
 	private static final int CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE = 100;
 	private Uri fileUri;
-	String fileLocation = null;
+	static String fileLocation = null;
 	
 	
 	@Override
@@ -46,15 +48,16 @@ public class TakePicture extends Activity {
 			fileUri = getOutputMediaFileUri(MEDIA_TYPE_IMAGE);
 			
 			//continue only if file was successfully created
-			takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, fileUri);
-			startActivityForResult(takePictureIntent,CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE);
+			if (fileUri != null) {
+				takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, fileUri);
+				startActivityForResult(takePictureIntent,CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE);
+			}
 		}
 			
 		
 		//store file path to variable
 		fileLocation = fileUri.getPath(); 
-		//sync file with dropbox
-		dropboxStuff(fileLocation);
+		
 		/*
 		try {
 			ExifInterface exif = new ExifInterface(fileLocation);
@@ -85,9 +88,22 @@ public class TakePicture extends Activity {
 		return super.onOptionsItemSelected(item);
 	}
 	
+	@Override
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+		if (requestCode == CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE && resultCode == RESULT_OK) {
+			//ImageView resultImage = (ImageView) findViewById(R.id.imageView1);
+			//Bundle extras = data.getExtras();
+			//Bitmap imageBitmap = (Bitmap) extras.get("data");
+			//resultImage.setImageBitmap(imageBitmap);
+			System.out.println("You just took a picture");
+			dropboxStuff(fileLocation);
+		}
+	}
+	
 	private static Uri getOutputMediaFileUri(int type)
 	{
 		return Uri.fromFile(getOutputMediaFile(type));
+		
 	}
 	
 	private static File getOutputMediaFile(int type)
@@ -119,7 +135,7 @@ public class TakePicture extends Activity {
 		return mediaFile;
 	}
 	
-	void dropboxStuff(String file) {
+	static void dropboxStuff(String file) {
 		try {
 			DbxFileSystem dbxFs = DbxFileSystem.forAccount(MainActivity.mAccountManager.getLinkedAccount());
 			DbxFile testFile = dbxFs.create(new DbxPath(file));
@@ -131,7 +147,6 @@ public class TakePicture extends Activity {
 			    File fileVar = new File(fileLocation);
 			    
 			    testFile.writeFromExistingFile(fileVar, false);
-			    System.out.println(testFile);
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
