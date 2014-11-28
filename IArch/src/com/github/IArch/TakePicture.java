@@ -16,6 +16,7 @@ import com.dropbox.sync.android.DbxPath.InvalidPathException;
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.media.ExifInterface;
 import android.net.Uri;
 import android.os.Bundle;
@@ -86,10 +87,13 @@ public class TakePicture extends Activity {
 			//sync picture with dropbox
 			dropboxStuff(fileLocation);
 			
-			//ImageView resultImage = (ImageView) findViewById(R.id.imageView1);
-			//Bundle extras = data.getExtras();
-			//Bitmap imageBitmap = (Bitmap) extras.get("data");
-			//resultImage.setImageBitmap(imageBitmap);
+			//show picture that was taken in ImageView1
+			File imgFile = new File(fileLocation);
+			Bitmap myBitmap = BitmapFactory.decodeFile(imgFile.getAbsolutePath());
+			ImageView myImage = (ImageView) findViewById(R.id.imageView1);
+			myImage.setImageBitmap(myBitmap);
+			
+			
 		}
 	}
 	
@@ -131,20 +135,22 @@ public class TakePicture extends Activity {
 	static void dropboxStuff(String file) {
 		try {
 			//shorten path
-			String[] shortFile = file.split("/");
+			String[] splitFile = file.split("/");
 					
+			//get link from dropbox and create remote path for sync
 			DbxFileSystem dbxFs = DbxFileSystem.forAccount(MainActivity.mAccountManager.getLinkedAccount());
-			DbxFile testFile = dbxFs.create(new DbxPath(shortFile[6]));
+			DbxFile testFile = dbxFs.create(new DbxPath(splitFile[6]));
 		
 			try {
-			    System.out.println(fileLocation);
-			    File fileVar = new File(fileLocation);
+			    //create remote file and assign it to photo
+				File fileVar = new File(fileLocation);
 			    testFile.writeFromExistingFile(fileVar, false);
 			    
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			} finally {
+				//close remote file so other things can be done
 			    testFile.close();
 			}
 			} catch (Unauthorized e) {
