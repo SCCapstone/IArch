@@ -56,6 +56,7 @@ public class TakePicture extends Activity {
 		
 		//store file path to variable
 		fileLocation = fileUri.getPath(); 
+		
 				
 	}
 
@@ -129,14 +130,16 @@ public class TakePicture extends Activity {
 	
 	static void dropboxStuff(String file) {
 		try {
+			String[] shortFile = file.split("/");
+			String newFile = shortFile[5] + "/" + shortFile[6]; 
 			DbxFileSystem dbxFs = DbxFileSystem.forAccount(MainActivity.mAccountManager.getLinkedAccount());
-			DbxFile testFile = dbxFs.create(new DbxPath(file));
+			DbxFile testFile = dbxFs.create(new DbxPath(newFile));
 		
 			try {
-			    //testFile.writeString("Hello Dropbox!");
+			    System.out.println(fileLocation);
 			    File fileVar = new File(fileLocation);
-			    
 			    testFile.writeFromExistingFile(fileVar, false);
+			    
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
