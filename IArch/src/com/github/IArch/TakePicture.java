@@ -17,6 +17,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.BitmapFactory.Options;
 import android.media.ExifInterface;
 import android.net.Uri;
 import android.os.Bundle;
@@ -27,6 +28,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 public class TakePicture extends Activity {
 
@@ -87,11 +89,28 @@ public class TakePicture extends Activity {
 			//sync picture with dropbox
 			dropboxStuff(fileLocation);
 			
-			//show picture that was taken in ImageView1
-			File imgFile = new File(fileLocation);
-			Bitmap myBitmap = BitmapFactory.decodeFile(imgFile.getAbsolutePath());
-			ImageView myImage = (ImageView) findViewById(R.id.imageView1);
-			myImage.setImageBitmap(myBitmap);
+			//show picture that was taken
+			setPic(fileLocation);
+			
+			//get lat & long from exif data
+			try {
+				//float[] latLng = null;
+				ExifInterface exifInterface = new ExifInterface(fileLocation);
+				String picLat = exifInterface.getAttribute(ExifInterface.TAG_GPS_LATITUDE);
+				String picLong = exifInterface.getAttribute(ExifInterface.TAG_GPS_LONGITUDE);
+				
+				//exifInterface.getLatLong(latLng);
+				TextView myText = (TextView) findViewById(R.id.textView1);
+				myText.setText("Latitude: " + picLat + " " + "Longitude: " + picLong);
+				//System.out.println("TJEHTEKJTHE: " + latLng);
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
+			
+			
+			
 			
 			
 		}
@@ -166,4 +185,36 @@ public class TakePicture extends Activity {
 		
 	}
 	
+	private void setPic(String file) {
+		/*
+		//get dimensions of view
+		ImageView myImage = (ImageView) findViewById(R.id.imageView1);
+		int targetW = myImage.getWidth();
+		int targetH = myImage.getHeight();
+		
+		//get dimensions of bitmap
+		BitmapFactory.Options bmOptions = new BitmapFactory.Options();
+		bmOptions.inJustDecodeBounds = true;
+		BitmapFactory.decodeFile(file, bmOptions);
+		int photoW = bmOptions.outWidth;
+		int photoH = bmOptions.outHeight;
+		
+		//determine how much to scale down the image
+		int scaleFactor = Math.min(photoW/targetW, photoH/targetH);
+		
+		//Decode image file into a bitmap sized to fill the view
+		bmOptions.inJustDecodeBounds = false;
+		bmOptions.inSampleSize = scaleFactor;
+		bmOptions.inPurgeable = true;
+		
+		Bitmap bitmap = BitmapFactory.decodeFile(file, bmOptions);
+		myImage.setImageBitmap(bitmap);
+		*/
+		
+		File imgFile = new File(fileLocation);
+		Bitmap myBitmap = BitmapFactory.decodeFile(imgFile.getAbsolutePath());
+		ImageView myImage = (ImageView) findViewById(R.id.imageView1);
+		myImage.setImageBitmap(myBitmap);
+		
+	}
 }
