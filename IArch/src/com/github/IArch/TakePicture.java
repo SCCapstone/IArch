@@ -53,20 +53,10 @@ public class TakePicture extends Activity {
 				startActivityForResult(takePictureIntent,CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE);
 			}
 		}
-			
 		
 		//store file path to variable
 		fileLocation = fileUri.getPath(); 
-		
-		/*
-		try {
-			ExifInterface exif = new ExifInterface(fileLocation);
-			System.out.println("Made it to the exif stuff");
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		*/
+				
 	}
 
 	@Override
@@ -91,12 +81,14 @@ public class TakePicture extends Activity {
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		if (requestCode == CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE && resultCode == RESULT_OK) {
+			System.out.println("You just took a picture");
+			//sync picture with dropbox
+			dropboxStuff(fileLocation);
+			
 			//ImageView resultImage = (ImageView) findViewById(R.id.imageView1);
 			//Bundle extras = data.getExtras();
 			//Bitmap imageBitmap = (Bitmap) extras.get("data");
 			//resultImage.setImageBitmap(imageBitmap);
-			System.out.println("You just took a picture");
-			dropboxStuff(fileLocation);
 		}
 	}
 	
@@ -139,8 +131,6 @@ public class TakePicture extends Activity {
 		try {
 			DbxFileSystem dbxFs = DbxFileSystem.forAccount(MainActivity.mAccountManager.getLinkedAccount());
 			DbxFile testFile = dbxFs.create(new DbxPath(file));
-			//DbxFile testFile = dbxFs.;
-			
 		
 			try {
 			    //testFile.writeString("Hello Dropbox!");
