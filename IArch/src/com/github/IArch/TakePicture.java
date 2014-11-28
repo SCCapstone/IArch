@@ -130,10 +130,11 @@ public class TakePicture extends Activity {
 	
 	static void dropboxStuff(String file) {
 		try {
+			//shorten path
 			String[] shortFile = file.split("/");
-			String newFile = shortFile[5] + "/" + shortFile[6]; 
+					
 			DbxFileSystem dbxFs = DbxFileSystem.forAccount(MainActivity.mAccountManager.getLinkedAccount());
-			DbxFile testFile = dbxFs.create(new DbxPath(newFile));
+			DbxFile testFile = dbxFs.create(new DbxPath(shortFile[6]));
 		
 			try {
 			    System.out.println(fileLocation);
