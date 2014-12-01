@@ -70,6 +70,10 @@
             android:name=".Gallery"
             android:label="@string/title_activity_gallery" >
         </activity>
+        <activity
+            android:name=".ImageDetails"
+            android:label="@string/title_activity_image_details" >
+        </activity>
     </application>
 
 </manifest>

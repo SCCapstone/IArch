@@ -23,5 +23,6 @@
     <string name="title_activity_take_picture">TakePicture</string>
     <string name="title_activity_display_map">DisplayMapActivity</string>
     <string name="title_activity_gallery">Gallery</string>
+    <string name="title_activity_image_details">ImageDetails</string>
 
 </resources>
