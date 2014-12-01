@@ -99,7 +99,7 @@ public class TakePicture extends Activity {
 				//exifInterface.getLatLong(latLng);
 				TextView myText = (TextView) findViewById(R.id.textView1);
 				myText.setText("Latitude: " + picLat + " " + "Longitude: " + picLong);
-				//System.out.println("TJEHTEKJTHE: " + latLng);
+				//System.out.println("MADE IT HERE");
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -183,11 +183,17 @@ public class TakePicture extends Activity {
 	}
 	
 	private void setPic(String file) {
-		/*
+		
 		//get dimensions of view
 		ImageView myImage = (ImageView) findViewById(R.id.imageView1);
-		int targetW = myImage.getWidth();
-		int targetH = myImage.getHeight();
+		
+		//this doesnt work for the size but I want it to...
+		int targetW = 400;//myImage.getWidth();
+		int targetH = 400;//myImage.getHeight();
+		
+		
+		System.out.println("targetW: " + targetW + " targetH: " + targetH);
+		
 		
 		//get dimensions of bitmap
 		BitmapFactory.Options bmOptions = new BitmapFactory.Options();
@@ -195,6 +201,7 @@ public class TakePicture extends Activity {
 		BitmapFactory.decodeFile(file, bmOptions);
 		int photoW = bmOptions.outWidth;
 		int photoH = bmOptions.outHeight;
+		System.out.println("photoW: " + photoW + " photoH: " + photoH);
 		
 		//determine how much to scale down the image
 		int scaleFactor = Math.min(photoW/targetW, photoH/targetH);
@@ -206,12 +213,12 @@ public class TakePicture extends Activity {
 		
 		Bitmap bitmap = BitmapFactory.decodeFile(file, bmOptions);
 		myImage.setImageBitmap(bitmap);
-		*/
 		
+		/*
 		File imgFile = new File(fileLocation);
 		Bitmap myBitmap = BitmapFactory.decodeFile(imgFile.getAbsolutePath());
-		ImageView myImage = (ImageView) findViewById(R.id.imageView1);
-		myImage.setImageBitmap(myBitmap);
-		
+		ImageView myImage2 = (ImageView) findViewById(R.id.imageView1);
+		myImage2.setImageBitmap(myBitmap);
+		*/
 	}
 }
