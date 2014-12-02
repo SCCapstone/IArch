@@ -5,23 +5,25 @@ import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-import com.dropbox.sync.android.DbxAccount;
-import com.dropbox.sync.android.DbxAccountManager;
 import com.dropbox.sync.android.DbxDatastore;
 import com.dropbox.sync.android.DbxException;
 import com.dropbox.sync.android.DbxException.Unauthorized;
-import com.dropbox.sync.android.DbxDatastoreManager;
 import com.dropbox.sync.android.DbxFile;
 import com.dropbox.sync.android.DbxFileSystem;
 import com.dropbox.sync.android.DbxPath;
 import com.dropbox.sync.android.DbxPath.InvalidPathException;
 import com.dropbox.sync.android.DbxRecord;
 import com.dropbox.sync.android.DbxTable;
+import com.google.android.gms.maps.model.LatLng;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
 import android.media.ExifInterface;
 import android.net.Uri;
 import android.os.Bundle;
@@ -39,6 +41,10 @@ public class TakePicture extends Activity {
 	private static final int CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE = 100;
 	private Uri fileUri;
 	static String fileLocation = null;
+	static double latitude;
+	static double longitude;
+	static LocationManager locationManager;
+	static LocationListener locationListener;
 	
 	
 	
@@ -49,6 +55,7 @@ public class TakePicture extends Activity {
 		
 		Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
 		
+		getLocation();
 		//Ensure there is a camera activity to handle intent
 		if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
 			//create file where photo should go
@@ -63,7 +70,6 @@ public class TakePicture extends Activity {
 		
 		//store file path to variable
 		fileLocation = fileUri.getPath(); 
-		
 				
 	}
 
@@ -96,27 +102,10 @@ public class TakePicture extends Activity {
 			//show picture that was taken
 			setPic(fileLocation);
 			
-			//get lat & long from exif data
-			try {
-				//float[] latLng = null;
-				ExifInterface exifInterface = new ExifInterface(fileLocation);
-				String picLat = exifInterface.getAttribute(ExifInterface.TAG_GPS_LATITUDE);
-				String picLong = exifInterface.getAttribute(ExifInterface.TAG_GPS_LONGITUDE);
-				
-				//exifInterface.getLatLong(latLng);
-				TextView myText = (TextView) findViewById(R.id.textView1);
-				myText.setText("Latitude: " + picLat + " " + "Longitude: " + picLong);
-				//System.out.println("MADE IT HERE");
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-			
-			
-			
-			
-			
-			
+			TextView myText = (TextView) findViewById(R.id.textView1);
+			myText.setText("Latitude: " + latitude + " " + "Longitude: " + longitude);
+			//System.out.println("MADE IT HERE");
+						
 		}
 	}
 	
@@ -172,8 +161,17 @@ public class TakePicture extends Activity {
 			    //set up dropbox datastores
 			    DbxDatastore datastore = MainActivity.mDatastoreManager.openDefaultDatastore();
 				DbxTable tasksTbl = datastore.getTable("tasks");
-				DbxRecord firstTask = tasksTbl.insert().set("filename", fileLocation).set("completed", true);
+				DbxRecord task = tasksTbl.insert().set("filename", fileLocation).set("latitude", latitude).set("longitude", longitude);
+				
+				//sync datastore
 				datastore.sync();
+				
+				//close datastore
+				datastore.close();
+				
+				//stop looking for location updates; saves battery
+				locationManager.removeUpdates(locationListener);
+				
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -233,4 +231,45 @@ public class TakePicture extends Activity {
 		myImage2.setImageBitmap(myBitmap);
 		*/
 	}
+	
+	void getLocation() {
+		//acquire a reference to system location manager
+		locationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
+		
+		//define listener that responds to location updates
+		locationListener = new LocationListener() {
+
+			@Override
+			public void onLocationChanged(Location location) {
+				// called when new location is found by network location provider
+				latitude = location.getLatitude();
+				longitude = location.getLongitude();
+			}
+
+			@Override
+			public void onStatusChanged(String provider, int status,
+					Bundle extras) {
+				// TODO Auto-generated method stub
+				
+			}
+
+			@Override
+			public void onProviderEnabled(String provider) {
+				// TODO Auto-generated method stub
+				
+			}
+
+			@Override
+			public void onProviderDisabled(String provider) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+		};
+		String locationProvider = LocationManager.GPS_PROVIDER;
+		//cached last known location
+		Location lastKnownLocation = locationManager.getLastKnownLocation(locationProvider);
+		locationManager.requestLocationUpdates(locationProvider, 0, 0, locationListener);
+	}
+		
 }
