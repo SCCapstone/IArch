@@ -5,12 +5,9 @@ import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-import com.dropbox.sync.android.DbxAccount;
-import com.dropbox.sync.android.DbxAccountManager;
 import com.dropbox.sync.android.DbxDatastore;
 import com.dropbox.sync.android.DbxException;
 import com.dropbox.sync.android.DbxException.Unauthorized;
-import com.dropbox.sync.android.DbxDatastoreManager;
 import com.dropbox.sync.android.DbxFile;
 import com.dropbox.sync.android.DbxFileSystem;
 import com.dropbox.sync.android.DbxPath;
@@ -174,6 +171,7 @@ public class TakePicture extends Activity {
 				DbxTable tasksTbl = datastore.getTable("tasks");
 				DbxRecord firstTask = tasksTbl.insert().set("filename", fileLocation).set("completed", true);
 				datastore.sync();
+				
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
