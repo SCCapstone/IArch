@@ -5,12 +5,18 @@ import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import com.dropbox.sync.android.DbxAccount;
+import com.dropbox.sync.android.DbxAccountManager;
+import com.dropbox.sync.android.DbxDatastore;
 import com.dropbox.sync.android.DbxException;
 import com.dropbox.sync.android.DbxException.Unauthorized;
+import com.dropbox.sync.android.DbxDatastoreManager;
 import com.dropbox.sync.android.DbxFile;
 import com.dropbox.sync.android.DbxFileSystem;
 import com.dropbox.sync.android.DbxPath;
 import com.dropbox.sync.android.DbxPath.InvalidPathException;
+import com.dropbox.sync.android.DbxRecord;
+import com.dropbox.sync.android.DbxTable;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -33,6 +39,7 @@ public class TakePicture extends Activity {
 	private static final int CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE = 100;
 	private Uri fileUri;
 	static String fileLocation = null;
+	
 	
 	
 	@Override
@@ -153,15 +160,20 @@ public class TakePicture extends Activity {
 			//shorten path
 			String[] splitFile = file.split("/");
 					
-			//get link from dropbox and create remote path for sync
+			//get link from dropbox and create remote path for sync; create datastore
 			DbxFileSystem dbxFs = DbxFileSystem.forAccount(MainActivity.mAccountManager.getLinkedAccount());
 			DbxFile testFile = dbxFs.create(new DbxPath(splitFile[6]));
-		
+			
 			try {
 			    //create remote file and assign it to photo
 				File fileVar = new File(fileLocation);
 			    testFile.writeFromExistingFile(fileVar, false);
-			    
+			  
+			    //set up dropbox datastores
+			    DbxDatastore datastore = MainActivity.mDatastoreManager.openDefaultDatastore();
+				DbxTable tasksTbl = datastore.getTable("tasks");
+				DbxRecord firstTask = tasksTbl.insert().set("filename", fileLocation).set("completed", true);
+				datastore.sync();
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -179,7 +191,7 @@ public class TakePicture extends Activity {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-		
+			
 	}
 	
 	private void setPic(String file) {
@@ -187,7 +199,7 @@ public class TakePicture extends Activity {
 		//get dimensions of view
 		ImageView myImage = (ImageView) findViewById(R.id.imageView1);
 		
-		//this doesnt work for the size but I want it to...
+		//this works for now... hard coded scale factor
 		int targetW = 400;//myImage.getWidth();
 		int targetH = 400;//myImage.getHeight();
 		

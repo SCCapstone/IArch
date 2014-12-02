@@ -19,7 +19,7 @@ public class MainActivity extends Activity {
 	
 	private Button mLinkButton;
 	static DbxAccountManager mAccountManager;
-	private DbxDatastoreManager mDatastoreManager;
+	static DbxDatastoreManager mDatastoreManager;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
