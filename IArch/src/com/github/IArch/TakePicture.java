@@ -34,6 +34,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class TakePicture extends Activity {
 
@@ -45,6 +46,7 @@ public class TakePicture extends Activity {
 	static double longitude;
 	static LocationManager locationManager;
 	static LocationListener locationListener;
+	static Location lastKnownLocation;
 	
 	
 	
@@ -56,6 +58,7 @@ public class TakePicture extends Activity {
 		Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
 		
 		getLocation();
+		
 		//Ensure there is a camera activity to handle intent
 		if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
 			//create file where photo should go
@@ -224,17 +227,17 @@ public class TakePicture extends Activity {
 		Bitmap bitmap = BitmapFactory.decodeFile(file, bmOptions);
 		myImage.setImageBitmap(bitmap);
 		
-		/*
-		File imgFile = new File(fileLocation);
-		Bitmap myBitmap = BitmapFactory.decodeFile(imgFile.getAbsolutePath());
-		ImageView myImage2 = (ImageView) findViewById(R.id.imageView1);
-		myImage2.setImageBitmap(myBitmap);
-		*/
 	}
 	
 	void getLocation() {
 		//acquire a reference to system location manager
 		locationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
+		String locationProvider = LocationManager.GPS_PROVIDER;
+		
+		//cached last known location
+		lastKnownLocation = locationManager.getLastKnownLocation(locationProvider);
+		latitude = lastKnownLocation.getLatitude();
+		longitude = lastKnownLocation.getLongitude();
 		
 		//define listener that responds to location updates
 		locationListener = new LocationListener() {
@@ -266,9 +269,6 @@ public class TakePicture extends Activity {
 			}
 			
 		};
-		String locationProvider = LocationManager.GPS_PROVIDER;
-		//cached last known location
-		Location lastKnownLocation = locationManager.getLastKnownLocation(locationProvider);
 		locationManager.requestLocationUpdates(locationProvider, 0, 0, locationListener);
 	}
 		
