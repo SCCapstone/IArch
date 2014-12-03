@@ -17,6 +17,7 @@ import com.dropbox.sync.android.DbxTable;
 import com.google.android.gms.maps.model.LatLng;
 
 import android.app.Activity;
+import android.app.ActionBar;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -117,6 +118,8 @@ public class TakePicture extends Activity {
 				myText.setText("Error: photo not synced with Dropbox!");
 			}			
 		}
+		//stop looking for location updates; saves battery
+		locationManager.removeUpdates(locationListener);
 	}
 	
 	private static Uri getOutputMediaFileUri(int type)
