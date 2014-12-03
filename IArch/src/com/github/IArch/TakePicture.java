@@ -73,9 +73,6 @@ public class TakePicture extends Activity {
 		}
 		//user rotated the screen, redraw stuff
 		if (MainActivity.mAccountManager.hasLinkedAccount()) {
-			//sync picture with dropbox
-			dropboxStuff(fileLocation);
-			
 			//show picture that was taken
 			setPic(fileLocation);
 			
