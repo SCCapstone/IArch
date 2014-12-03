@@ -27,26 +27,32 @@ public class Gallery extends Activity {
 
 	private ArrayList getData() {
 		final ArrayList imageItems = new ArrayList();
+		/*
 		// retrieve String drawable array
-		/*TypedArray imgs = getResources().obtainTypedArray(R.array.image_ids);
+		TypedArray imgs = getResources().obtainTypedArray(R.array.image_ids);
 		for (int i = 0; i < imgs.length(); i++) {
 			Bitmap bitmap = BitmapFactory.decodeResource(this.getResources(),
 					imgs.getResourceId(i, -1));
 			imageItems.add(new ImageItem(bitmap, "Image#" + i));
-		}*/
-		
+		}
+		*/
 		File path = new File(Environment.getExternalStoragePublicDirectory(
 				Environment.DIRECTORY_PICTURES) + "/iArch/");
-	    File[] imageFiles = path.listFiles();/*
+	    File[] imageFiles = path.listFiles();
+	    
 	    for (int i = 0; i < imageFiles.length; i++) {
 	        Bitmap bitmap = BitmapFactory.decodeFile(imageFiles[i].getAbsolutePath());
-	        imageItems.add(new ImageItem(bitmap, "Image#" + i));
-	    }*/
+	        Bitmap smallBitmap = bitmap.createScaledBitmap(bitmap, 200, 200, false);
+	        imageItems.add(new ImageItem(smallBitmap, "Image#" + i));
+	    }
+	    /*
 	    Bitmap bitmap = BitmapFactory.decodeFile(imageFiles[1].getAbsolutePath());
-        imageItems.add(new ImageItem(bitmap, "Image#" + 1));
+	    Bitmap smallBitmap = bitmap.createScaledBitmap(bitmap, 200, 200, false);
+        imageItems.add(new ImageItem(smallBitmap, "Image#" + 1));
+        
         bitmap = BitmapFactory.decodeFile(imageFiles[2].getAbsolutePath());
         imageItems.add(new ImageItem(bitmap, "Image#" + 2));
-
+*/
 		return imageItems;
 
 	}
