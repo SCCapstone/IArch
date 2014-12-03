@@ -3,8 +3,6 @@ package com.github.IArch;
 import java.util.ArrayList;
 import android.app.Activity;
 import android.content.Context;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,8 +15,7 @@ public class GridViewAdapter extends ArrayAdapter {
 	private int layoutResourceId;
 	private ArrayList<ImageItem> data = new ArrayList<ImageItem>();
 
-	public GridViewAdapter(Context context, int layoutResourceId,
-			ArrayList data) {
+	public GridViewAdapter(Context context, int layoutResourceId, ArrayList<ImageItem> data) {
 		super(context, layoutResourceId, data);
 		this.layoutResourceId = layoutResourceId;
 		this.context = context;
@@ -43,7 +40,6 @@ public class GridViewAdapter extends ArrayAdapter {
 
 		ImageItem item = data.get(position);
 		holder.imageTitle.setText(item.getTitle());
-		//holder.image.setImageBitmap(Bitmap.createScaledBitmap(BitmapFactory.decodeFile(item.getImage()), 200, 200, false));
 		holder.image.setImageBitmap(item.getImage());
 		return row;
 	}
