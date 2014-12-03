@@ -99,16 +99,23 @@ public class TakePicture extends Activity {
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		if (requestCode == CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE && resultCode == RESULT_OK) {
 			System.out.println("You just took a picture");
-			//sync picture with dropbox
-			dropboxStuff(fileLocation);
 			
-			//show picture that was taken
-			setPic(fileLocation);
-			
-			TextView myText = (TextView) findViewById(R.id.textView1);
-			myText.setText("Latitude: " + latitude + " " + "Longitude: " + longitude);
-			//System.out.println("MADE IT HERE");
-						
+			if (MainActivity.mAccountManager.hasLinkedAccount()) {
+				//sync picture with dropbox
+				dropboxStuff(fileLocation);
+				
+				//show picture that was taken
+				setPic(fileLocation);
+				
+				TextView myText = (TextView) findViewById(R.id.textView1);
+				myText.setText("Latitude: " + latitude + " " + "Longitude: " + longitude);
+			} else {
+				//show picture that was taken
+				setPic(fileLocation);
+				
+				TextView myText = (TextView) findViewById(R.id.textView1);
+				myText.setText("Error: photo not synced with Dropbox!");
+			}			
 		}
 	}
 	
@@ -185,6 +192,7 @@ public class TakePicture extends Activity {
 			} catch (Unauthorized e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
+				
 			} catch (InvalidPathException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -234,7 +242,7 @@ public class TakePicture extends Activity {
 		locationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
 		String locationProvider = LocationManager.GPS_PROVIDER;
 		
-		//cached last known location
+		//set cached last known location to current location for initial state
 		lastKnownLocation = locationManager.getLastKnownLocation(locationProvider);
 		latitude = lastKnownLocation.getLatitude();
 		longitude = lastKnownLocation.getLongitude();
