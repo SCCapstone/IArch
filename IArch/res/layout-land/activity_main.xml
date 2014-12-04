@@ -19,23 +19,6 @@
         android:textSize="45sp" />
 
     <Button
-        android:id="@+id/Button03"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignBaseline="@+id/link_button"
-        android:layout_alignBottom="@+id/link_button"
-        android:layout_centerHorizontal="true"
-        android:text="@string/options" />
-
-    <Button
-        android:id="@+id/link_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_toRightOf="@+id/Button03"
-        android:text="@string/button_send" />
-
-    <Button
         android:id="@+id/Button02"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -64,5 +47,22 @@
         android:layout_marginLeft="53dp"
         android:onClick="sendMessage"
         android:text="@string/map" />
+
+    <Button
+        android:id="@+id/Button03"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="38dp"
+        android:text="@string/options" />
+
+    <Button
+        android:id="@+id/link_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/Button01"
+        android:layout_toRightOf="@+id/TextView01"
+        android:text="@string/button_send" />
 
 </RelativeLayout>
