@@ -14,10 +14,7 @@ import com.dropbox.sync.android.DbxPath;
 import com.dropbox.sync.android.DbxPath.InvalidPathException;
 import com.dropbox.sync.android.DbxRecord;
 import com.dropbox.sync.android.DbxTable;
-import com.google.android.gms.maps.model.LatLng;
-
 import android.app.Activity;
-import android.app.ActionBar;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -25,7 +22,6 @@ import android.graphics.BitmapFactory;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
-import android.media.ExifInterface;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -35,7 +31,6 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 public class TakePicture extends Activity {
 
@@ -55,26 +50,41 @@ public class TakePicture extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_take_picture);
-		
-		Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-		
-		getLocation();
-		
-		//Ensure there is a camera activity to handle intent
-		if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
-			//create file where photo should go
-			fileUri = getOutputMediaFileUri(MEDIA_TYPE_IMAGE);
+		if (savedInstanceState == null) {
 			
-			//continue only if file was successfully created
-			if (fileUri != null) {
-				takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, fileUri);
-				startActivityForResult(takePictureIntent,CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE);
-			}
-		}
+			Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
 		
-		//store file path to variable
-		fileLocation = fileUri.getPath(); 
-				
+			getLocation();
+		
+			//Ensure there is a camera activity to handle intent
+			if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
+				//create file where photo should go
+				fileUri = getOutputMediaFileUri(MEDIA_TYPE_IMAGE);
+			
+				//continue only if file was successfully created
+				if (fileUri != null) {
+					takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, fileUri);
+					startActivityForResult(takePictureIntent,CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE);
+				}
+			}
+		
+			//store file path to variable
+			fileLocation = fileUri.getPath(); 
+		}
+		//user rotated the screen, redraw stuff
+		if (MainActivity.mAccountManager.hasLinkedAccount()) {
+			//show picture that was taken
+			setPic(fileLocation);
+			
+			TextView myText = (TextView) findViewById(R.id.textView1);
+			myText.setText("Latitude: " + latitude + " " + "Longitude: " + longitude);
+		} else {
+			//show picture that was taken
+			setPic(fileLocation);
+			
+			TextView myText = (TextView) findViewById(R.id.textView1);
+			myText.setText("Error: photo not synced with Dropbox!");
+		}			
 	}
 
 	@Override
@@ -181,9 +191,6 @@ public class TakePicture extends Activity {
 				
 				//close datastore
 				datastore.close();
-				
-				//stop looking for location updates; saves battery
-				locationManager.removeUpdates(locationListener);
 				
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
