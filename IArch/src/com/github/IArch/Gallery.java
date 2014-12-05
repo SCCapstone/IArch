@@ -39,6 +39,7 @@ public class Gallery extends Activity {
 	    }
 	    
 		return imageItems;
-
 	}
+	
+	
 }
