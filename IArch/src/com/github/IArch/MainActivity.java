@@ -69,11 +69,6 @@ public class MainActivity extends Activity {
 		// Handle action bar item clicks here. The action bar will
 		// automatically handle clicks on the Home/Up button, so long
 		// as you specify a parent activity in AndroidManifest.xml.
-		//int id = item.getItemId();
-		//if (id == R.id.action_settings) {
-		//	return true;
-		//}
-		//handle presses on menu bar items
 		switch (item.getItemId()) {
 		case R.id.action_upload:
 			
@@ -93,14 +88,15 @@ public class MainActivity extends Activity {
 	                mDatastoreManager.migrateToAccount(account);
 	                // Now use Dropbox datastores
 	                mDatastoreManager = DbxDatastoreManager.forAccount(account);
-	                // Hide link button
-	                //mLinkButton.setVisibility(View.GONE);
+	                
 	                mLinkButton.setText("Unlink from Dropbox");
 	            } catch (DbxException e) {
 	                e.printStackTrace();
 	            }
 	        } else {
 	            // Link failed or was cancelled by the user
+	        	//mAccountManager.unlink();
+	        	//mLinkButton.setText("Link with Dropbox");
 	        }
 	    } else {
 	        super.onActivityResult(requestCode, resultCode, data);
