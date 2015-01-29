@@ -37,26 +37,10 @@ public class MainActivity extends Activity {
 	        @Override
 	        public void onClick(View v) {
 	        	onClickLinkToDropbox();
-	            
 	        }
 	    });
 
-	    // Set up the datastore manager
-	    if (mAccountManager.hasLinkedAccount()) {
-	        try {
-	            // Use Dropbox datastores
-	            mDatastoreManager = DbxDatastoreManager.forAccount(mAccountManager.getLinkedAccount());
-	            //mLinkButton.setText("Unlink from Dropbox");
-	        } catch (DbxException.Unauthorized e) {
-	            System.out.println("Account was unlinked remotely");
-	        }
-	    }
-	    if (mDatastoreManager == null) {
-	        // Account isn't linked yet, use local datastores
-	        mDatastoreManager = DbxDatastoreManager.localManager(mAccountManager);
-	        // Show link button
-	        mLinkButton.setVisibility(View.VISIBLE);
-	    }
+	    
 		
 	}//onCreate
 
@@ -86,7 +70,7 @@ public class MainActivity extends Activity {
 		super.onResume();
 		if (mAccountManager.hasLinkedAccount()) {
 		    showLinkedView();
-		    //doDropboxTest();
+		    doDropboxStuff();
 		} else {
 			showUnlinkedView();
 		}
@@ -103,7 +87,7 @@ public class MainActivity extends Activity {
     private void onClickLinkToDropbox() {
     	if (mAccountManager.hasLinkedAccount()) {
     		mAccountManager.unlink();
-        	mLinkButton.setText("Connect to Dropbox");
+        	showUnlinkedView();
     	} else {
     	mAccountManager.startLink((Activity)MainActivity.this, REQUEST_LINK_TO_DBX);
     	}
@@ -113,24 +97,39 @@ public class MainActivity extends Activity {
 	public void onActivityResult(int requestCode, int resultCode, Intent data) {
 	    if (requestCode == REQUEST_LINK_TO_DBX) {
 	        if (resultCode == Activity.RESULT_OK) {
-	            DbxAccount account = mAccountManager.getLinkedAccount();
-	            try {
-	                // Migrate any local datastores to the linked account
-	                //mDatastoreManager.migrateToAccount(account);
-	                // Now use Dropbox datastores
-	                mDatastoreManager = DbxDatastoreManager.forAccount(account);
-	                
-	                //mLinkButton.setText("Unlink from Dropbox");
-	            } catch (DbxException e) {
-	                e.printStackTrace();
-	            }
+	        	doDropboxStuff();
 	        } else {
 	            // Link failed or was cancelled by the user
-	        	//mAccountManager.unlink();
-	        	//mLinkButton.setText("Link with Dropbox");
 	        }
 	    } else {
 	        super.onActivityResult(requestCode, resultCode, data);
+	    }
+	}
+	
+	private void doDropboxStuff() {
+		DbxAccount account = mAccountManager.getLinkedAccount();
+        try {
+            // Migrate any local datastores to the linked account
+            //mDatastoreManager.migrateToAccount(account);
+            // Now use Dropbox datastores
+            mDatastoreManager = DbxDatastoreManager.forAccount(account);
+            
+        } catch (DbxException e) {
+            e.printStackTrace();
+        }
+        
+     // Set up the datastore manager
+	    if (mAccountManager.hasLinkedAccount()) {
+	        try {
+	            // Use Dropbox datastores
+	            mDatastoreManager = DbxDatastoreManager.forAccount(mAccountManager.getLinkedAccount());
+	        } catch (DbxException.Unauthorized e) {
+	            System.out.println("Account was unlinked remotely");
+	        }
+	    }
+	    if (mDatastoreManager == null) {
+	        // Account isn't linked yet, use local datastores
+	        mDatastoreManager = DbxDatastoreManager.localManager(mAccountManager);
 	    }
 	}
 	
