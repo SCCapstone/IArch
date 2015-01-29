@@ -2,7 +2,7 @@ package com.github.IArch;
 
 import android.location.Location;
 import android.os.Bundle;
-import android.support.v7.app.ActionBarActivity;
+import android.support.v4.app.FragmentActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.TextView;
@@ -23,7 +23,7 @@ import com.google.android.gms.maps.model.LatLng;
 
 
 
-public class DisplayMapActivity extends ActionBarActivity
+public class DisplayMapActivity extends FragmentActivity
 	implements
 	ConnectionCallbacks,
 	OnConnectionFailedListener,
@@ -36,6 +36,7 @@ public class DisplayMapActivity extends ActionBarActivity
     private TextView mMessageView;
     private LatLng LatLong;
     float zoom = 16;
+    int zoomCounter = 0;
     
     
  // These settings are the same as the settings for the map. They will in fact give you updates
@@ -50,7 +51,7 @@ public class DisplayMapActivity extends ActionBarActivity
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_display_map);
 		mMessageView = (TextView) findViewById(R.id.message_text);
-		
+				
 	}
 
 	@Override
@@ -80,7 +81,7 @@ public class DisplayMapActivity extends ActionBarActivity
             if (mMap != null) {
                 mMap.setMyLocationEnabled(true);
                 mMap.setOnMyLocationButtonClickListener(this);
-                
+                mMap.setMapType(GoogleMap.MAP_TYPE_HYBRID);
                 
             }
         }
@@ -130,9 +131,11 @@ public class DisplayMapActivity extends ActionBarActivity
 		double latitude = location.getLatitude();
 		double longitude = location.getLongitude();
 		LatLong = new LatLng(latitude, longitude);
-		mMap.moveCamera(CameraUpdateFactory.newLatLng(LatLong));
-		mMap.animateCamera(CameraUpdateFactory.zoomTo(zoom), 2000, null);
-		
+		if (zoomCounter == 0) {
+			mMap.moveCamera(CameraUpdateFactory.newLatLng(LatLong));
+			mMap.animateCamera(CameraUpdateFactory.zoomTo(zoom), 2000, null);
+		}
+		zoomCounter++;
 	}
 
 	@Override
