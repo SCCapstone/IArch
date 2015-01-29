@@ -184,6 +184,7 @@ public class TakePicture extends Activity {
 			    //set up dropbox datastores
 			    DbxDatastore datastore = MainActivity.mDatastoreManager.openDefaultDatastore();
 				DbxTable tasksTbl = datastore.getTable("tasks");
+				@SuppressWarnings("unused")
 				DbxRecord task = tasksTbl.insert().set("filename", fileLocation).set("latitude", latitude).set("longitude", longitude);
 				
 				//sync datastore

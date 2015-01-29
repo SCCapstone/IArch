@@ -10,12 +10,11 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-public class GridViewAdapter extends ArrayAdapter {
+public class GridViewAdapter extends ArrayAdapter<ImageItem> {
 	private Context context;
 	private int layoutResourceId;
 	private ArrayList<ImageItem> data = new ArrayList<ImageItem>();
 
-	@SuppressWarnings("unchecked")
 	public GridViewAdapter(Context context, int layoutResourceId, ArrayList<ImageItem> data) {
 		super(context, layoutResourceId, data);
 		this.layoutResourceId = layoutResourceId;
