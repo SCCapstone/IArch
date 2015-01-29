@@ -15,6 +15,9 @@ import com.dropbox.sync.android.DbxException;
 
 public class MainActivity extends Activity {
 
+	private static final String appKey = "fapxgsf7glvwkb0";
+    private static final String appSecret = "1swwbsarfhraqab";
+    
 	static final int REQUEST_LINK_TO_DBX = 0;
 	
 	private Button mLinkButton;
@@ -26,14 +29,15 @@ public class MainActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
 		
-		mAccountManager = DbxAccountManager.getInstance(getApplicationContext(), "fapxgsf7glvwkb0", "1swwbsarfhraqab");
+		mAccountManager = DbxAccountManager.getInstance(getApplicationContext(), appKey, appSecret);
 
 	    // Button to link to Dropbox
 	    mLinkButton = (Button) findViewById(R.id.link_button);
 	    mLinkButton.setOnClickListener(new OnClickListener() {
 	        @Override
 	        public void onClick(View v) {
-	            mAccountManager.startLink((Activity)MainActivity.this, REQUEST_LINK_TO_DBX);
+	        	onClickLinkToDropbox();
+	            
 	        }
 	    });
 
@@ -42,7 +46,7 @@ public class MainActivity extends Activity {
 	        try {
 	            // Use Dropbox datastores
 	            mDatastoreManager = DbxDatastoreManager.forAccount(mAccountManager.getLinkedAccount());
-	            mLinkButton.setText("Unlink from Dropbox");
+	            //mLinkButton.setText("Unlink from Dropbox");
 	        } catch (DbxException.Unauthorized e) {
 	            System.out.println("Account was unlinked remotely");
 	        }
@@ -78,17 +82,45 @@ public class MainActivity extends Activity {
 	}
 	
 	@Override
+	protected void onResume() {
+		super.onResume();
+		if (mAccountManager.hasLinkedAccount()) {
+		    showLinkedView();
+		    //doDropboxTest();
+		} else {
+			showUnlinkedView();
+		}
+	}
+
+    private void showLinkedView() {
+        mLinkButton.setText("Unlink from Dropbox");
+    }
+
+    private void showUnlinkedView() {
+    	mLinkButton.setText("Connect to Dropbox");
+    }
+    
+    private void onClickLinkToDropbox() {
+    	if (mAccountManager.hasLinkedAccount()) {
+    		mAccountManager.unlink();
+        	mLinkButton.setText("Connect to Dropbox");
+    	} else {
+    	mAccountManager.startLink((Activity)MainActivity.this, REQUEST_LINK_TO_DBX);
+    	}
+    }
+    
+	@Override
 	public void onActivityResult(int requestCode, int resultCode, Intent data) {
 	    if (requestCode == REQUEST_LINK_TO_DBX) {
 	        if (resultCode == Activity.RESULT_OK) {
 	            DbxAccount account = mAccountManager.getLinkedAccount();
 	            try {
 	                // Migrate any local datastores to the linked account
-	                mDatastoreManager.migrateToAccount(account);
+	                //mDatastoreManager.migrateToAccount(account);
 	                // Now use Dropbox datastores
 	                mDatastoreManager = DbxDatastoreManager.forAccount(account);
 	                
-	                mLinkButton.setText("Unlink from Dropbox");
+	                //mLinkButton.setText("Unlink from Dropbox");
 	            } catch (DbxException e) {
 	                e.printStackTrace();
 	            }
