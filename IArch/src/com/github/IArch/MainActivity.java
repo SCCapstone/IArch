@@ -101,6 +101,7 @@ public class MainActivity extends ActionBarActivity {
 	    }
 	}
 	
+	// Camera Button OnClick
 	public void takePicture(View view)
 	{
 		Intent intent = new Intent(this, TakePicture.class);
@@ -114,11 +115,11 @@ public class MainActivity extends ActionBarActivity {
 		startActivity(intent);
 	}
 	
-	public void gallery(View view)
+	// Project Management Button OnClick
+	/*public void gallery(View view)
 	{
-		Intent intent = new Intent(this,Gallery.class);
+		Intent intent = new Intent(this, Gallery.class);
 		startActivity(intent);
-	}
+	}*/
 }
-//testing, delete this comment
-//Now Nick's branch is different'
+
