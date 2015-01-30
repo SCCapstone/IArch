@@ -58,7 +58,6 @@ public class MainActivity extends Activity {
 		// as you specify a parent activity in AndroidManifest.xml.
 		switch (item.getItemId()) {
 		case R.id.action_upload:
-			
 			return true;
 		default:
 			return super.onOptionsItemSelected(item);
