@@ -31,7 +31,7 @@ public class MainActivity extends Activity {
 		
 		mAccountManager = DbxAccountManager.getInstance(getApplicationContext(), appKey, appSecret);
 
-	    // Button to link to Dropbox
+	    //dropbox button listener
 	    mLinkButton = (Button) findViewById(R.id.link_button);
 	    mLinkButton.setOnClickListener(new OnClickListener() {
 	        @Override
@@ -39,10 +39,7 @@ public class MainActivity extends Activity {
 	        	onClickLinkToDropbox();
 	        }
 	    });
-
-	    
-		
-	}//onCreate
+	}
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
@@ -86,6 +83,7 @@ public class MainActivity extends Activity {
     
     private void onClickLinkToDropbox() {
     	if (mAccountManager.hasLinkedAccount()) {
+    		//if already linked to dropbox and button is clicked, unlink
     		mAccountManager.unlink();
         	showUnlinkedView();
     	} else {
