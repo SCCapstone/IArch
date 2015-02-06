@@ -29,7 +29,6 @@ public class Gallery extends Activity {
 		gridView.setAdapter(customGridAdapter);
 		
 		gridView.setOnItemClickListener(new OnItemClickListener() {
-			@Override
 			public void onItemClick(AdapterView<?> parent, View view,
 					int position, long id) {
 				// TODO Auto-generated method stub
@@ -49,6 +48,7 @@ public class Gallery extends Activity {
 	        Bitmap bitmap = BitmapFactory.decodeFile(imageFiles[i].getAbsolutePath());
 	        Bitmap smallBitmap = Bitmap.createScaledBitmap(bitmap, 200, 200, false);
 	        imageItems.add(new ImageItem(smallBitmap, "Image#" + i));
+	        bitmap.recycle();
 	    }
 	    
 		return imageItems;

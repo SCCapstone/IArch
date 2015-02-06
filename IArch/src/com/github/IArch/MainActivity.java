@@ -16,7 +16,7 @@ import com.dropbox.sync.android.DbxException;
 public class MainActivity extends Activity {
 
 	private static final String appKey = "fapxgsf7glvwkb0";
-    private static final String appSecret = "1swwbsarfhraqab";
+	private static final String appSecret = "1swwbsarfhraqab";
     
 	static final int REQUEST_LINK_TO_DBX = 0;
 	
