@@ -8,6 +8,9 @@ import android.view.MenuItem;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.dropbox.sync.android.DbxDatastore;
+import com.dropbox.sync.android.DbxException;
+import com.dropbox.sync.android.DbxTable;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.GoogleApiClient.ConnectionCallbacks;
@@ -20,6 +23,7 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.GoogleMap.OnMyLocationButtonClickListener;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
 
 
 
@@ -134,6 +138,9 @@ public class DisplayMapActivity extends FragmentActivity
 		if (zoomCounter == 0) {
 			mMap.moveCamera(CameraUpdateFactory.newLatLng(LatLong));
 			mMap.animateCamera(CameraUpdateFactory.zoomTo(zoom), 2000, null);
+			
+			getPins();
+			
 		}
 		zoomCounter++;
 	}
@@ -159,6 +166,38 @@ public class DisplayMapActivity extends FragmentActivity
 		
 	}
 	
+	public void getPins() {
+		//set up dropbox datastores
+	    DbxDatastore datastore;
+		try {
+			datastore = MainActivity.mDatastoreManager.openDefaultDatastore();
+			DbxTable tasksTbl = datastore.getTable("tasks");
+			//DbxFields queryParams = new DbxFields().getString(latitude);
+			DbxTable.QueryResult results = tasksTbl.query();
+			System.out.println("results: " + results);
+			datastore.close();
+		} catch (DbxException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		// You can customize the marker image using images bundled with
+        // your app, or dynamically generated bitmaps.
+        mMap.addMarker(new MarkerOptions()
+                //.icon(BitmapDescriptorFactory.fromResource(R.drawable.house_flag))
+                .anchor(0.0f, 1.0f) // Anchors the marker on the bottom left
+                .position(new LatLng(41.889, -87.622)));
+	}
+	
 	/**
      * Button to get current Location. This demonstrates how to get the current Location as required
      * without needing to register a LocationListener.
@@ -171,7 +210,4 @@ public class DisplayMapActivity extends FragmentActivity
         }
     }
 	*/
-	
-	
-	
 }
