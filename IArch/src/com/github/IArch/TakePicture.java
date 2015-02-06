@@ -237,7 +237,14 @@ public class TakePicture extends Activity {
 			    DbxDatastore datastore = MainActivity.mDatastoreManager.openDefaultDatastore();
 				DbxTable tasksTbl = datastore.getTable("tasks");
 				@SuppressWarnings("unused")
-				DbxRecord task = tasksTbl.insert().set("filename", fileLocation).set("latitude", latitude).set("longitude", longitude);
+				DbxRecord task = tasksTbl.insert().set("LOCAL_FILENAME", fileLocation).
+						set("DATE", date).
+						set("LATITUDE", latitude).set("LONGITUDE", longitude).
+						set("PROJECT_NAME", projectName).
+						set("LOCATION", location).
+						set("ARTIFACT_TYPE", artifact).
+						set("DESCRIPTION", description);
+					
 				
 				//sync datastore
 				datastore.sync();
