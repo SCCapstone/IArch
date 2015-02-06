@@ -3,6 +3,14 @@
 
     <string name="app_name">iArch</string>
     <string name="hello_world">Hello world!</string>
+    
+    <!--  Take Picture / Meta data entry -->
+    <string name="project_hint">Project Name</string>
+    <string name="location_hint">Location</string>
+    <string name="artifact_hint">Artifact</string>
+    <string name="description_hint">Description</string>
+    <string name="date">Date</string>
+    <string name="gps">GPS</string>
 
     <!-- Buttons -->
     <string name="camera">Camera</string>

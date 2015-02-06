@@ -7,7 +7,7 @@
 	<classpathentry kind="src" path="gen"/>
 	<classpathentry exported="true" kind="lib" path="libs/dropbox-sync-sdk-android.jar"/>
 	<classpathentry exported="true" kind="src" path="/android-support-v7-appcompat"/>
-	<classpathentry exported="true" kind="lib" path="G:/Development/adt-bundle-windows-x86_64-20140702/adt-bundle-windows-x86_64-20140702/sdk/platforms/android-14/android.jar" sourcepath="G:/Development/adt-bundle-windows-x86_64-20140702/adt-bundle-windows-x86_64-20140702/sdk/sources/android-14">
+	<classpathentry kind="lib" path="G:/Development/adt-bundle-windows-x86_64-20140702/adt-bundle-windows-x86_64-20140702/sdk/platforms/android-14/android.jar" sourcepath="G:/Development/adt-bundle-windows-x86_64-20140702/adt-bundle-windows-x86_64-20140702/sdk/sources/android-14">
 		<attributes>
 			<attribute name="javadoc_location" value="file:/G:/Development/adt-bundle-windows-x86_64-20140702/adt-bundle-windows-x86_64-20140702/sdk/docs/reference"/>
 		</attributes>

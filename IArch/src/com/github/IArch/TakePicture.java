@@ -76,8 +76,12 @@ public class TakePicture extends Activity {
 			//show picture that was taken
 			setPic(fileLocation);
 			
+			String date = new SimpleDateFormat("MM/dd/yyyy").format(new Date());
+			TextView textDate = (TextView) findViewById(R.id.date);
+			textDate.setText(date);
+			
 			TextView myText = (TextView) findViewById(R.id.textView1);
-			myText.setText("Latitude: " + latitude + " " + "Longitude: " + longitude);
+			myText.setText("Latitude1: " + latitude + " " + "Longitude1: " + longitude);
 		} else {
 			//show picture that was taken
 			setPic(fileLocation);
@@ -118,8 +122,12 @@ public class TakePicture extends Activity {
 				//show picture that was taken
 				setPic(fileLocation);
 				
+				String date = new SimpleDateFormat("MM/dd/yyyy").format(new Date());
+				TextView textDate = (TextView) findViewById(R.id.date);
+				textDate.setText(date);
+				
 				TextView myText = (TextView) findViewById(R.id.textView1);
-				myText.setText("Latitude: " + latitude + " " + "Longitude: " + longitude);
+				myText.setText("Latitude2: " + latitude + " " + "Longitude2: " + longitude);
 			} else {
 				//show picture that was taken
 				setPic(fileLocation);
