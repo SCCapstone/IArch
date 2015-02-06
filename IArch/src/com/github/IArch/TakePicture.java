@@ -29,6 +29,8 @@ import android.provider.MediaStore;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -38,6 +40,11 @@ public class TakePicture extends Activity {
 	private static final int CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE = 100;
 	private Uri fileUri;
 	static String fileLocation = null;
+	static private String date;
+	static private String projectName;
+	static private String location;
+	static private String artifact;
+	static private String description;
 	static double latitude;
 	static double longitude;
 	static LocationManager locationManager;
@@ -55,6 +62,7 @@ public class TakePicture extends Activity {
 			Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
 		
 			getLocation();
+			getDate();
 		
 			//Ensure there is a camera activity to handle intent
 			if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
@@ -76,7 +84,7 @@ public class TakePicture extends Activity {
 			//show picture that was taken
 			setPic(fileLocation);
 			
-			String date = new SimpleDateFormat("MM/dd/yyyy").format(new Date());
+			//date = new SimpleDateFormat("MM/dd/yyyy").format(new Date());
 			TextView textDate = (TextView) findViewById(R.id.date);
 			textDate.setText(date);
 			
@@ -115,14 +123,14 @@ public class TakePicture extends Activity {
 		if (requestCode == CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE && resultCode == RESULT_OK) {
 			System.out.println("You just took a picture");
 			
-			if (MainActivity.mAccountManager.hasLinkedAccount()) {
+			if (MainActivity.mAccountManager.hasLinkedAccount()) {	
 				//sync picture with dropbox
-				dropboxStuff(fileLocation);
+				//dropboxStuff(fileLocation);
 				
 				//show picture that was taken
 				setPic(fileLocation);
 				
-				String date = new SimpleDateFormat("MM/dd/yyyy").format(new Date());
+				//date = new SimpleDateFormat("MM/dd/yyyy").format(new Date());
 				TextView textDate = (TextView) findViewById(R.id.date);
 				textDate.setText(date);
 				
@@ -175,8 +183,44 @@ public class TakePicture extends Activity {
 		return mediaFile;
 	}
 	
-	static void dropboxStuff(String file) {
+	private void capturePictureData()
+	{
+		EditText projectEditText = (EditText) findViewById(R.id.project_name);
+	    projectName = projectEditText.getText().toString();
+	    
+	    EditText locationEditText = (EditText) findViewById(R.id.location_name);
+	    location = locationEditText.getText().toString();
+	    
+	    EditText artifactEditText = (EditText) findViewById(R.id.artifact_name);
+	    artifact = artifactEditText.getText().toString();
+	    
+	    EditText descriptionEditText = (EditText) findViewById(R.id.description);
+	    description = descriptionEditText.getText().toString();	    
+	}
+	
+	public void syncToDropbox(View view)
+	{
+		//sync picture with dropbox upon clicking sync button
+		if (MainActivity.mAccountManager.hasLinkedAccount())
+		{
+			Boolean syncCorrectly = dropboxStuff(fileLocation);
+			if (syncCorrectly)
+			{
+				// Restart taking picture activity after sync is complete
+				Intent intent = getIntent();
+			    finish();
+			    startActivity(intent);
+			}
+			// Need to add failure message
+		}
+		
+		
+	}
+	
+	private Boolean dropboxStuff(String file) {
 		try {
+			// Get the data entered into the textboxes
+			capturePictureData();
 			//shorten path
 			String[] splitFile = file.split("/");
 					
@@ -201,12 +245,14 @@ public class TakePicture extends Activity {
 				//close datastore
 				datastore.close();
 				
+				
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			} finally {
 				//close remote file so other things can be done
 			    testFile.close();
+			    return true;
 			}
 			} catch (Unauthorized e) {
 				// TODO Auto-generated catch block
@@ -219,6 +265,8 @@ public class TakePicture extends Activity {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
+		
+		return false;
 			
 	}
 	
@@ -254,6 +302,11 @@ public class TakePicture extends Activity {
 		Bitmap bitmap = BitmapFactory.decodeFile(file, bmOptions);
 		myImage.setImageBitmap(bitmap);
 		
+	}
+	
+	void getDate()
+	{
+		date = new SimpleDateFormat("MM/dd/yyyy").format(new Date());
 	}
 	
 	void getLocation() {

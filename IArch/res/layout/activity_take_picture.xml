@@ -68,5 +68,14 @@
         android:layout_below="@+id/artifact_name"
         android:hint="@string/description_hint"
         android:inputType="textMultiLine" />
+    
+     <Button
+        android:id="@+id/sync"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignLeft="@+id/imageView1"
+        android:text="@string/sync"
+        android:onClick="syncToDropbox" />
 
 </RelativeLayout>

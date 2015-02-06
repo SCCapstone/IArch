@@ -11,8 +11,9 @@
     <string name="description_hint">Description</string>
     <string name="date">Date</string>
     <string name="gps">GPS</string>
+    <string name="sync">Sync to Dropbox</string>
 
-    <!-- Buttons -->
+    <!-- Main Screen Buttons -->
     <string name="camera">Camera</string>
     <string name="map">Map</string>
     <string name="project_management">Project Management</string>
