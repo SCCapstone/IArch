@@ -61,9 +61,6 @@ public class TakePicture extends Activity {
 			
 			Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
 		
-			getLocation();
-			getDate();
-		
 			//Ensure there is a camera activity to handle intent
 			if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
 				//create file where photo should go
@@ -80,7 +77,7 @@ public class TakePicture extends Activity {
 			fileLocation = fileUri.getPath(); 
 		}
 		//user rotated the screen, redraw stuff
-		if (MainActivity.mAccountManager.hasLinkedAccount()) {
+		else if (MainActivity.mAccountManager.hasLinkedAccount()) {
 			//show picture that was taken
 			setPic(fileLocation);
 			
@@ -122,6 +119,9 @@ public class TakePicture extends Activity {
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		if (requestCode == CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE && resultCode == RESULT_OK) {
 			System.out.println("You just took a picture");
+			
+			getLocation();
+			getDate();
 			
 			if (MainActivity.mAccountManager.hasLinkedAccount()) {	
 				//sync picture with dropbox
