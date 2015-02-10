@@ -6,10 +6,10 @@
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="src" path="gen"/>
 	<classpathentry exported="true" kind="lib" path="libs/dropbox-sync-sdk-android.jar"/>
-	<classpathentry exported="true" kind="src" path="/android-support-v7-appcompat"/>
-	<classpathentry kind="lib" path="G:/Development/adt-bundle-windows-x86_64-20140702/adt-bundle-windows-x86_64-20140702/sdk/platforms/android-14/android.jar" sourcepath="G:/Development/adt-bundle-windows-x86_64-20140702/adt-bundle-windows-x86_64-20140702/sdk/sources/android-14">
+	<classpathentry combineaccessrules="false" kind="src" path="/google-play-services_lib"/>
+	<classpathentry exported="true" kind="lib" path="D:/android/sdk/platforms/android-20/android.jar" sourcepath="D:/Downloads/adt-bundle-windows-x86_64-20140702/adt-bundle-windows-x86_64-20140702/sdk/sources/android-20">
 		<attributes>
-			<attribute name="javadoc_location" value="file:/G:/Development/adt-bundle-windows-x86_64-20140702/adt-bundle-windows-x86_64-20140702/sdk/docs/reference"/>
+			<attribute name="javadoc_location" value="http://developer.android.com/reference/"/>
 		</attributes>
 		<accessrules>
 			<accessrule kind="nonaccessible" pattern="com/android/internal/**"/>
