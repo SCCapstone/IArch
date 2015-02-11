@@ -15,13 +15,15 @@ public class GridViewAdapter extends ArrayAdapter<ImageItem> {
 	private int layoutResourceId;
 	private ArrayList<ImageItem> data = new ArrayList<ImageItem>();
 
-	public GridViewAdapter(Context context, int layoutResourceId, ArrayList<ImageItem> data) {
+	public GridViewAdapter(Context context, int layoutResourceId,
+			ArrayList<ImageItem> data) {
 		super(context, layoutResourceId, data);
 		this.layoutResourceId = layoutResourceId;
 		this.context = context;
 		this.data = data;
 	}
 
+	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
 		View row = convertView;
 		ViewHolder holder = null;

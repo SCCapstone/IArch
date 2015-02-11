@@ -79,26 +79,34 @@ public class TakePicture extends Activity {
 			//store file path to variable
 			fileLocation = fileUri.getPath(); 
 		}
-		//user rotated the screen, redraw stuff
-		else if (MainActivity.mAccountManager.hasLinkedAccount()) {
-			//show picture that was taken
-			setPic(fileLocation);
-			
-			//date = new SimpleDateFormat("MM/dd/yyyy").format(new Date());
-			TextView textDate = (TextView) findViewById(R.id.date);
-			textDate.setText(date);
-			
-			TextView myText = (TextView) findViewById(R.id.textView1);
-			myText.setText("Latitude1: " + latitude + " " + "Longitude1: " + longitude);
-		} else {
-			//show picture that was taken
-			setPic(fileLocation);
-			
-			TextView myText = (TextView) findViewById(R.id.textView1);
-			myText.setText("Error: photo not synced with Dropbox!");
-		}			
+		
 	}
 
+	@Override
+    public void onResume() {
+		super.onResume();
+        System.out.println("you just resumed it");
+        //user rotated the screen, redraw stuff
+      		if (MainActivity.mAccountManager.hasLinkedAccount()) {
+      			//show picture that was taken
+      			setPic(fileLocation);
+      			
+      			//date = new SimpleDateFormat("MM/dd/yyyy").format(new Date());
+      			TextView textDate = (TextView) findViewById(R.id.date);
+      			textDate.setText(date);
+      			
+      			TextView myText = (TextView) findViewById(R.id.textView1);
+      			myText.setText("Latitude1: " + latitude + " " + "Longitude1: " + longitude);
+      		} else {
+      			//show picture that was taken
+      			setPic(fileLocation);
+      			
+      			TextView myText = (TextView) findViewById(R.id.textView1);
+      			myText.setText("Error: photo not synced with Dropbox!");
+      		}			
+        
+    }
+	
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.
@@ -143,7 +151,14 @@ public class TakePicture extends Activity {
 				TextView myText = (TextView) findViewById(R.id.textView1);
 				myText.setText("Error: photo not synced with Dropbox!");
 			}			
+		} 
+		//triggered if photo capture is canceled or back button pressed
+		else if (resultCode == RESULT_CANCELED){
+			Intent intent = new Intent(this, MainActivity.class);
+			startActivity(intent);
+			finish();
 		}
+		
 		//stop looking for location updates; saves battery
 		locationManager.removeUpdates(locationListener);
 	}
@@ -278,7 +293,6 @@ public class TakePicture extends Activity {
 	}
 	
 	private void setPic(String file) {
-		
 		//get dimensions of view
 		ImageView myImage = (ImageView) findViewById(R.id.imageView1);
 		
@@ -297,7 +311,7 @@ public class TakePicture extends Activity {
 		int photoW = bmOptions.outWidth;
 		int photoH = bmOptions.outHeight;
 		System.out.println("photoW: " + photoW + " photoH: " + photoH);
-		
+				
 		//determine how much to scale down the image
 		int scaleFactor = Math.min(photoW/targetW, photoH/targetH);
 		

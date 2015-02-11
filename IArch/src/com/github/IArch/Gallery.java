@@ -29,12 +29,15 @@ public class Gallery extends Activity {
 		customGridAdapter = new GridViewAdapter(this, R.layout.row_grid, getData());
 		gridView.setAdapter(customGridAdapter);
 		
+		//handle item click
 		gridView.setOnItemClickListener(new OnItemClickListener() {
-			public void onItemClick(AdapterView<?> parent, View view,
-					int position, long id) {
-				// TODO Auto-generated method stub
-				Toast.makeText(getApplicationContext(), position, Toast.LENGTH_SHORT).show();
+			public void onItemClick(AdapterView<?> parent, View v,
+				int position, long id) {
+				Toast.makeText(Gallery.this, position + "#Selected",
+						Toast.LENGTH_SHORT).show();
+				System.out.println("position: " + position);
 			}
+
 		});
 	}
 
