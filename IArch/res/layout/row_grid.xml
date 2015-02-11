@@ -5,8 +5,8 @@
     android:layout_marginTop="5dp"
     android:orientation="vertical"
     android:padding="5dp" 
-    android:clickable="true"
-    android:focusable="true">
+    android:clickable="false"
+    android:focusable="false">
 
     <ImageView
         android:id="@+id/image"
