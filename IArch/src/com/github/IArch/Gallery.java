@@ -4,10 +4,9 @@ import java.io.File;
 import java.util.ArrayList;
 
 import android.app.Activity;
-import android.content.res.Resources;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.BitmapFactory.Options;
 import android.os.Bundle;
 import android.os.Environment;
 import android.view.Menu;
@@ -21,6 +20,7 @@ public class Gallery extends Activity {
 
 	private GridView gridView;
 	private GridViewAdapter customGridAdapter;
+	public static File fileName = null;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -37,7 +37,17 @@ public class Gallery extends Activity {
 				int position, long id) {
 				Toast.makeText(Gallery.this, position + "#Selected",
 						Toast.LENGTH_SHORT).show();
-				System.out.println("position: " + position);
+				
+				//get files in images directory
+				File path = new File(Environment.getExternalStoragePublicDirectory(
+						Environment.DIRECTORY_PICTURES) + "/iArch/");
+			    File[] imageFiles = path.listFiles();
+			    //use it like imageFiles[position]
+			    fileName = imageFiles[position];
+			    System.out.println("image selected : " + imageFiles[position]);
+				
+			    Intent intent = new Intent(Gallery.this, ImageDetails.class);
+			    startActivity(intent);
 			}
 
 		});
@@ -96,7 +106,7 @@ public class Gallery extends Activity {
             inSampleSize *= 2;
         }
     }
-    System.out.println(inSampleSize);
+    //System.out.println(inSampleSize);
     return inSampleSize;
 }
 
