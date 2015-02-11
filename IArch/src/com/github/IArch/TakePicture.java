@@ -151,11 +151,14 @@ public class TakePicture extends Activity {
 				TextView myText = (TextView) findViewById(R.id.textView1);
 				myText.setText("Error: photo not synced with Dropbox!");
 			}			
-		} else if (resultCode == RESULT_CANCELED){
+		} 
+		//triggered if photo capture is canceled or back button pressed
+		else if (resultCode == RESULT_CANCELED){
 			Intent intent = new Intent(this, MainActivity.class);
 			startActivity(intent);
 			finish();
 		}
+		
 		//stop looking for location updates; saves battery
 		locationManager.removeUpdates(locationListener);
 	}
@@ -290,7 +293,6 @@ public class TakePicture extends Activity {
 	}
 	
 	private void setPic(String file) {
-		
 		//get dimensions of view
 		ImageView myImage = (ImageView) findViewById(R.id.imageView1);
 		
