@@ -61,6 +61,9 @@ public class TakePicture extends Activity {
 			
 			Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
 		
+			getLocation();
+			getDate();
+			
 			//Ensure there is a camera activity to handle intent
 			if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
 				//create file where photo should go
@@ -119,9 +122,6 @@ public class TakePicture extends Activity {
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		if (requestCode == CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE && resultCode == RESULT_OK) {
 			System.out.println("You just took a picture");
-			
-			getLocation();
-			getDate();
 			
 			if (MainActivity.mAccountManager.hasLinkedAccount()) {	
 				//sync picture with dropbox
@@ -321,10 +321,15 @@ public class TakePicture extends Activity {
 		locationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
 		String locationProvider = LocationManager.GPS_PROVIDER;
 		
-		//set cached last known location to current location for initial state
-		lastKnownLocation = locationManager.getLastKnownLocation(locationProvider);
-		latitude = lastKnownLocation.getLatitude();
-		longitude = lastKnownLocation.getLongitude();
+		//check to see if last known location exists
+		if (locationManager != null) {
+			//set cached last known location to current location for initial state
+			lastKnownLocation = locationManager.getLastKnownLocation(locationProvider);
+			if (lastKnownLocation != null) {
+				latitude = lastKnownLocation.getLatitude();
+				longitude = lastKnownLocation.getLongitude();
+			}
+		}
 		
 		//define listener that responds to location updates
 		locationListener = new LocationListener() {
