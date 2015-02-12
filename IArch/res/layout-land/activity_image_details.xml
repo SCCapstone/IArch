@@ -32,43 +32,43 @@
         android:text="@string/gps"
         android:textAppearance="?android:attr/textAppearanceSmall" />
     
-    <EditText
+    <TextView
         android:id="@+id/project_name"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_alignLeft="@+id/date"
         android:layout_below="@+id/textView1"
         android:hint="@string/project_hint"
-        android:inputType="text" />
+    />
     
-    <EditText
+    <TextView
         android:id="@+id/location_name"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_alignLeft="@+id/date"
         android:layout_below="@+id/project_name"
         android:hint="@string/location_hint"
-        android:inputType="text" >
-    </EditText>
+    />
     
-    <EditText
+    
+    <TextView
         android:id="@+id/artifact_name"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_alignLeft="@+id/date"
         android:layout_below="@+id/location_name"
         android:hint="@string/artifact_hint"
-        android:inputType="text" />
+         />
 
-    <EditText
+    <TextView
         android:id="@+id/description"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_alignLeft="@+id/date"
         android:layout_below="@+id/artifact_name"
         android:hint="@string/description_hint"
-        android:inputType="textMultiLine" />
-    
+         />
+    <!-- 
     <Button
         android:id="@+id/sync"
         android:layout_width="fill_parent"
@@ -77,5 +77,5 @@
         android:layout_alignLeft="@+id/date"
         android:text="@string/sync"
         android:onClick="syncToDropbox" />
-
+	 -->
 </RelativeLayout>
