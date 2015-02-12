@@ -10,6 +10,7 @@ import android.view.View.OnClickListener;
 import android.widget.Button;
 import com.dropbox.sync.android.DbxAccount;
 import com.dropbox.sync.android.DbxAccountManager;
+import com.dropbox.sync.android.DbxDatastore;
 import com.dropbox.sync.android.DbxDatastoreManager;
 import com.dropbox.sync.android.DbxException;
 
@@ -128,6 +129,20 @@ public class MainActivity extends Activity {
 	        // Account isn't linked yet, use local datastores
 	        mDatastoreManager = DbxDatastoreManager.localManager(mAccountManager);
 	    }
+	    //sync datastores just in case back button was pressed too soon
+	    DbxDatastore datastore;
+		try {
+			datastore = mDatastoreManager.openDefaultDatastore();
+			//sync datastore
+			datastore.sync();
+			
+			//close datastore
+			datastore.close();
+		} catch (DbxException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	    
 	}
 	
 	public void takePicture(View view)
