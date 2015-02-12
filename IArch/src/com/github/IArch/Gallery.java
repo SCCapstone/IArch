@@ -35,8 +35,8 @@ public class Gallery extends Activity {
 		gridView.setOnItemClickListener(new OnItemClickListener() {
 			public void onItemClick(AdapterView<?> parent, View v,
 				int position, long id) {
-				Toast.makeText(Gallery.this, position + "#Selected",
-						Toast.LENGTH_SHORT).show();
+				//Toast.makeText(Gallery.this, position + "#Selected",
+				//		Toast.LENGTH_SHORT).show();
 				
 				//get files in images directory
 				File path = new File(Environment.getExternalStoragePublicDirectory(

@@ -1,5 +1,11 @@
 package com.github.IArch;
 
+import com.dropbox.sync.android.DbxDatastore;
+import com.dropbox.sync.android.DbxException;
+import com.dropbox.sync.android.DbxFields;
+import com.dropbox.sync.android.DbxRecord;
+import com.dropbox.sync.android.DbxTable;
+
 import android.app.Activity;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -7,22 +13,18 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 public class ImageDetails extends Activity {
 
+	String fileLocation = Gallery.fileName.toString();
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_image_details);
-		String fileLocation = Gallery.fileName.toString();
+		dropboxStuff();
 		
-		if (MainActivity.mAccountManager.hasLinkedAccount()) {	
-			//show picture that was taken
-			setPic(fileLocation);
-		} else {
-			//show picture that was taken
-			setPic(fileLocation);
-		}		
 	}
 
 	@Override
@@ -75,5 +77,59 @@ public class ImageDetails extends Activity {
 		Bitmap bitmap = BitmapFactory.decodeFile(file, bmOptions);
 		myImage.setImageBitmap(bitmap);
 		
+	}
+	
+	void dropboxStuff() {
+		if (MainActivity.mAccountManager.hasLinkedAccount()) {	
+			//show picture that was taken
+			setPic(fileLocation);
+			
+			try {
+				//open datastore and get fresh data
+				DbxDatastore datastore = MainActivity.mDatastoreManager.openDefaultDatastore();
+				datastore.sync();
+				
+				//open table
+				DbxTable tasksTbl = datastore.getTable("tasks");
+				
+				//query table for results
+				DbxFields queryParams = new DbxFields().set("LOCAL_FILENAME", fileLocation);
+				DbxTable.QueryResult results = tasksTbl.query(queryParams);
+				DbxRecord firstResult = results.iterator().next();
+				
+				//get data for variables
+				String date = firstResult.getString("DATE");
+				String projectName = firstResult.getString("PROJECT_NAME");
+				String description = firstResult.getString("DESCRIPTION");
+				Double longitude = firstResult.getDouble("LONGITUDE");
+				Double latitude = firstResult.getDouble("LATITUDE");
+				String latLong = "Latitude: " + latitude + " Longitude: " + longitude;
+				String artifactType = firstResult.getString("ARTIFACT_TYPE");
+				String location = firstResult.getString("LOCATION");
+				
+				//set text for textViews
+				TextView dateField = (TextView)findViewById(R.id.date);
+				dateField.setText(date);
+				TextView nameField = (TextView)findViewById(R.id.project_name);
+				nameField.setText(projectName);
+				TextView descriptionField = (TextView)findViewById(R.id.description);
+				descriptionField.setText(description);
+				TextView latLongField = (TextView)findViewById(R.id.textView1);
+				latLongField.setText(latLong);
+				TextView artifactField = (TextView)findViewById(R.id.artifact_name);
+				artifactField.setText(artifactType);
+				TextView locationField = (TextView)findViewById(R.id.location_name);
+				locationField.setText(location);
+				
+				//close datastores
+				datastore.close();
+			} catch (DbxException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		} else {
+			//show picture that was taken
+			setPic(fileLocation);
+		}		
 	}
 }
