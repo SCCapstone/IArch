@@ -17,16 +17,11 @@ public class ImageDetails extends Activity {
 		String fileLocation = Gallery.fileName.toString();
 		
 		if (MainActivity.mAccountManager.hasLinkedAccount()) {	
-			//sync picture with dropbox
-			//dropboxStuff(fileLocation);
-						
 			//show picture that was taken
 			setPic(fileLocation);
-			
 		} else {
 			//show picture that was taken
 			setPic(fileLocation);
-			
 		}		
 	}
 
