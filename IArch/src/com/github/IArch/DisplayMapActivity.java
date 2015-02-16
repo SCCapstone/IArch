@@ -1,6 +1,8 @@
 package com.github.IArch;
 
+import android.content.Context;
 import android.location.Location;
+import android.location.LocationManager;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.view.Menu;
@@ -82,7 +84,7 @@ public class DisplayMapActivity extends FragmentActivity
                 mMap.setMyLocationEnabled(true);
                 mMap.setOnMyLocationButtonClickListener(this);
                 mMap.setMapType(GoogleMap.MAP_TYPE_HYBRID);
-                
+                setupLastKnown();
             }
         }
     }
@@ -159,6 +161,28 @@ public class DisplayMapActivity extends FragmentActivity
 		
 	}
 	
+	void setupLastKnown() {
+		//acquire a reference to system location manager
+				LocationManager locationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
+				String locationProvider = LocationManager.GPS_PROVIDER;
+				
+				//check to see if last known location exists
+				if (locationManager != null) {
+					//set cached last known location to current location for initial state
+					Location lastKnownLocation = locationManager.getLastKnownLocation(locationProvider);
+					if (lastKnownLocation != null) {
+						double lastLatitude = lastKnownLocation.getLatitude();
+						double lastLongitude = lastKnownLocation.getLongitude();
+						LatLng lastLatLong = new LatLng(lastLatitude, lastLongitude);
+						if (zoomCounter == 0) {
+							mMap.moveCamera(CameraUpdateFactory.newLatLng(lastLatLong));
+						}
+					}
+				}
+				
+				
+	}
+	
 	/**
      * Button to get current Location. This demonstrates how to get the current Location as required
      * without needing to register a LocationListener.
@@ -171,6 +195,7 @@ public class DisplayMapActivity extends FragmentActivity
         }
     }
 	*/
+	
 	
 	
 	
