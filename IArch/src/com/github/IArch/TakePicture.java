@@ -115,6 +115,15 @@ public class TakePicture extends Activity {
 	}
 
 	@Override
+	protected void onStop() {
+	    super.onStop();  // Always call the superclass method first
+	    //delete photo if back button was pressed on TakePicture after taking photo
+	    File myFile = new File(fileLocation);
+	    myFile.delete();
+	    
+	}
+	
+	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		// Handle action bar item clicks here. The action bar will
 		// automatically handle clicks on the Home/Up button, so long
@@ -375,5 +384,5 @@ public class TakePicture extends Activity {
 		};
 		locationManager.requestLocationUpdates(locationProvider, 0, 0, locationListener);
 	}
-		
+	
 }
