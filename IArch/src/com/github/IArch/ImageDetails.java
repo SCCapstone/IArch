@@ -114,11 +114,11 @@ public class ImageDetails extends Activity {
 				}
 				if (projectName != null) {
 					TextView nameField = (TextView)findViewById(R.id.project_name);
-					nameField.setText(projectName);
+					nameField.setText("Project Name : " + projectName);
 				}
 				if (description != null) {
 					TextView descriptionField = (TextView)findViewById(R.id.description);
-					descriptionField.setText(description);
+					descriptionField.setText("Description: " + description);
 				}
 				if (latLong != null) {
 					TextView latLongField = (TextView)findViewById(R.id.textView1);
@@ -126,11 +126,11 @@ public class ImageDetails extends Activity {
 				}
 				if (artifactType != null) {
 					TextView artifactField = (TextView)findViewById(R.id.artifact_name);
-					artifactField.setText(artifactType);
+					artifactField.setText("Artifact: " + artifactType);
 				}
 				if (location != null) {
 					TextView locationField = (TextView)findViewById(R.id.location_name);
-					locationField.setText(location);
+					locationField.setText("Location: " + location);
 				}
 				
 				//close datastores
