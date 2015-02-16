@@ -108,18 +108,30 @@ public class ImageDetails extends Activity {
 				String location = firstResult.getString("LOCATION");
 				
 				//set text for textViews
-				TextView dateField = (TextView)findViewById(R.id.date);
-				dateField.setText(date);
-				TextView nameField = (TextView)findViewById(R.id.project_name);
-				nameField.setText(projectName);
-				TextView descriptionField = (TextView)findViewById(R.id.description);
-				descriptionField.setText(description);
-				TextView latLongField = (TextView)findViewById(R.id.textView1);
-				latLongField.setText(latLong);
-				TextView artifactField = (TextView)findViewById(R.id.artifact_name);
-				artifactField.setText(artifactType);
-				TextView locationField = (TextView)findViewById(R.id.location_name);
-				locationField.setText(location);
+				if (date != null) {
+					TextView dateField = (TextView)findViewById(R.id.date);
+					dateField.setText(date);
+				}
+				if (projectName != null) {
+					TextView nameField = (TextView)findViewById(R.id.project_name);
+					nameField.setText(projectName);
+				}
+				if (description != null) {
+					TextView descriptionField = (TextView)findViewById(R.id.description);
+					descriptionField.setText(description);
+				}
+				if (latLong != null) {
+					TextView latLongField = (TextView)findViewById(R.id.textView1);
+					latLongField.setText(latLong);
+				}
+				if (artifactType != null) {
+					TextView artifactField = (TextView)findViewById(R.id.artifact_name);
+					artifactField.setText(artifactType);
+				}
+				if (location != null) {
+					TextView locationField = (TextView)findViewById(R.id.location_name);
+					locationField.setText(location);
+				}
 				
 				//close datastores
 				datastore.close();
