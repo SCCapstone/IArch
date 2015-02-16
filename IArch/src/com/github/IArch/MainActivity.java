@@ -8,6 +8,8 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
+import android.widget.Toast;
+
 import com.dropbox.sync.android.DbxAccount;
 import com.dropbox.sync.android.DbxAccountManager;
 import com.dropbox.sync.android.DbxDatastore;
@@ -147,8 +149,14 @@ public class MainActivity extends Activity {
 	
 	public void takePicture(View view)
 	{
+		if (mAccountManager.hasLinkedAccount()) {
 		Intent intent = new Intent(this, TakePicture.class);
 		startActivity(intent);
+		}
+		else {
+			Toast.makeText(MainActivity.this, "Error : Not connected to Dropbox", 
+					Toast.LENGTH_LONG).show();
+		}
 	}
 	
 	//Map Button OnClick
