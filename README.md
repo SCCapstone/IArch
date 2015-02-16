@@ -22,7 +22,5 @@ on the fly using their phones camera and GPS. These finds are then synced to the
   - The user can also disconect their account
   
 #### Bugs:
-- Gallery crashed when data is filled in incorrectly
-- Returning to the main page creates a new main page instance
-- The options button does not do anything at the moment
+  - The options button does not do anything at the moment
   
