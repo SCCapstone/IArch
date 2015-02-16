@@ -154,8 +154,6 @@ public class TakePicture extends Activity {
 		} 
 		//triggered if photo capture is canceled or back button pressed
 		else if (resultCode == RESULT_CANCELED){
-			Intent intent = new Intent(this, MainActivity.class);
-			startActivity(intent);
 			finish();
 		}
 		
