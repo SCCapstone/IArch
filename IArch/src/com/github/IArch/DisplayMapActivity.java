@@ -1,5 +1,7 @@
 package com.github.IArch;
 
+import java.util.Iterator;
+
 import android.content.Context;
 import android.location.Location;
 import android.location.LocationManager;
@@ -10,6 +12,11 @@ import android.view.MenuItem;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.dropbox.sync.android.DbxDatastore;
+import com.dropbox.sync.android.DbxException;
+import com.dropbox.sync.android.DbxFields;
+import com.dropbox.sync.android.DbxRecord;
+import com.dropbox.sync.android.DbxTable;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.GoogleApiClient.ConnectionCallbacks;
@@ -22,6 +29,7 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.GoogleMap.OnMyLocationButtonClickListener;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
 
 
 
@@ -85,11 +93,49 @@ public class DisplayMapActivity extends FragmentActivity
                 mMap.setOnMyLocationButtonClickListener(this);
                 mMap.setMapType(GoogleMap.MAP_TYPE_HYBRID);
                 setupLastKnown();
+                mapPins();
             }
         }
     }
 
-    private void setUpGoogleApiClientIfNeeded() {
+    //add location of photos in database as map pins
+    private void mapPins() {
+    	if (MainActivity.mAccountManager.hasLinkedAccount()) {	
+    		//open datastore and get fresh data
+			DbxDatastore datastore;
+			try {
+				datastore = MainActivity.mDatastoreManager.openDefaultDatastore();
+				datastore.sync();
+				
+				//open table
+				DbxTable tasksTbl = datastore.getTable("tasks");
+				
+				//query table for results
+				DbxTable.QueryResult results = tasksTbl.query();
+				Iterator<DbxRecord> it = results.iterator();
+				
+				if (it.hasNext()) {
+					DbxRecord firstResult = it.next(); 
+					Double myLongitude = firstResult.getDouble("LONGITUDE");
+					Double myLatitude = firstResult.getDouble("LATITUDE");
+					String myFilename = firstResult.getString("LOCAL_FILENAME");
+					//shorten path
+					String[] splitFile = myFilename.split("/");
+					LatLng myLoc = new LatLng(myLatitude,myLongitude);
+					mMap.addMarker(new MarkerOptions()
+						.position(myLoc)
+						.title(splitFile[6]));
+				}
+				datastore.close();
+			} catch (DbxException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
+    	}
+	}
+
+	private void setUpGoogleApiClientIfNeeded() {
         if (mGoogleApiClient == null) {
             mGoogleApiClient = new GoogleApiClient.Builder(this)
                     .addApi(LocationServices.API)

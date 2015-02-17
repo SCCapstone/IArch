@@ -78,6 +78,9 @@ public class TakePicture extends Activity {
 		
 			//store file path to variable
 			fileLocation = fileUri.getPath(); 
+			
+			//stop looking for location updates; saves battery
+			locationManager.removeUpdates(locationListener);
 		}
 		
 	}
@@ -87,24 +90,14 @@ public class TakePicture extends Activity {
 		super.onResume();
         System.out.println("you just resumed it");
         //user rotated the screen, redraw stuff
-      		if (MainActivity.mAccountManager.hasLinkedAccount()) {
-      			//show picture that was taken
-      			setPic(fileLocation);
+      	//show picture that was taken
+      	setPic(fileLocation);
       			
-      			//date = new SimpleDateFormat("MM/dd/yyyy").format(new Date());
-      			TextView textDate = (TextView) findViewById(R.id.date);
-      			textDate.setText(date);
+      	TextView textDate = (TextView) findViewById(R.id.date);
+      	textDate.setText(date);
       			
-      			TextView myText = (TextView) findViewById(R.id.textView1);
-      			myText.setText("Latitude1: " + latitude + " " + "Longitude1: " + longitude);
-      		} else {
-      			//show picture that was taken
-      			setPic(fileLocation);
-      			
-      			TextView myText = (TextView) findViewById(R.id.textView1);
-      			myText.setText("Error: photo not synced with Dropbox!");
-      		}			
-        
+      	TextView myText = (TextView) findViewById(R.id.textView1);
+      	myText.setText("Latitude1: " + latitude + " " + "Longitude1: " + longitude);
     }
 	
 	@Override
@@ -140,34 +133,24 @@ public class TakePicture extends Activity {
 		if (requestCode == CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE && resultCode == RESULT_OK) {
 			System.out.println("You just took a picture");
 			
-			if (MainActivity.mAccountManager.hasLinkedAccount()) {	
-				//sync picture with dropbox
-				//dropboxStuff(fileLocation);
+			//show picture that was taken
+			setPic(fileLocation);
 				
-				//show picture that was taken
-				setPic(fileLocation);
+			TextView textDate = (TextView) findViewById(R.id.date);
+			textDate.setText(date);
 				
-				//date = new SimpleDateFormat("MM/dd/yyyy").format(new Date());
-				TextView textDate = (TextView) findViewById(R.id.date);
-				textDate.setText(date);
-				
-				TextView myText = (TextView) findViewById(R.id.textView1);
-				myText.setText("Latitude2: " + latitude + " " + "Longitude2: " + longitude);
-			} else {
-				//show picture that was taken
-				setPic(fileLocation);
-				
-				TextView myText = (TextView) findViewById(R.id.textView1);
-				myText.setText("Error: photo not synced with Dropbox!");
-			}			
+			TextView myText = (TextView) findViewById(R.id.textView1);
+			myText.setText("Latitude2: " + latitude + " " + "Longitude2: " + longitude);
+			
+			//stop looking for location updates; saves battery
+			//locationManager.removeUpdates(locationListener);
 		} 
 		//triggered if photo capture is canceled or back button pressed
 		else if (resultCode == RESULT_CANCELED){
 			finish();
 		}
 		
-		//stop looking for location updates; saves battery
-		locationManager.removeUpdates(locationListener);
+		
 	}
 	
 	private static Uri getOutputMediaFileUri(int type)
