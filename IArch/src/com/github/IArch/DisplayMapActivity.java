@@ -114,7 +114,7 @@ public class DisplayMapActivity extends FragmentActivity
 				DbxTable.QueryResult results = tasksTbl.query();
 				Iterator<DbxRecord> it = results.iterator();
 				
-				if (it.hasNext()) {
+				while (it.hasNext()) {
 					DbxRecord firstResult = it.next(); 
 					Double myLongitude = firstResult.getDouble("LONGITUDE");
 					Double myLatitude = firstResult.getDouble("LATITUDE");
@@ -126,6 +126,7 @@ public class DisplayMapActivity extends FragmentActivity
 						.position(myLoc)
 						.title(splitFile[6]));
 				}
+				
 				datastore.close();
 			} catch (DbxException e) {
 				// TODO Auto-generated catch block
