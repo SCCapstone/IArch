@@ -113,50 +113,56 @@ public class ImageDetails extends Activity {
 				//query table for results
 				DbxFields queryParams = new DbxFields().set("LOCAL_FILENAME", fileLocation);
 				DbxTable.QueryResult results = tasksTbl.query(queryParams);
-				DbxRecord firstResult = results.iterator().next();
+				if (results.hasResults()) {
+					DbxRecord firstResult = results.iterator().next();
 				
-				//get data for variables
-				String date = firstResult.getString("DATE");
-				String projectName = firstResult.getString("PROJECT_NAME");
-				String description = firstResult.getString("DESCRIPTION");
-				Double longitude = firstResult.getDouble("LONGITUDE");
-				Double latitude = firstResult.getDouble("LATITUDE");
-				String latLong = "Latitude: " + latitude + " Longitude: " + longitude;
-				String artifactType = firstResult.getString("ARTIFACT_TYPE");
-				String location = firstResult.getString("LOCATION");
+					//get data for variables
+					String date = firstResult.getString("DATE");
+					String projectName = firstResult.getString("PROJECT_NAME");
+					String description = firstResult.getString("DESCRIPTION");
+					Double longitude = firstResult.getDouble("LONGITUDE");
+					Double latitude = firstResult.getDouble("LATITUDE");
+					String latLong = "Latitude: " + latitude + " Longitude: " + longitude;
+					String artifactType = firstResult.getString("ARTIFACT_TYPE");
+					String location = firstResult.getString("LOCATION");
 				
-				//set text for textViews
-				if (date != null) {
-					TextView dateField = (TextView)findViewById(R.id.date);
-					dateField.setText(date);
-				}
-				if (projectName != null) {
-					TextView nameField = (TextView)findViewById(R.id.project_name);
-					nameField.setText("Project Name : " + projectName);
-				}
-				if (description != null) {
-					TextView descriptionField = (TextView)findViewById(R.id.description);
-					descriptionField.setText("Description: " + description);
-				}
-				if (latLong != null) {
-					TextView latLongField = (TextView)findViewById(R.id.textView1);
-					latLongField.setText(latLong);
-				}
-				if (artifactType != null) {
-					TextView artifactField = (TextView)findViewById(R.id.artifact_name);
-					artifactField.setText("Artifact: " + artifactType);
-				}
-				if (location != null) {
-					TextView locationField = (TextView)findViewById(R.id.location_name);
-					locationField.setText("Location: " + location);
-				}
+					//set text for textViews
+					if (date != null) {
+						TextView dateField = (TextView)findViewById(R.id.date);
+						dateField.setText(date);
+					}
+					if (projectName != null) {
+						TextView nameField = (TextView)findViewById(R.id.project_name);
+						nameField.setText("Project Name : " + projectName);
+					}
+					if (description != null) {
+						TextView descriptionField = (TextView)findViewById(R.id.description);
+						descriptionField.setText("Description: " + description);
+					}
+					if (latLong != null) {
+						TextView latLongField = (TextView)findViewById(R.id.textView1);
+						latLongField.setText(latLong);
+					}
+					if (artifactType != null) {
+						TextView artifactField = (TextView)findViewById(R.id.artifact_name);
+						artifactField.setText("Artifact: " + artifactType);
+					}
+					if (location != null) {
+						TextView locationField = (TextView)findViewById(R.id.location_name);
+						locationField.setText("Location: " + location);
+					}
 				
-				//close datastores
-				datastore.close();
+					//close datastores
+					datastore.close();
+				} else {
+					//picture clicked had no data attached to it, do something here
+					
+				}
 			} catch (DbxException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
+			
 		} else {
 			//show picture that was taken
 			setPic(fileLocation);
