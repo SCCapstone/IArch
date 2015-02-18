@@ -215,10 +215,28 @@ public class TakePicture extends Activity {
 			Boolean syncCorrectly = dropboxStuff(fileLocation);
 			if (syncCorrectly)
 			{
-				// Restart taking picture activity after sync is complete
-				Intent intent = getIntent();
-			    finish();
-			    startActivity(intent);
+				Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+				
+				getLocation();
+				getDate();
+				
+				//Ensure there is a camera activity to handle intent
+				if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
+					//create file where photo should go
+					fileUri = getOutputMediaFileUri(MEDIA_TYPE_IMAGE);
+				
+					//continue only if file was successfully created
+					if (fileUri != null) {
+						takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, fileUri);
+						startActivityForResult(takePictureIntent,CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE);
+					}
+				}
+			
+				//store file path to variable
+				fileLocation = fileUri.getPath(); 
+				
+				//stop looking for location updates; saves battery
+				locationManager.removeUpdates(locationListener);
 			}
 			// Need to add failure message
 		}
