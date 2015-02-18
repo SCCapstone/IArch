@@ -82,6 +82,8 @@ public class TakePicture extends Activity {
 			
 			//stop looking for location updates; saves battery
 			locationManager.removeUpdates(locationListener);
+			
+			System.out.println("GOT HERE TO ONCREATE PAST SAVEDINSTANCESTATE");
 		}
 		
 	}
@@ -111,12 +113,14 @@ public class TakePicture extends Activity {
 	}
 
 	@Override
-	protected void onStop() {
-	    super.onStop();  // Always call the superclass method first
+	protected void onPause() {
+	    super.onPause();  // Always call the superclass method first
 	    //delete photo if back button was pressed on TakePicture after taking photo
-	    File myFile = new File(fileLocation);
-	    myFile.delete();
-	    
+	    if (super.isFinishing()) {
+	    	System.out.println("DELETING IMAGE");
+	    	File myFile = new File(fileLocation);
+		    myFile.delete();
+	    }
 	}
 	
 	@Override
@@ -150,6 +154,7 @@ public class TakePicture extends Activity {
 			//locationManager.removeUpdates(locationListener);
 		} else if (resultCode == RESULT_CANCELED){
 			//user cancelled the image capture
+			
 			finish();
 		} else {
 			// image capture failed, advise user
