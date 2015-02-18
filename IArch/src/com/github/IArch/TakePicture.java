@@ -216,9 +216,9 @@ public class TakePicture extends Activity {
 			if (syncCorrectly)
 			{
 				// Restart taking picture activity after sync is complete
-				//Intent intent = getIntent();
+				Intent intent = getIntent();
 			    finish();
-			    //startActivity(intent);
+			    startActivity(intent);
 			}
 			// Need to add failure message
 		}
