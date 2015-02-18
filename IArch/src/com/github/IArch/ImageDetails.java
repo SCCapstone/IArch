@@ -156,7 +156,7 @@ public class ImageDetails extends Activity {
 					datastore.close();
 				} else {
 					//picture clicked had no data attached to it, do something here
-					
+					datastore.close();
 				}
 			} catch (DbxException e) {
 				// TODO Auto-generated catch block
