@@ -33,6 +33,7 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class TakePicture extends Activity {
 
@@ -89,6 +90,7 @@ public class TakePicture extends Activity {
     public void onResume() {
 		super.onResume();
         System.out.println("you just resumed it");
+        
         //user rotated the screen, redraw stuff
       	//show picture that was taken
       	setPic(fileLocation);
@@ -98,6 +100,7 @@ public class TakePicture extends Activity {
       			
       	TextView myText = (TextView) findViewById(R.id.textView1);
       	myText.setText("Latitude1: " + latitude + " " + "Longitude1: " + longitude);
+    	
     }
 	
 	@Override
@@ -130,6 +133,7 @@ public class TakePicture extends Activity {
 	
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+		System.out.println("RESULT CODE: " + resultCode);
 		if (requestCode == CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE && resultCode == RESULT_OK) {
 			System.out.println("You just took a picture");
 			
@@ -144,13 +148,13 @@ public class TakePicture extends Activity {
 			
 			//stop looking for location updates; saves battery
 			//locationManager.removeUpdates(locationListener);
-		} 
-		//triggered if photo capture is canceled or back button pressed
-		else if (resultCode == RESULT_CANCELED){
+		} else if (resultCode == RESULT_CANCELED){
+			//user cancelled the image capture
 			finish();
+		} else {
+			// image capture failed, advise user
+			Toast.makeText(TakePicture.this, "Error Capturing Image", Toast.LENGTH_SHORT).show();
 		}
-		
-		
 	}
 	
 	private static Uri getOutputMediaFileUri(int type)
@@ -212,9 +216,9 @@ public class TakePicture extends Activity {
 			if (syncCorrectly)
 			{
 				// Restart taking picture activity after sync is complete
-				Intent intent = getIntent();
+				//Intent intent = getIntent();
 			    finish();
-			    startActivity(intent);
+			    //startActivity(intent);
 			}
 			// Need to add failure message
 		}
@@ -289,30 +293,48 @@ public class TakePicture extends Activity {
 		//this works for now... hard coded scale factor
 		int targetW = 400;//myImage.getWidth();
 		int targetH = 400;//myImage.getHeight();
-		
-		
+				
 		System.out.println("targetW: " + targetW + " targetH: " + targetH);
 		
+		Bitmap myBitmap = decodeSampledBitmapFromFile(file, targetW, targetH);
+		myImage.setImageBitmap(myBitmap);
+	}	
 		
-		//get dimensions of bitmap
-		BitmapFactory.Options bmOptions = new BitmapFactory.Options();
-		bmOptions.inJustDecodeBounds = true;
-		BitmapFactory.decodeFile(file, bmOptions);
-		int photoW = bmOptions.outWidth;
-		int photoH = bmOptions.outHeight;
-		System.out.println("photoW: " + photoW + " photoH: " + photoH);
-				
-		//determine how much to scale down the image
-		int scaleFactor = Math.min(photoW/targetW, photoH/targetH);
+	public static Bitmap decodeSampledBitmapFromFile(String file, int reqWidth, int reqHeight) {
+
+	    // First decode with inJustDecodeBounds=true to check dimensions
+	    final BitmapFactory.Options options = new BitmapFactory.Options();
+	    options.inJustDecodeBounds = true;
+	    BitmapFactory.decodeFile(file, options);
+
+	    // Calculate inSampleSize
+	    options.inSampleSize = calculateInSampleSize(options, reqWidth, reqHeight);
+
+	    // Decode bitmap with inSampleSize set
+	    options.inJustDecodeBounds = false;
+	    return BitmapFactory.decodeFile(file, options);
+	}
 		
-		//Decode image file into a bitmap sized to fill the view
-		bmOptions.inJustDecodeBounds = false;
-		bmOptions.inSampleSize = scaleFactor;
-		bmOptions.inPurgeable = true;
-		
-		Bitmap bitmap = BitmapFactory.decodeFile(file, bmOptions);
-		myImage.setImageBitmap(bitmap);
-		
+	public static int calculateInSampleSize(BitmapFactory.Options options, int reqWidth, int reqHeight) {
+	    // Raw height and width of image
+	    final int height = options.outHeight;
+	    final int width = options.outWidth;
+	    int inSampleSize = 1;
+
+	    if (height > reqHeight || width > reqWidth) {
+
+	        final int halfHeight = height / 2;
+	        final int halfWidth = width / 2;
+
+	        // Calculate the largest inSampleSize value that is a power of 2 and keeps both
+	        // height and width larger than the requested height and width.
+	        while ((halfHeight / inSampleSize) > reqHeight
+	                && (halfWidth / inSampleSize) > reqWidth) {
+	            inSampleSize *= 2;
+	        }
+	    }
+	    System.out.println("INSAMPLE SIZE: " + inSampleSize);
+	    return inSampleSize;
 	}
 	
 	void getDate()

@@ -14,7 +14,6 @@ import android.widget.Toast;
 
 import com.dropbox.sync.android.DbxDatastore;
 import com.dropbox.sync.android.DbxException;
-import com.dropbox.sync.android.DbxFields;
 import com.dropbox.sync.android.DbxRecord;
 import com.dropbox.sync.android.DbxTable;
 import com.google.android.gms.common.ConnectionResult;

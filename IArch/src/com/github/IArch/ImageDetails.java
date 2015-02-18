@@ -53,30 +53,48 @@ public class ImageDetails extends Activity {
 		//this works for now... hard coded scale factor
 		int targetW = 400;//myImage.getWidth();
 		int targetH = 400;//myImage.getHeight();
-		
-		
+				
 		System.out.println("targetW: " + targetW + " targetH: " + targetH);
 		
+		Bitmap myBitmap = decodeSampledBitmapFromFile(file, targetW, targetH);
+		myImage.setImageBitmap(myBitmap);
+	}	
 		
-		//get dimensions of bitmap
-		BitmapFactory.Options bmOptions = new BitmapFactory.Options();
-		bmOptions.inJustDecodeBounds = true;
-		BitmapFactory.decodeFile(file, bmOptions);
-		int photoW = bmOptions.outWidth;
-		int photoH = bmOptions.outHeight;
-		System.out.println("photoW: " + photoW + " photoH: " + photoH);
-				
-		//determine how much to scale down the image
-		int scaleFactor = Math.min(photoW/targetW, photoH/targetH);
+	public static Bitmap decodeSampledBitmapFromFile(String file, int reqWidth, int reqHeight) {
+
+	    // First decode with inJustDecodeBounds=true to check dimensions
+	    final BitmapFactory.Options options = new BitmapFactory.Options();
+	    options.inJustDecodeBounds = true;
+	    BitmapFactory.decodeFile(file, options);
+
+	    // Calculate inSampleSize
+	    options.inSampleSize = calculateInSampleSize(options, reqWidth, reqHeight);
+
+	    // Decode bitmap with inSampleSize set
+	    options.inJustDecodeBounds = false;
+	    return BitmapFactory.decodeFile(file, options);
+	}
 		
-		//Decode image file into a bitmap sized to fill the view
-		bmOptions.inJustDecodeBounds = false;
-		bmOptions.inSampleSize = scaleFactor;
-		bmOptions.inPurgeable = true;
-		
-		Bitmap bitmap = BitmapFactory.decodeFile(file, bmOptions);
-		myImage.setImageBitmap(bitmap);
-		
+	public static int calculateInSampleSize(BitmapFactory.Options options, int reqWidth, int reqHeight) {
+	    // Raw height and width of image
+	    final int height = options.outHeight;
+	    final int width = options.outWidth;
+	    int inSampleSize = 1;
+
+	    if (height > reqHeight || width > reqWidth) {
+
+	        final int halfHeight = height / 2;
+	        final int halfWidth = width / 2;
+
+	        // Calculate the largest inSampleSize value that is a power of 2 and keeps both
+	        // height and width larger than the requested height and width.
+	        while ((halfHeight / inSampleSize) > reqHeight
+	                && (halfWidth / inSampleSize) > reqWidth) {
+	            inSampleSize *= 2;
+	        }
+	    }
+	    System.out.println("INSAMPLE SIZE: " + inSampleSize);
+	    return inSampleSize;
 	}
 	
 	void dropboxStuff() {
