@@ -3,11 +3,15 @@ package com.github.IArch;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.widget.DrawerLayout;
 import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ListView;
 import android.widget.Toast;
 
 import com.dropbox.sync.android.DbxAccount;
@@ -17,6 +21,7 @@ import com.dropbox.sync.android.DbxDatastoreManager;
 import com.dropbox.sync.android.DbxException;
 
 public class MainActivity extends Activity {
+	
 
 	private static final String appKey = "fapxgsf7glvwkb0";
 	private static final String appSecret = "1swwbsarfhraqab";
@@ -47,8 +52,9 @@ public class MainActivity extends Activity {
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.
-		getMenuInflater().inflate(R.menu.main, menu);
-		return true;
+		MenuInflater inflater = getMenuInflater();
+		inflater.inflate(R.menu.main, menu);
+		return super.onCreateOptionsMenu(menu);
 	}
 
 	@Override
@@ -58,6 +64,16 @@ public class MainActivity extends Activity {
 		// as you specify a parent activity in AndroidManifest.xml.
 		switch (item.getItemId()) {
 		case R.id.action_upload:
+			Toast.makeText(MainActivity.this, "This will sync eventually!", 
+					Toast.LENGTH_LONG).show();
+			return true;
+		case R.id.action_export:
+			Toast.makeText(MainActivity.this, "Export feature coming soon", 
+					Toast.LENGTH_LONG).show();
+			return true;
+		case R.id.action_settings:
+			Toast.makeText(MainActivity.this, "No settings yet", 
+					Toast.LENGTH_LONG).show();
 			return true;
 		default:
 			return super.onOptionsItemSelected(item);
