@@ -108,7 +108,7 @@ public class ImageDetails extends Activity {
 				datastore.sync();
 				
 				//open table
-				DbxTable tasksTbl = datastore.getTable("tasks");
+				DbxTable tasksTbl = datastore.getTable("Picture_Data");
 				
 				//query table for results
 				DbxFields queryParams = new DbxFields().set("LOCAL_FILENAME", fileLocation);
