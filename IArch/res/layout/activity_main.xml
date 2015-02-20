@@ -49,18 +49,10 @@
          />
 
     <Button
-        android:id="@+id/options_button"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/project_mgmt_button"
-        android:layout_marginTop="20dp"
-        android:text="@string/options" />
-
-    <Button
         android:id="@+id/link_button"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/options_button"
+        android:layout_below="@+id/project_mgmt_button"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="20dp"
         android:text="@string/button_send" />
