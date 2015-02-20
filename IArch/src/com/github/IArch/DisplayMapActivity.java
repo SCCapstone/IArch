@@ -107,7 +107,7 @@ public class DisplayMapActivity extends FragmentActivity
 				datastore.sync();
 				
 				//open table
-				DbxTable tasksTbl = datastore.getTable("tasks");
+				DbxTable tasksTbl = datastore.getTable("Picture_Data");
 				
 				//query table for results
 				DbxTable.QueryResult results = tasksTbl.query();
