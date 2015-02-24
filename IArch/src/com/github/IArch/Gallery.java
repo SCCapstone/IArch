@@ -56,8 +56,7 @@ public class Gallery extends Activity {
 	private ArrayList<ImageItem> getData() {
 		final ArrayList<ImageItem> imageItems = new ArrayList<ImageItem>();
 		
-		File path = new File(Environment.getExternalStoragePublicDirectory(
-				Environment.DIRECTORY_PICTURES) + "/iArch/");
+		File path = new File(Chooser.fileName.toString());
 	    File[] imageFiles = path.listFiles();
 	    
 	    for (int i = 0; i < imageFiles.length; i++) {

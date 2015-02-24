@@ -3,8 +3,8 @@
 
     <string name="app_name">iArch</string>
     <string name="hello_world">Hello world!</string>
-    
-    <!--  Take Picture / Meta data entry -->
+
+    <!-- Take Picture / Meta data entry -->
     <string name="project_hint">Project Name</string>
     <string name="location_hint">Location</string>
     <string name="artifact_hint">Artifact</string>
@@ -19,8 +19,8 @@
     <string name="project_management">Project Management</string>
     <string name="options">Options</string>
     <string name="button_send">Connect to Dropbox</string>
-    
-    <!--  Navigation Drawer -->
+
+    <!-- Navigation Drawer -->
     <string-array name="navigation_drawer_items_array">
         <item>Camera</item>
         <item>Map</item>
@@ -42,5 +42,6 @@
     <string name="title_activity_display_map">DisplayMapActivity</string>
     <string name="title_activity_gallery">Gallery</string>
     <string name="title_activity_image_details">ImageDetails</string>
+    <string name="title_activity_chooser">Chooser</string>
 
 </resources>

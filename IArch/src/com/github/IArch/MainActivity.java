@@ -184,7 +184,7 @@ public class MainActivity extends Activity {
 	
 	public void gallery(View view)
 	{
-		Intent intent = new Intent(this,Gallery.class);
+		Intent intent = new Intent(this,Chooser.class);
 		startActivity(intent);
 	}
 	
