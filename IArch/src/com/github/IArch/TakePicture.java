@@ -41,6 +41,7 @@ public class TakePicture extends Activity {
 	private static final int CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE = 100;
 	private Uri fileUri;
 	static String fileLocation = null;
+	static File newFileLocation;
 	static private String date;
 	static private String projectName;
 	static private String location;
@@ -222,7 +223,7 @@ public class TakePicture extends Activity {
 			//create new project directory under iArch folder
 			File mediaStorageDir = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES), "iArch/" + projectName);
 			//new file to move to
-			File newFile = new File(mediaStorageDir.toString() + "/" + splitLoc[6]);
+			newFileLocation = new File(mediaStorageDir.toString() + "/" + splitLoc[6]);
 			if(! mediaStorageDir.exists())
 			{
 				if(! mediaStorageDir.mkdirs())
@@ -231,7 +232,7 @@ public class TakePicture extends Activity {
 				}
 			}
 			//move file to project folder
-			myFile.renameTo(newFile);
+			myFile.renameTo(newFileLocation);
 		}
 		
 		
@@ -279,8 +280,14 @@ public class TakePicture extends Activity {
 					
 			//get link from dropbox and create remote path for sync; create datastore
 			DbxFileSystem dbxFs = DbxFileSystem.forAccount(MainActivity.mAccountManager.getLinkedAccount());
-			DbxFile testFile = dbxFs.create(new DbxPath(splitFile[6]));
-			
+			DbxFile testFile;
+			if (projectName != "") {
+				testFile = dbxFs.create(new DbxPath(projectName + "/" + splitFile[6]));
+				fileLocation = newFileLocation.toString();
+			}
+			else {
+				testFile = dbxFs.create(new DbxPath(splitFile[6]));
+			}
 			try {
 			    //create remote file and assign it to photo
 				File fileVar = new File(fileLocation);
