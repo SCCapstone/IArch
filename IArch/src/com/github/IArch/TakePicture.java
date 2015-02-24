@@ -294,8 +294,8 @@ public class TakePicture extends Activity {
 			    testFile.writeFromExistingFile(fileVar, false);
 			  
 			    //set up dropbox datastores
-			    DbxDatastore datastore = MainActivity.mDatastoreManager.openDefaultDatastore();
-			    //DbxDatastore datastore = MainActivity.mDatastoreManager.openOrCreateDatastore(projectName);
+			    //DbxDatastore datastore = MainActivity.mDatastoreManager.openDefaultDatastore();
+			    DbxDatastore datastore = MainActivity.mDatastoreManager.openOrCreateDatastore(projectName);
 				DbxTable dataTbl = datastore.getTable("Picture_Data");
 				@SuppressWarnings("unused")
 				DbxRecord task = dataTbl.insert().set("LOCAL_FILENAME", fileLocation).
