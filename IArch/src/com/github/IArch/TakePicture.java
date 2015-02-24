@@ -214,6 +214,27 @@ public class TakePicture extends Activity {
 	
 	public void syncToDropbox(View view)
 	{
+		String[] splitLoc = fileLocation.split("/");
+		if (projectName != "") {
+			capturePictureData();
+			//file to copy
+			File myFile = new File(fileLocation);
+			//create new project directory under iArch folder
+			File mediaStorageDir = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES), "iArch/" + projectName);
+			//new file to move to
+			File newFile = new File(mediaStorageDir.toString() + "/" + splitLoc[6]);
+			if(! mediaStorageDir.exists())
+			{
+				if(! mediaStorageDir.mkdirs())
+				{
+					Log.d("iArch/" + projectName, " failed to create directory");
+				}
+			}
+			//move file to project folder
+			myFile.renameTo(newFile);
+		}
+		
+		
 		//sync picture with dropbox upon clicking sync button
 		if (MainActivity.mAccountManager.hasLinkedAccount())
 		{
