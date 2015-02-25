@@ -41,6 +41,7 @@ public class TakePicture extends Activity {
 	private static final int CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE = 100;
 	private Uri fileUri;
 	static String fileLocation = null;
+	static File newFileLocation;
 	static private String date;
 	static private String projectName;
 	static private String location;
@@ -101,7 +102,7 @@ public class TakePicture extends Activity {
       	textDate.setText(date);
       			
       	TextView myText = (TextView) findViewById(R.id.textView1);
-      	myText.setText("Latitude1: " + latitude + " " + "Longitude1: " + longitude);
+      	myText.setText("Latitude: " + latitude + " " + "Longitude: " + longitude);
     	
     }
 	
@@ -117,7 +118,8 @@ public class TakePicture extends Activity {
 	    super.onPause();  // Always call the superclass method first
 	    //delete photo if back button was pressed on TakePicture after taking photo
 	    if (super.isFinishing()) {
-	    	System.out.println("DELETING IMAGE");
+	    	//System.out.println("DELETING IMAGE");
+	    	Toast.makeText(TakePicture.this, "Back button pressed, deleting image", Toast.LENGTH_SHORT).show();
 	    	File myFile = new File(fileLocation);
 		    myFile.delete();
 	    }
@@ -148,7 +150,7 @@ public class TakePicture extends Activity {
 			textDate.setText(date);
 				
 			TextView myText = (TextView) findViewById(R.id.textView1);
-			myText.setText("Latitude2: " + latitude + " " + "Longitude2: " + longitude);
+			myText.setText("Latitude: " + latitude + " " + "Longitude: " + longitude);
 			
 			//stop looking for location updates; saves battery
 			//locationManager.removeUpdates(locationListener);
@@ -212,39 +214,68 @@ public class TakePicture extends Activity {
 	    description = descriptionEditText.getText().toString();	    
 	}
 	
+	//sync to dropbox click
 	public void syncToDropbox(View view)
 	{
-		//sync picture with dropbox upon clicking sync button
-		if (MainActivity.mAccountManager.hasLinkedAccount())
-		{
-			Boolean syncCorrectly = dropboxStuff(fileLocation);
-			if (syncCorrectly)
-			{
-				Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-				
-				getLocation();
-				getDate();
-				
-				//Ensure there is a camera activity to handle intent
-				if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
-					//create file where photo should go
-					fileUri = getOutputMediaFileUri(MEDIA_TYPE_IMAGE);
-				
-					//continue only if file was successfully created
-					if (fileUri != null) {
-						takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, fileUri);
-						startActivityForResult(takePictureIntent,CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE);
-					}
-				}
+		String[] splitLoc = fileLocation.split("/");
+		capturePictureData();
+		
+		if (projectName.isEmpty()) {
+			//projectName was null, give error since it is a required field
+			Toast.makeText(TakePicture.this, "Error: Project Name is required", Toast.LENGTH_SHORT).show();
 			
-				//store file path to variable
-				fileLocation = fileUri.getPath(); 
-				
-				//stop looking for location updates; saves battery
-				locationManager.removeUpdates(locationListener);
+		} else {
+			//file to copy
+			File myFile = new File(fileLocation);
+			//create new project directory under iArch folder
+			File mediaStorageDir = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES), "iArch/" + projectName);
+			//new file to move to
+			newFileLocation = new File(mediaStorageDir.toString() + "/" + splitLoc[6]);
+			if(! mediaStorageDir.exists())
+			{
+				if(! mediaStorageDir.mkdirs())
+				{
+					Log.d("iArch/" + projectName, " failed to create directory");
+				}
 			}
-			// Need to add failure message
+			//move file to project folder
+			myFile.renameTo(newFileLocation);
+			
+			//sync picture with dropbox upon clicking sync button
+			if (MainActivity.mAccountManager.hasLinkedAccount())
+			{
+				Boolean syncCorrectly = dropboxStuff(fileLocation);
+				if (syncCorrectly)
+				{
+					Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+					
+					getLocation();
+					getDate();
+					
+					//Ensure there is a camera activity to handle intent
+					if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
+						//create file where photo should go
+						fileUri = getOutputMediaFileUri(MEDIA_TYPE_IMAGE);
+					
+						//continue only if file was successfully created
+						if (fileUri != null) {
+							takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, fileUri);
+							startActivityForResult(takePictureIntent,CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE);
+						}
+					}
+				
+					//store file path to variable
+					fileLocation = fileUri.getPath(); 
+					
+					//stop looking for location updates; saves battery
+					locationManager.removeUpdates(locationListener);
+				}
+				// Need to add failure message
+			}
+		
 		}
+		
+		
 		
 		
 	}
@@ -258,16 +289,22 @@ public class TakePicture extends Activity {
 					
 			//get link from dropbox and create remote path for sync; create datastore
 			DbxFileSystem dbxFs = DbxFileSystem.forAccount(MainActivity.mAccountManager.getLinkedAccount());
-			DbxFile testFile = dbxFs.create(new DbxPath(splitFile[6]));
-			
+			DbxFile testFile;
+			if (projectName != "") {
+				testFile = dbxFs.create(new DbxPath(projectName + "/" + splitFile[6]));
+				fileLocation = newFileLocation.toString();
+			}
+			else {
+				testFile = dbxFs.create(new DbxPath(splitFile[6]));
+			}
 			try {
 			    //create remote file and assign it to photo
 				File fileVar = new File(fileLocation);
 			    testFile.writeFromExistingFile(fileVar, false);
 			  
 			    //set up dropbox datastores
-			    DbxDatastore datastore = MainActivity.mDatastoreManager.openDefaultDatastore();
-			    //DbxDatastore datastore = MainActivity.mDatastoreManager.openOrCreateDatastore(projectName);
+			    //DbxDatastore datastore = MainActivity.mDatastoreManager.openDefaultDatastore();
+			    DbxDatastore datastore = MainActivity.mDatastoreManager.openOrCreateDatastore(projectName);
 				DbxTable dataTbl = datastore.getTable("Picture_Data");
 				@SuppressWarnings("unused")
 				DbxRecord task = dataTbl.insert().set("LOCAL_FILENAME", fileLocation).

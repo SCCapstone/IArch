@@ -101,10 +101,11 @@ public class ImageDetails extends Activity {
 		if (MainActivity.mAccountManager.hasLinkedAccount()) {	
 			//show picture that was taken
 			setPic(fileLocation);
+			String[] splitFile = fileLocation.split("/");
 			
 			try {
 				//open datastore and get fresh data
-				DbxDatastore datastore = MainActivity.mDatastoreManager.openDefaultDatastore();
+				DbxDatastore datastore = MainActivity.mDatastoreManager.openDatastore(splitFile[6]);
 				datastore.sync();
 				
 				//open table

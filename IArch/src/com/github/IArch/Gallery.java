@@ -14,7 +14,6 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.GridView;
-import android.widget.Toast;
 
 public class Gallery extends Activity {
 
@@ -39,8 +38,10 @@ public class Gallery extends Activity {
 				//		Toast.LENGTH_SHORT).show();
 				
 				//get files in images directory
+				String longFileName = Chooser.fileName.toString();
+				String[] shortFileName = longFileName.split("/");
 				File path = new File(Environment.getExternalStoragePublicDirectory(
-						Environment.DIRECTORY_PICTURES) + "/iArch/");
+						Environment.DIRECTORY_PICTURES) + "/iArch/" + shortFileName[6]);
 			    File[] imageFiles = path.listFiles();
 			    //use it like imageFiles[position]
 			    fileName = imageFiles[position];
@@ -56,17 +57,13 @@ public class Gallery extends Activity {
 	private ArrayList<ImageItem> getData() {
 		final ArrayList<ImageItem> imageItems = new ArrayList<ImageItem>();
 		
-		File path = new File(Environment.getExternalStoragePublicDirectory(
-				Environment.DIRECTORY_PICTURES) + "/iArch/");
+		File path = new File(Chooser.fileName.toString());
 	    File[] imageFiles = path.listFiles();
 	    
 	    for (int i = 0; i < imageFiles.length; i++) {
-	    	//decodeSampledBitmapFromFile(imageFiles[i].getAbsolutePath(), 200, 200);
-	    	//Bitmap bitmap = BitmapFactory.decodeFile(imageFiles[i].getAbsolutePath());
-	        //Bitmap smallBitmap = Bitmap.createScaledBitmap(bitmap, 200, 200, false);
-	        imageItems.add(new ImageItem(decodeSampledBitmapFromFile(imageFiles[i].getAbsolutePath(), 200, 200), "Image#" + i));
-	        //bitmap.recycle();
-	        
+	    	String folderName = imageFiles[i].toString();
+	    	String[] shortFolderName = folderName.split("/");
+	    	imageItems.add(new ImageItem(decodeSampledBitmapFromFile(imageFiles[i].getAbsolutePath(), 200, 200), shortFolderName[7]));
 	    }
 	    
 		return imageItems;
