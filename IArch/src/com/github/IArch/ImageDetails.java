@@ -17,7 +17,7 @@ import android.widget.TextView;
 
 public class ImageDetails extends Activity {
 
-	String fileLocation = Chooser.fileName.toString();
+	String fileLocation = Gallery.fileName.toString();
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {

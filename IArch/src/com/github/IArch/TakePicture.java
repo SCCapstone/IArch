@@ -102,7 +102,7 @@ public class TakePicture extends Activity {
       	textDate.setText(date);
       			
       	TextView myText = (TextView) findViewById(R.id.textView1);
-      	myText.setText("Latitude1: " + latitude + " " + "Longitude1: " + longitude);
+      	myText.setText("Latitude: " + latitude + " " + "Longitude: " + longitude);
     	
     }
 	
@@ -118,7 +118,8 @@ public class TakePicture extends Activity {
 	    super.onPause();  // Always call the superclass method first
 	    //delete photo if back button was pressed on TakePicture after taking photo
 	    if (super.isFinishing()) {
-	    	System.out.println("DELETING IMAGE");
+	    	//System.out.println("DELETING IMAGE");
+	    	Toast.makeText(TakePicture.this, "Back button pressed, deleting image", Toast.LENGTH_SHORT).show();
 	    	File myFile = new File(fileLocation);
 		    myFile.delete();
 	    }
@@ -149,7 +150,7 @@ public class TakePicture extends Activity {
 			textDate.setText(date);
 				
 			TextView myText = (TextView) findViewById(R.id.textView1);
-			myText.setText("Latitude2: " + latitude + " " + "Longitude2: " + longitude);
+			myText.setText("Latitude: " + latitude + " " + "Longitude: " + longitude);
 			
 			//stop looking for location updates; saves battery
 			//locationManager.removeUpdates(locationListener);
@@ -213,11 +214,17 @@ public class TakePicture extends Activity {
 	    description = descriptionEditText.getText().toString();	    
 	}
 	
+	//sync to dropbox click
 	public void syncToDropbox(View view)
 	{
 		String[] splitLoc = fileLocation.split("/");
-		if (projectName != "") {
-			capturePictureData();
+		capturePictureData();
+		
+		if (projectName.isEmpty()) {
+			//projectName was null, give error since it is a required field
+			Toast.makeText(TakePicture.this, "Error: Project Name is required", Toast.LENGTH_SHORT).show();
+			
+		} else {
 			//file to copy
 			File myFile = new File(fileLocation);
 			//create new project directory under iArch folder
@@ -233,40 +240,42 @@ public class TakePicture extends Activity {
 			}
 			//move file to project folder
 			myFile.renameTo(newFileLocation);
-		}
-		
-		
-		//sync picture with dropbox upon clicking sync button
-		if (MainActivity.mAccountManager.hasLinkedAccount())
-		{
-			Boolean syncCorrectly = dropboxStuff(fileLocation);
-			if (syncCorrectly)
-			{
-				Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-				
-				getLocation();
-				getDate();
-				
-				//Ensure there is a camera activity to handle intent
-				if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
-					//create file where photo should go
-					fileUri = getOutputMediaFileUri(MEDIA_TYPE_IMAGE);
-				
-					//continue only if file was successfully created
-					if (fileUri != null) {
-						takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, fileUri);
-						startActivityForResult(takePictureIntent,CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE);
-					}
-				}
 			
-				//store file path to variable
-				fileLocation = fileUri.getPath(); 
+			//sync picture with dropbox upon clicking sync button
+			if (MainActivity.mAccountManager.hasLinkedAccount())
+			{
+				Boolean syncCorrectly = dropboxStuff(fileLocation);
+				if (syncCorrectly)
+				{
+					Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+					
+					getLocation();
+					getDate();
+					
+					//Ensure there is a camera activity to handle intent
+					if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
+						//create file where photo should go
+						fileUri = getOutputMediaFileUri(MEDIA_TYPE_IMAGE);
+					
+						//continue only if file was successfully created
+						if (fileUri != null) {
+							takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, fileUri);
+							startActivityForResult(takePictureIntent,CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE);
+						}
+					}
 				
-				//stop looking for location updates; saves battery
-				locationManager.removeUpdates(locationListener);
+					//store file path to variable
+					fileLocation = fileUri.getPath(); 
+					
+					//stop looking for location updates; saves battery
+					locationManager.removeUpdates(locationListener);
+				}
+				// Need to add failure message
 			}
-			// Need to add failure message
+		
 		}
+		
+		
 		
 		
 	}
