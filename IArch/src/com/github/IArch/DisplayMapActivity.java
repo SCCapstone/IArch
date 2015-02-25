@@ -1,7 +1,8 @@
 package com.github.IArch;
 
+import java.util.ArrayList;
 import java.util.Iterator;
-
+import java.util.List;
 import android.content.Context;
 import android.location.Location;
 import android.location.LocationManager;
@@ -9,10 +10,13 @@ import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.ArrayAdapter;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.dropbox.sync.android.DbxDatastore;
+import com.dropbox.sync.android.DbxDatastoreInfo;
 import com.dropbox.sync.android.DbxException;
 import com.dropbox.sync.android.DbxRecord;
 import com.dropbox.sync.android.DbxTable;
@@ -46,6 +50,8 @@ public class DisplayMapActivity extends FragmentActivity
     private LatLng LatLong;
     float zoom = 16;
     int zoomCounter = 0;
+    Spinner spinner;
+    DbxDatastore datastore;
     
     
  // These settings are the same as the settings for the map. They will in fact give you updates
@@ -92,6 +98,7 @@ public class DisplayMapActivity extends FragmentActivity
                 mMap.setOnMyLocationButtonClickListener(this);
                 mMap.setMapType(GoogleMap.MAP_TYPE_HYBRID);
                 setupLastKnown();
+                addItemsOnSpinner();
                 mapPins();
             }
         }
@@ -101,7 +108,6 @@ public class DisplayMapActivity extends FragmentActivity
     private void mapPins() {
     	if (MainActivity.mAccountManager.hasLinkedAccount()) {	
     		//open datastore and get fresh data
-			DbxDatastore datastore;
 			try {
 				datastore = MainActivity.mDatastoreManager.openDefaultDatastore();
 				datastore.sync();
@@ -229,20 +235,26 @@ public class DisplayMapActivity extends FragmentActivity
 				
 	}
 	
-	/**
-     * Button to get current Location. This demonstrates how to get the current Location as required
-     * without needing to register a LocationListener.
-     
-    public void showMyLocation(View view) {
-        if (mGoogleApiClient != null && mGoogleApiClient.isConnected()) {
-            String msg = "Location = "
-                    + LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
-            Toast.makeText(getApplicationContext(), msg, Toast.LENGTH_SHORT).show();
-        }
-    }
-	*/
-	
-	
-	
+	public void addItemsOnSpinner() {
+        spinner = (Spinner) findViewById(R.id.spinner);
+        List<String> list = new ArrayList<String>();
+        //query database for datastore names
+        //Set<DbxDatastoreInfo> set = MainActivity.mDatastoreManager.listDatastores();
+		ArrayList<DbxDatastoreInfo> infos = new ArrayList<DbxDatastoreInfo>();
+		try {
+			infos.addAll(MainActivity.mDatastoreManager.listDatastores());
+			
+			for (int i=0; i<infos.size(); i++) {
+				DbxDatastoreInfo data = infos.get(i);
+				String id = data.id;
+				list.add(id);
+				ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, list);
+				dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+				spinner.setAdapter(dataAdapter);
+			}
+		} catch (DbxException e) {
+			e.printStackTrace();
+		}
+	}
 	
 }
