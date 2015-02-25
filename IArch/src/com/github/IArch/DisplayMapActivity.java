@@ -1,7 +1,8 @@
 package com.github.IArch;
 
+import java.util.ArrayList;
 import java.util.Iterator;
-
+import java.util.List;
 import android.content.Context;
 import android.location.Location;
 import android.location.LocationManager;
@@ -9,10 +10,16 @@ import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemSelectedListener;
+import android.widget.ArrayAdapter;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.dropbox.sync.android.DbxDatastore;
+import com.dropbox.sync.android.DbxDatastoreInfo;
 import com.dropbox.sync.android.DbxException;
 import com.dropbox.sync.android.DbxRecord;
 import com.dropbox.sync.android.DbxTable;
@@ -46,6 +53,8 @@ public class DisplayMapActivity extends FragmentActivity
     private LatLng LatLong;
     float zoom = 16;
     int zoomCounter = 0;
+    Spinner spinner;
+    DbxDatastore datastore;
     
     
  // These settings are the same as the settings for the map. They will in fact give you updates
@@ -92,18 +101,19 @@ public class DisplayMapActivity extends FragmentActivity
                 mMap.setOnMyLocationButtonClickListener(this);
                 mMap.setMapType(GoogleMap.MAP_TYPE_HYBRID);
                 setupLastKnown();
-                mapPins();
+                addItemsOnSpinner();
             }
         }
     }
 
     //add location of photos in database as map pins
-    private void mapPins() {
+    private void mapPins(String datastoreName) {
+    	//reset map pins
+    	mMap.clear();
     	if (MainActivity.mAccountManager.hasLinkedAccount()) {	
     		//open datastore and get fresh data
-			DbxDatastore datastore;
 			try {
-				datastore = MainActivity.mDatastoreManager.openDefaultDatastore();
+				datastore = MainActivity.mDatastoreManager.openDatastore(datastoreName);
 				datastore.sync();
 				
 				//open table
@@ -123,7 +133,7 @@ public class DisplayMapActivity extends FragmentActivity
 					LatLng myLoc = new LatLng(myLatitude,myLongitude);
 					mMap.addMarker(new MarkerOptions()
 						.position(myLoc)
-						.title(splitFile[6]));
+						.title(splitFile[7]));
 				}
 				
 				datastore.close();
@@ -229,20 +239,47 @@ public class DisplayMapActivity extends FragmentActivity
 				
 	}
 	
-	/**
-     * Button to get current Location. This demonstrates how to get the current Location as required
-     * without needing to register a LocationListener.
-     
-    public void showMyLocation(View view) {
-        if (mGoogleApiClient != null && mGoogleApiClient.isConnected()) {
-            String msg = "Location = "
-                    + LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
-            Toast.makeText(getApplicationContext(), msg, Toast.LENGTH_SHORT).show();
-        }
-    }
-	*/
+	public void addItemsOnSpinner() {
+        spinner = (Spinner) findViewById(R.id.spinner);
+        List<String> list = new ArrayList<String>();
+        //query database for datastore names
+        //Set<DbxDatastoreInfo> set = MainActivity.mDatastoreManager.listDatastores();
+		ArrayList<DbxDatastoreInfo> infos = new ArrayList<DbxDatastoreInfo>();
+		try {
+			infos.addAll(MainActivity.mDatastoreManager.listDatastores());
+			
+			for (int i=0; i<infos.size(); i++) {
+				DbxDatastoreInfo data = infos.get(i);
+				String id = data.id;
+				list.add(id);
+				ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, list);
+				dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+				spinner.setAdapter(dataAdapter);
+				spinner.setOnItemSelectedListener(new OnItemSelectedListener() {
+
+					@Override
+					public void onItemSelected(AdapterView<?> parent,
+							View view, int position, long id) {
+						System.out.println("ITEM SELECTED AT POSITION: " + position);
+						String selectedItem = parent.getItemAtPosition(position).toString();
+						mapPins(selectedItem);
+					}
+
+					@Override
+					public void onNothingSelected(AdapterView<?> parent) {
+												
+					}
+					
+				});
+				
+				
+			}
+		} catch (DbxException e) {
+			e.printStackTrace();
+		}
+	}
 	
 	
-	
+
 	
 }

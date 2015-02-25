@@ -4,6 +4,9 @@
     <string name="app_name">iArch</string>
     <string name="hello_world">Hello world!</string>
 
+    <!-- Map strings -->
+    <string name="map_pins">Add map pins</string>
+    
     <!-- Take Picture / Meta data entry -->
     <string name="project_hint">Project Name</string>
     <string name="location_hint">Location</string>
