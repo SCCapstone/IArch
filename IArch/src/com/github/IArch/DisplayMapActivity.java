@@ -10,6 +10,9 @@ import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -99,17 +102,18 @@ public class DisplayMapActivity extends FragmentActivity
                 mMap.setMapType(GoogleMap.MAP_TYPE_HYBRID);
                 setupLastKnown();
                 addItemsOnSpinner();
-                mapPins();
             }
         }
     }
 
     //add location of photos in database as map pins
-    private void mapPins() {
+    private void mapPins(String datastoreName) {
+    	//reset map pins
+    	mMap.clear();
     	if (MainActivity.mAccountManager.hasLinkedAccount()) {	
     		//open datastore and get fresh data
 			try {
-				datastore = MainActivity.mDatastoreManager.openDefaultDatastore();
+				datastore = MainActivity.mDatastoreManager.openDatastore(datastoreName);
 				datastore.sync();
 				
 				//open table
@@ -129,7 +133,7 @@ public class DisplayMapActivity extends FragmentActivity
 					LatLng myLoc = new LatLng(myLatitude,myLongitude);
 					mMap.addMarker(new MarkerOptions()
 						.position(myLoc)
-						.title(splitFile[6]));
+						.title(splitFile[7]));
 				}
 				
 				datastore.close();
@@ -251,10 +255,31 @@ public class DisplayMapActivity extends FragmentActivity
 				ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, list);
 				dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 				spinner.setAdapter(dataAdapter);
+				spinner.setOnItemSelectedListener(new OnItemSelectedListener() {
+
+					@Override
+					public void onItemSelected(AdapterView<?> parent,
+							View view, int position, long id) {
+						System.out.println("ITEM SELECTED AT POSITION: " + position);
+						String selectedItem = parent.getItemAtPosition(position).toString();
+						mapPins(selectedItem);
+					}
+
+					@Override
+					public void onNothingSelected(AdapterView<?> parent) {
+												
+					}
+					
+				});
+				
+				
 			}
 		} catch (DbxException e) {
 			e.printStackTrace();
 		}
 	}
+	
+	
+
 	
 }
