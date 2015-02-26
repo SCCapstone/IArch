@@ -84,7 +84,6 @@ public class TakePicture extends Activity {
 			//stop looking for location updates; saves battery
 			locationManager.removeUpdates(locationListener);
 			
-			System.out.println("GOT HERE TO ONCREATE PAST SAVEDINSTANCESTATE");
 		}
 		
 	}
