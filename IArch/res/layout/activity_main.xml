@@ -40,7 +40,7 @@
         android:layout_below="@+id/camera_button"
         android:layout_marginTop="20dp"
         android:text="@string/map"
-        android:onClick="sendMessage"
+        android:onClick="displayMap"
          />
     
     <Button

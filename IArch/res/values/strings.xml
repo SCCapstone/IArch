@@ -31,6 +31,8 @@
         <item>Options</item>
         <item>Logout</item>
     </string-array>
+    <string name="drawer_open">iArch</string>
+    <string name="drawer_close">Close navigation drawer</string>
 
     <!-- Action bar -->
     <string name="action_home">Home</string>

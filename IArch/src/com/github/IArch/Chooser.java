@@ -20,11 +20,15 @@ public class Chooser extends Activity {
 	private GridView gridView;
 	private GridViewAdapter customGridAdapter;
 	public static File fileName = null;
+	private CharSequence mTitle;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_chooser);
+		
+		mTitle = getString(R.string.project_management);
+		getActionBar().setTitle(mTitle);
 
 		gridView = (GridView) findViewById(R.id.gridView);
 		customGridAdapter = new GridViewAdapter(this, R.layout.row_grid, getData());

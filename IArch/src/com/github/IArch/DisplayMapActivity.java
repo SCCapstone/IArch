@@ -46,6 +46,7 @@ public class DisplayMapActivity extends FragmentActivity
 	LocationListener,
 	OnMyLocationButtonClickListener {
 
+	private CharSequence mTitle;
 	private GoogleMap mMap;
 
     private GoogleApiClient mGoogleApiClient;
@@ -69,6 +70,9 @@ public class DisplayMapActivity extends FragmentActivity
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_display_map);
 		mMessageView = (TextView) findViewById(R.id.message_text);
+		
+		mTitle = getString(R.string.map);
+		getActionBar().setTitle(mTitle);
 				
 	}
 
