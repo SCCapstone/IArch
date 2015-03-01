@@ -24,7 +24,7 @@
     <string name="button_send">Connect to Dropbox</string>
 
     <!-- Navigation Drawer -->
-    <string-array name="navigation_drawer_items_array">
+    <string-array name="nav_drawer_items_array">
         <item>Camera</item>
         <item>Map</item>
         <item>Project Management</item>
