@@ -66,12 +66,13 @@ public class Chooser extends Activity {
 	    File[] imageFiles = path.listFiles();
 	    Bitmap icon = BitmapFactory.decodeResource(getResources(), R.drawable.folder_icon_small);
 	    
-	    
-	    for (int i = 0; i < imageFiles.length; i++) {
-	    	String folderName = imageFiles[i].toString();
-	    	String[] shortFolderName = folderName.split("/");
-	    	imageItems.add(new ImageItem(icon, shortFolderName[6]));
-	    	//imageItems.add(new ImageItem(decodeSampledBitmapFromFile(imageFiles[i].getAbsolutePath(), 200, 200), shortFolderName[6]));
+	    if (imageFiles != null) {
+	    	for (int i = 0; i < imageFiles.length; i++) {
+	    		String folderName = imageFiles[i].toString();
+	    		String[] shortFolderName = folderName.split("/");
+	    		imageItems.add(new ImageItem(icon, shortFolderName[6]));
+	    		//imageItems.add(new ImageItem(decodeSampledBitmapFromFile(imageFiles[i].getAbsolutePath(), 200, 200), shortFolderName[6]));
+	    	}
 	    }
 	    
 		return imageItems;

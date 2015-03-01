@@ -53,7 +53,7 @@ public class DisplayMapActivity extends FragmentActivity
     private LatLng LatLong;
     float zoom = 16;
     int zoomCounter = 0;
-    Spinner spinner;
+    //Spinner spinner;
     DbxDatastore datastore;
     
     
@@ -101,7 +101,12 @@ public class DisplayMapActivity extends FragmentActivity
                 mMap.setOnMyLocationButtonClickListener(this);
                 mMap.setMapType(GoogleMap.MAP_TYPE_HYBRID);
                 setupLastKnown();
-                addItemsOnSpinner();
+                
+                if (MainActivity.mAccountManager.hasLinkedAccount()) {
+                	addItemsOnSpinner();
+                } else {
+                	hideSpinner();
+                }
             }
         }
     }
@@ -240,12 +245,12 @@ public class DisplayMapActivity extends FragmentActivity
 	}
 	
 	public void addItemsOnSpinner() {
-        spinner = (Spinner) findViewById(R.id.spinner);
+        Spinner spinner = (Spinner) findViewById(R.id.spinner);
         List<String> list = new ArrayList<String>();
-        //query database for datastore names
-        //Set<DbxDatastoreInfo> set = MainActivity.mDatastoreManager.listDatastores();
+        
 		ArrayList<DbxDatastoreInfo> infos = new ArrayList<DbxDatastoreInfo>();
 		try {
+			//query database for datastore names
 			infos.addAll(MainActivity.mDatastoreManager.listDatastores());
 			
 			for (int i=0; i<infos.size(); i++) {
@@ -279,6 +284,13 @@ public class DisplayMapActivity extends FragmentActivity
 		}
 	}
 	
+	void hideSpinner() {
+		TextView pins = (TextView) findViewById(R.id.pins);
+		pins.setVisibility(View.GONE);
+		
+		Spinner spinner = (Spinner) findViewById(R.id.spinner);
+        spinner.setVisibility(View.GONE);
+	}
 	
 
 	
