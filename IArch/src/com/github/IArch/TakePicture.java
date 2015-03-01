@@ -81,9 +81,6 @@ public class TakePicture extends Activity {
 			//store file path to variable
 			fileLocation = fileUri.getPath(); 
 			
-			//stop looking for location updates; saves battery
-			locationManager.removeUpdates(locationListener);
-			
 		}
 		
 	}
@@ -117,10 +114,11 @@ public class TakePicture extends Activity {
 	    super.onPause();  // Always call the superclass method first
 	    //delete photo if back button was pressed on TakePicture after taking photo
 	    if (super.isFinishing()) {
-	    	//System.out.println("DELETING IMAGE");
-	    	Toast.makeText(TakePicture.this, "Back button pressed, deleting image", Toast.LENGTH_SHORT).show();
-	    	File myFile = new File(fileLocation);
-		    myFile.delete();
+	    	if (fileLocation != null) {
+	    		Toast.makeText(TakePicture.this, "Back button pressed, deleting image", Toast.LENGTH_SHORT).show();
+	    		File myFile = new File(fileLocation);
+	    		myFile.delete();
+	    	}
 	    }
 	}
 	
@@ -138,10 +136,11 @@ public class TakePicture extends Activity {
 	
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+		//stop getting location updates; saves battery
+		stopLocation();
+		
 		System.out.println("RESULT CODE: " + resultCode);
 		if (requestCode == CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE && resultCode == RESULT_OK) {
-			System.out.println("You just took a picture");
-			
 			//show picture that was taken
 			setPic(fileLocation);
 				
@@ -151,8 +150,6 @@ public class TakePicture extends Activity {
 			TextView myText = (TextView) findViewById(R.id.textView1);
 			myText.setText("Latitude: " + latitude + " " + "Longitude: " + longitude);
 			
-			//stop looking for location updates; saves battery
-			//locationManager.removeUpdates(locationListener);
 		} else if (resultCode == RESULT_CANCELED){
 			//user cancelled the image capture
 			
@@ -266,8 +263,6 @@ public class TakePicture extends Activity {
 					//store file path to variable
 					fileLocation = fileUri.getPath(); 
 					
-					//stop looking for location updates; saves battery
-					locationManager.removeUpdates(locationListener);
 				}
 				// Need to add failure message
 			}
@@ -450,4 +445,10 @@ public class TakePicture extends Activity {
 		locationManager.requestLocationUpdates(locationProvider, 0, 0, locationListener);
 	}
 	
+	void stopLocation() {
+		locationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
+		
+		//stop looking for location updates; saves battery
+		locationManager.removeUpdates(locationListener);
+	}
 }
