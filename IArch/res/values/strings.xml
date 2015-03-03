@@ -5,7 +5,7 @@
     <string name="hello_world">Hello world!</string>
 
     <!-- Map strings -->
-    <string name="map_pins">Add map pins</string>
+    <string name="map_pins">Display map pins</string>
     
     <!-- Take Picture / Meta data entry -->
     <string name="project_hint">Project Name</string>

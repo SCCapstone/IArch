@@ -7,10 +7,14 @@ import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Environment;
+import android.view.ActionMode;
 import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
+import android.widget.AbsListView.MultiChoiceModeListener;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.GridView;
@@ -29,6 +33,8 @@ public class Gallery extends Activity {
 		gridView = (GridView) findViewById(R.id.gridView);
 		customGridAdapter = new GridViewAdapter(this, R.layout.row_grid, getData());
 		gridView.setAdapter(customGridAdapter);
+		gridView.setChoiceMode(GridView.CHOICE_MODE_MULTIPLE_MODAL);
+		gridView.setMultiChoiceModeListener(new MultiChoiceModeListener());
 		
 		//handle item click
 		gridView.setOnItemClickListener(new OnItemClickListener() {
@@ -114,4 +120,53 @@ public class Gallery extends Activity {
 		return true;
 	}
 	
+	public class MultiChoiceModeListener implements GridView.MultiChoiceModeListener {
+
+		@Override
+		public boolean onCreateActionMode(ActionMode mode, Menu menu) {
+			mode.setTitle("Select Items");
+            mode.setSubtitle("One item selected");
+			return true;
+		}
+
+		@Override
+		public boolean onPrepareActionMode(ActionMode mode, Menu menu) {
+			return true;
+		}
+
+		@Override
+		public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
+			return true;
+		}
+
+		@Override
+		public void onDestroyActionMode(ActionMode mode) {
+		}
+
+		@Override
+		public void onItemCheckedStateChanged(ActionMode mode, int position,
+				long id, boolean checked) {
+			View singleView = gridView.getChildAt(position);
+			if (checked == true) {
+				//item checked
+				singleView.setBackgroundColor(getResources().getColor(android.R.color.background_light));
+			} else {
+				//item unchecked
+				singleView.setBackgroundColor(Color.parseColor("#fff3f3f3"));
+			}
+			
+			
+			//count number of items selected; display it at top of screen
+			int selectCount = gridView.getCheckedItemCount();
+            switch (selectCount) {
+            case 1:
+                mode.setSubtitle("One item selected");
+                break;
+            default:
+                mode.setSubtitle("" + selectCount + " items selected");
+                break;
+            }
+		}
+
+	}
 }
