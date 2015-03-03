@@ -4,23 +4,9 @@
     tools:context="com.github.IArch.TakePicture" >
 
     <item
-        android:id="@+id/action_upload"
-        android:title="@string/action_upload"
-        android:orderInCategory="1"
-        android:showAsAction="never"
-        />
-    
-    <item
-        android:id="@+id/action_export"
-        android:title="@string/action_export"
-        android:orderInCategory="2"
-        android:showAsAction="never"
-        />
-    
-    <item
         android:id="@+id/action_settings"
         android:title="@string/action_settings"
-        android:orderInCategory="3"
+        android:orderInCategory="1"
         android:showAsAction="never"
         />
 

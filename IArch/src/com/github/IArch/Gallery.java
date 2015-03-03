@@ -154,7 +154,6 @@ public class Gallery extends Activity {
 				singleView.setBackgroundColor(Color.parseColor("#fff3f3f3"));
 			}
 			
-			
 			//count number of items selected; display it at top of screen
 			int selectCount = gridView.getCheckedItemCount();
             switch (selectCount) {
