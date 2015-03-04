@@ -3,26 +3,23 @@ package com.github.IArch;
 import java.io.File;
 import java.util.ArrayList;
 
-import com.dropbox.sync.android.DbxException;
-import com.dropbox.sync.android.DbxFile;
-import com.dropbox.sync.android.DbxFileSystem;
-import com.dropbox.sync.android.DbxException.Unauthorized;
-import com.dropbox.sync.android.DbxPath;
-import com.dropbox.sync.android.DbxPath.InvalidPathException;
-
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Environment;
 import android.support.v4.app.ActionBarDrawerToggle;
+import android.view.ActionMode;
+import android.view.ActionMode;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.MenuItem;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.Toast;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.GridView;
 
@@ -40,6 +37,8 @@ public class Gallery extends Activity {
 		gridView = (GridView) findViewById(R.id.gridView);
 		customGridAdapter = new GridViewAdapter(this, R.layout.row_grid, getData());
 		gridView.setAdapter(customGridAdapter);
+		gridView.setChoiceMode(GridView.CHOICE_MODE_MULTIPLE_MODAL);
+		gridView.setMultiChoiceModeListener(new MultiChoiceModeListener());
 		
 		//handle item click
 		gridView.setOnItemClickListener(new OnItemClickListener() {
@@ -121,64 +120,56 @@ public class Gallery extends Activity {
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.
-		//getMenuInflater().inflate(R.menu.gallery, menu);
-		//return true;
-		
-		MenuInflater inflater = getMenuInflater();
-		inflater.inflate(R.menu.gallery, menu);
-		return super.onCreateOptionsMenu(menu);
+		getMenuInflater().inflate(R.menu.gallery, menu);
+		return true;
 	}
 	
-	@Override
-	public boolean onOptionsItemSelected(MenuItem item) {
-		// Handle action bar item clicks here. The action bar will
-		// automatically handle clicks on the Home/Up button, so long
-		// as you specify a parent activity in AndroidManifest.xml.
-		
-		// The action bar home/up action should open or close the drawer.
-        // ActionBarDrawerToggle will take care of this.
-       
-       
-		switch (item.getItemId()) {
-		case R.id.action_upload:
-			Toast.makeText(Gallery.this, "This will sync eventually!", 
-					Toast.LENGTH_LONG).show();
+	public class MultiChoiceModeListener implements GridView.MultiChoiceModeListener {
+
+		@Override
+		public boolean onCreateActionMode(ActionMode mode, Menu menu) {
+			mode.setTitle("Select Items");
+            mode.setSubtitle("One item selected");
 			return true;
-		case R.id.action_export:
-			Toast.makeText(Gallery.this, "Export feature coming soon", 
-					Toast.LENGTH_LONG).show();
-			return true;
-		case R.id.action_settings:
-			Toast.makeText(Gallery.this, "No settings yet", 
-					Toast.LENGTH_LONG).show();
-			return true;
-		default:
-			return super.onOptionsItemSelected(item);
-		
 		}
-	}
-	
-	private boolean export()
-	{
-		try{
-			DbxFileSystem dbxFs = DbxFileSystem.forAccount(MainActivity.mAccountManager.getLinkedAccount());
-			
-			DbxFile testFile = dbxFs.create(new DbxPath("exportTest.txt"));
-			
-			
-		}catch (Unauthorized e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-			
-		} catch (InvalidPathException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (DbxException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+
+		@Override
+		public boolean onPrepareActionMode(ActionMode mode, Menu menu) {
+			return true;
 		}
-		
-		return false;
+
+		@Override
+		public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
+			return true;
+		}
+
+		@Override
+		public void onDestroyActionMode(ActionMode mode) {
+		}
+
+		@Override
+		public void onItemCheckedStateChanged(ActionMode mode, int position,
+				long id, boolean checked) {
+			View singleView = gridView.getChildAt(position);
+			if (checked == true) {
+				//item checked
+				singleView.setBackgroundColor(getResources().getColor(android.R.color.background_light));
+			} else {
+				//item unchecked
+				singleView.setBackgroundColor(Color.parseColor("#fff3f3f3"));
+			}
+			
+			//count number of items selected; display it at top of screen
+			int selectCount = gridView.getCheckedItemCount();
+            switch (selectCount) {
+            case 1:
+                mode.setSubtitle("One item selected");
+                break;
+            default:
+                mode.setSubtitle("" + selectCount + " items selected");
+                break;
+            }
+		}
+
 	}
-	
 }
