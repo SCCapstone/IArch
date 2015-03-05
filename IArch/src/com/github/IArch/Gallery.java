@@ -144,8 +144,13 @@ public class Gallery extends Activity {
 					Toast.LENGTH_LONG).show();
 			return true;
 		case R.id.action_export:
-			Toast.makeText(Gallery.this, "Export feature coming soon", 
+			export();
+			Toast.makeText(Gallery.this, "Data Exported!", 
 					Toast.LENGTH_LONG).show();
+			String longFileName = Chooser.fileName.toString();
+			String[] shortFileName = longFileName.split("/");
+			System.out.println(shortFileName[6]);
+			//export();
 			return true;
 		case R.id.action_settings:
 			Toast.makeText(Gallery.this, "No settings yet", 
@@ -158,10 +163,13 @@ public class Gallery extends Activity {
 	
 	public boolean export(){
 		
+		String longFileName = Chooser.fileName.toString();
+		String[] shortFileName = longFileName.split("/");
+		
 		try{
 			DbxFileSystem dbxFs = DbxFileSystem.forAccount(MainActivity.mAccountManager.getLinkedAccount());
 
-			DbxFile testFile = dbxFs.create(new DbxPath("hello.txt"));
+			DbxFile testFile = dbxFs.create(new DbxPath(shortFileName[6] + "/" + "hello.txt"));
 			try {
 			    testFile.writeString("Hello Dropbox!");
 			    
