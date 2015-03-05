@@ -1,7 +1,15 @@
 package com.github.IArch;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
+
+import com.dropbox.sync.android.DbxException;
+import com.dropbox.sync.android.DbxFile;
+import com.dropbox.sync.android.DbxFileSystem;
+import com.dropbox.sync.android.DbxException.Unauthorized;
+import com.dropbox.sync.android.DbxPath;
+import com.dropbox.sync.android.DbxPath.InvalidPathException;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -16,6 +24,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.Toast;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.GridView;
 
@@ -118,6 +127,64 @@ public class Gallery extends Activity {
 		// Inflate the menu; this adds items to the action bar if it is present.
 		getMenuInflater().inflate(R.menu.gallery, menu);
 		return true;
+	}
+	
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		// Handle action bar item clicks here. The action bar will
+		// automatically handle clicks on the Home/Up button, so long
+		// as you specify a parent activity in AndroidManifest.xml.
+		
+		// The action bar home/up action should open or close the drawer.
+        // ActionBarDrawerToggle will take care of this.
+       
+		switch (item.getItemId()) {
+		case R.id.action_upload:
+			Toast.makeText(Gallery.this, "This will sync eventually!", 
+					Toast.LENGTH_LONG).show();
+			return true;
+		case R.id.action_export:
+			Toast.makeText(Gallery.this, "Export feature coming soon", 
+					Toast.LENGTH_LONG).show();
+			return true;
+		case R.id.action_settings:
+			Toast.makeText(Gallery.this, "No settings yet", 
+					Toast.LENGTH_LONG).show();
+			return true;
+		default:
+			return super.onOptionsItemSelected(item);
+		}
+	}
+	
+	public boolean export(){
+		
+		try{
+			DbxFileSystem dbxFs = DbxFileSystem.forAccount(MainActivity.mAccountManager.getLinkedAccount());
+
+			DbxFile testFile = dbxFs.create(new DbxPath("hello.txt"));
+			try {
+			    testFile.writeString("Hello Dropbox!");
+			    
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}finally {
+			    testFile.close();
+			}
+			
+		}catch (Unauthorized e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			
+		} catch (InvalidPathException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (DbxException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		return false;
 	}
 	
 	public class MultiChoiceModeListener implements GridView.MultiChoiceModeListener {
