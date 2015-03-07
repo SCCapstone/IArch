@@ -299,8 +299,10 @@ public class TakePicture extends Activity {
 			  
 			    //set up dropbox datastores
 			    //DbxDatastore datastore = MainActivity.mDatastoreManager.openDefaultDatastore();
-			    //get lowercase project name; dropbox datastores require lowercase
+			    //format data to meet dropbox datastore name requirements
 			    String lowercaseProjectName = projectName.toLowerCase(Locale.US);
+			    lowercaseProjectName = lowercaseProjectName.replace(" ", "_");
+			    
 			    DbxDatastore datastore = MainActivity.mDatastoreManager.openOrCreateDatastore(lowercaseProjectName);
 				DbxTable dataTbl = datastore.getTable("Picture_Data");
 				@SuppressWarnings("unused")
