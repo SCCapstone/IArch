@@ -1,8 +1,6 @@
 package com.github.IArch;
 
 import android.app.Activity;
-import android.app.Fragment;
-import android.app.FragmentManager;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.widget.DrawerLayout;
@@ -23,6 +21,7 @@ import com.dropbox.sync.android.DbxAccountManager;
 import com.dropbox.sync.android.DbxDatastoreManager;
 import com.dropbox.sync.android.DbxException;
 
+@SuppressWarnings("deprecation")
 public class MainActivity extends Activity {
 	
 

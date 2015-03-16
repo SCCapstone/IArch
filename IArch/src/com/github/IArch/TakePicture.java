@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Locale;
 
 import com.dropbox.sync.android.DbxDatastore;
 import com.dropbox.sync.android.DbxException;
@@ -298,7 +299,11 @@ public class TakePicture extends Activity {
 			  
 			    //set up dropbox datastores
 			    //DbxDatastore datastore = MainActivity.mDatastoreManager.openDefaultDatastore();
-			    DbxDatastore datastore = MainActivity.mDatastoreManager.openOrCreateDatastore(projectName);
+			    //format data to meet dropbox datastore name requirements
+			    String lowercaseProjectName = projectName.toLowerCase(Locale.US);
+			    lowercaseProjectName = lowercaseProjectName.replace(" ", "_");
+			    
+			    DbxDatastore datastore = MainActivity.mDatastoreManager.openOrCreateDatastore(lowercaseProjectName);
 				DbxTable dataTbl = datastore.getTable("Picture_Data");
 				@SuppressWarnings("unused")
 				DbxRecord task = dataTbl.insert().set("LOCAL_FILENAME", fileLocation).
