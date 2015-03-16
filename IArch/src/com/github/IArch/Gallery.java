@@ -175,16 +175,17 @@ public class Gallery extends Activity {
 		String[] shortFileName = longFileName.split("/");
 		File path = new File(Environment.getExternalStoragePublicDirectory(
 				Environment.DIRECTORY_PICTURES) + "/iArch/" + shortFileName[6]);
+		DbxPath remotePath = new DbxPath(shortFileName[6] + "/" + shortFileName[6] + ".csv");
 	    File[] imageFiles = path.listFiles();
-	    
 	    String finalString = "";
 	    
-	    
-		
 		try{
 			DbxFileSystem dbxFs = DbxFileSystem.forAccount(MainActivity.mAccountManager.getLinkedAccount());
-
-			DbxFile exportFile = dbxFs.create(new DbxPath(shortFileName[6] + "/" + shortFileName[6] + ".csv"));
+			//if remote file already exists, delete it before exporting new file
+			if (dbxFs.exists(remotePath)) {
+				dbxFs.delete(remotePath);
+			}
+			DbxFile exportFile = dbxFs.create(remotePath);
 			
 			try {
 			    //testFile.writeString("Hello Dropbox!");
