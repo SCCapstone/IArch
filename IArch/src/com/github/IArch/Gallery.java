@@ -179,8 +179,6 @@ public class Gallery extends Activity {
 	    File[] imageFiles = path.listFiles();
 	    String finalString = "";
 	    
-	    
-		
 		try{
 			DbxFileSystem dbxFs = DbxFileSystem.forAccount(MainActivity.mAccountManager.getLinkedAccount());
 			//if remote file already exists, delete it before exporting new file
