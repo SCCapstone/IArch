@@ -184,7 +184,7 @@ public class Gallery extends Activity {
 		try{
 			DbxFileSystem dbxFs = DbxFileSystem.forAccount(MainActivity.mAccountManager.getLinkedAccount());
 
-			DbxFile exportFile = dbxFs.create(new DbxPath(shortFileName[6] + "/" + "bbb.csv"));
+			DbxFile exportFile = dbxFs.create(new DbxPath(shortFileName[6] + "/" + shortFileName[6] + ".csv"));
 			
 			try {
 			    //testFile.writeString("Hello Dropbox!");
