@@ -12,12 +12,12 @@ import android.os.Environment;
 import android.view.Menu;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.GridView;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.ListView;
 
 public class Chooser extends Activity {
 
-	private GridView gridView;
+	private ListView gridView;
 	private GridViewAdapter customGridAdapter;
 	public static File fileName = null;
 	private CharSequence mTitle;
@@ -30,7 +30,7 @@ public class Chooser extends Activity {
 		mTitle = getString(R.string.project_management);
 		getActionBar().setTitle(mTitle);
 
-		gridView = (GridView) findViewById(R.id.gridView);
+		gridView = (ListView) findViewById(R.id.gridView);
 		customGridAdapter = new GridViewAdapter(this, R.layout.row_grid, getData());
 		gridView.setAdapter(customGridAdapter);
 		
