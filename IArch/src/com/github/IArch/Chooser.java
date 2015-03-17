@@ -17,8 +17,8 @@ import android.widget.ListView;
 
 public class Chooser extends Activity {
 
-	private ListView gridView;
-	private GridViewAdapter customGridAdapter;
+	private ListView listView;
+	private ListViewAdapter customGridAdapter;
 	public static File fileName = null;
 	private CharSequence mTitle;
 
@@ -30,12 +30,12 @@ public class Chooser extends Activity {
 		mTitle = getString(R.string.project_management);
 		getActionBar().setTitle(mTitle);
 
-		gridView = (ListView) findViewById(R.id.gridView);
-		customGridAdapter = new GridViewAdapter(this, R.layout.row_grid, getData());
-		gridView.setAdapter(customGridAdapter);
+		listView = (ListView) findViewById(R.id.listView);
+		customGridAdapter = new ListViewAdapter(this, R.layout.row_list, getData());
+		listView.setAdapter(customGridAdapter);
 		
 		//handle item click
-		gridView.setOnItemClickListener(new OnItemClickListener() {
+		listView.setOnItemClickListener(new OnItemClickListener() {
 			public void onItemClick(AdapterView<?> parent, View v,
 				int position, long id) {
 				//Toast.makeText(Gallery.this, position + "#Selected",
