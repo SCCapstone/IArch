@@ -1,19 +1,15 @@
 package com.github.IArch;
 
 import android.app.Activity;
-import android.app.Fragment;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.view.GravityCompat;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
-import android.view.View.OnClickListener;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -48,27 +44,19 @@ public class MainActivity extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
-		/*
+		
 		if (savedInstanceState == null) {
             getFragmentManager().beginTransaction()
-                    .add(R.id.container, new PlaceholderFragment())
+                    .add(R.id.container, new MainFragment())
                     .commit();
         }
-		*/
+		
 		setUpNavDrawer();
 		
 		mAccountManager = DbxAccountManager.getInstance(getApplicationContext(), appKey, appSecret);
-
-	    //dropbox button listener
-	    mLinkButton = (Button) findViewById(R.id.link_button);
-	    mLinkButton.setOnClickListener(new OnClickListener() {
-	        @Override
-	        public void onClick(View v) {
-	        	onClickLinkToDropbox();
-	        }
-	    });
+			    
 	}
-
+    
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.
@@ -106,22 +94,6 @@ public class MainActivity extends Activity {
 			return super.onOptionsItemSelected(item);
 		}
 	}
-	
-	/**
-     * A placeholder fragment containing a simple view.
-     */
-    public static class PlaceholderFragment extends Fragment {
-
-        public PlaceholderFragment() {
-        }
-
-        @Override
-        public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                Bundle savedInstanceState) {
-            View rootView = inflater.inflate(R.layout.fragment_main, container, false);
-            return rootView;
-        }
-    }
 	
 	@Override
 	protected void onResume() {
@@ -163,11 +135,11 @@ public class MainActivity extends Activity {
      // ActionBarDrawerToggle ties together the the proper interactions
         // between the sliding drawer and the action bar app icon
         mDrawerToggle = new ActionBarDrawerToggle(
-                this,                  /* host Activity */
-                mDrawerLayout,         /* DrawerLayout object */
-                R.drawable.ic_drawer,  /* nav drawer image to replace 'Up' caret */
-                R.string.drawer_open,  /* "open drawer" description for accessibility */
-                R.string.drawer_close  /* "close drawer" description for accessibility */
+                this,                  // host Activity 
+                mDrawerLayout,         // DrawerLayout object 
+                R.drawable.ic_drawer,  // nav drawer image to replace 'Up' caret 
+                R.string.drawer_open,  // "open drawer" description for accessibility 
+                R.string.drawer_close  // "close drawer" description for accessibility 
                 ) {
             public void onDrawerClosed(View view) {
                 getActionBar().setTitle(mTitle);
@@ -183,12 +155,14 @@ public class MainActivity extends Activity {
 	}
 
     private void showLinkedView() {
+    	mLinkButton = MainFragment.mLinkButton;
         mLinkButton.setText("Unlink from Dropbox");
         //navDrawerItems[4] = "Logout";
         //mDrawerList.setAdapter(new ArrayAdapter<String>(this,R.layout.drawer_list_item, navDrawerItems));
     }
 
     private void showUnlinkedView() {
+    	mLinkButton = MainFragment.mLinkButton;
     	mLinkButton.setText("Connect to Dropbox");
     	//navDrawerItems[4] = "Login";
     	//mDrawerList.setAdapter(new ArrayAdapter<String>(this,R.layout.drawer_list_item, navDrawerItems));
@@ -201,7 +175,8 @@ public class MainActivity extends Activity {
     		mAccountManager.unlink();
         	showUnlinkedView();
     	} else {
-    	mAccountManager.startLink((Activity)MainActivity.this, REQUEST_LINK_TO_DBX);
+    		mAccountManager.startLink((Activity)MainActivity.this, REQUEST_LINK_TO_DBX);
+    		showLinkedView();
     	}
     }
     
@@ -285,7 +260,12 @@ public class MainActivity extends Activity {
 		startActivity(intent);
 	}
 	
-	/* The click listener for ListView in the navigation drawer */
+	public void dropboxButtonClick(View view)
+	{
+		onClickLinkToDropbox();
+	}
+	
+	// The click listener for ListView in the navigation drawer 
     private class DrawerItemClickListener implements ListView.OnItemClickListener {
         @Override
         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -296,18 +276,18 @@ public class MainActivity extends Activity {
     private void selectItem(int position, View view) {
     	
     	// update selected item and title, then close the drawer
-        mDrawerList.setItemChecked(position, true);
-        mDrawerLayout.closeDrawer(mDrawerList);
+        //mDrawerList.setItemChecked(position, true);
+        //mDrawerLayout.closeDrawer(mDrawerList);
         // Click actions
         switch(position) {
         case 0: // Camera
-        	takePicture(view);
+        	//takePicture(view);
         break;
         case 1: // Map
-        	displayMap(view);
+        	//displayMap(view);
         break;
         case 2: // Project Management
-        	gallery(view);
+        	//gallery(view);
         break;
         case 3: // Options
         	Toast.makeText(MainActivity.this, "Options", 
