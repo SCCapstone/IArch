@@ -16,7 +16,6 @@ $('#connect').click(function (e) {
     client.authenticate(updateAuthenticationStatus);
 });
 
-
 function escapeID(myid) {
     return "#" + myid.replace( /(:|\.|\[|\])/g, "\\$1" );
 }
@@ -48,10 +47,10 @@ function updateAuthenticationStatus(err, client) {
     var datastoreManager = client.getDatastoreManager();
     var datastore = null;
     var selectedDsid = null;
-
+    var tableName = "Picture_Data"
     var previousList = [];
     datastoreManager.datastoreListChanged.addListener(function (e) {
-        var infos = e.getDatastoreInfos();
+    var infos = e.getDatastoreInfos();
 
 
         // Update the list of projects on the left-hand side of the page
@@ -64,7 +63,7 @@ function updateAuthenticationStatus(err, client) {
             // Generate list items like this:
             // <li id="{datastore ID}">{title of datastore} <button class="enabled">X</button></li>
             .map(function (info) {
-                var html = _.template('<li id="${dsid}">${dsid}<button class="enabled">&times;</button></li>', {
+                var html = _.template('<li id="${dsid}"><div id="wrap">${dsid}</div></li>', {
                     dsid: info.getId(),
                     title: info.getTitle()
                 });
@@ -84,8 +83,41 @@ function updateAuthenticationStatus(err, client) {
             return false;
         });
 
-        // Handle delete button click
-        $('#project-list li button').click(function (e) {
+        // Handle delete project button click
+        $("#project_delete").confirm({
+                title:"Delete current project",
+                text: "Are you sure you want to delete this entire project? This is permanent!",
+                confirm: function(button) {
+                   console.log("dsid=" + selectedDsid);
+                    // If this is the list we're currently viewing
+                    if (datastore !== null && datastore.getId() === selectedDsid) {
+                        // Close the datastore and null it
+                        datastore.close();
+                        datastore = null;
+
+                        // Select the first remaining list
+                        var first = _.find($('#project-list li'), function (li) {
+                            return $(li).attr('id') !== selectedDsid;
+                        });
+                        window.location.hash = $(first).attr('id') || '';
+                    }
+
+                    // Delete the datastore
+                    datastoreManager.deleteDatastore(selectedDsid, function () { });
+
+                    return false;
+                    
+                },
+                cancel: function(button) {
+                    // do nothing
+                },
+                confirmButton: "Yes I am",
+                cancelButton: "No"
+            });
+
+
+
+        /*$('#project-list li button').click(function (e) {
             e.preventDefault();
 
             var dsid = $(this).parent().attr('id');
@@ -107,7 +139,7 @@ function updateAuthenticationStatus(err, client) {
             datastoreManager.deleteDatastore(dsid, function () { });
 
             return false;
-        });
+        });*/
 
         // Notify the user if the datastore they're viewing is removed
         var dsidList = _.map(e.getDatastoreInfos(), function (info) { return info.getId(); });
@@ -142,7 +174,6 @@ function updateAuthenticationStatus(err, client) {
         }
     }
 
-
     // Populate the right-hand side of the screen (list items)
     function populateItems() {
         $("#dvLoading").show();
@@ -169,9 +200,12 @@ function updateAuthenticationStatus(err, client) {
                 .map(function (record) {
                     var fileName = record.get('LOCAL_FILENAME').split('/');
                     var filePath = projectName + '/' + fileName[fileName.length-1];
-                    var thumbnail_url = client.thumbnailUrl(filePath);
+                    var thumbnail_url = client.thumbnailUrl(filePath, {size: "large"});
                     picture_url = "";
-
+                    
+                    /*finished = false;
+                    console.log("finished before= " + finished);
+                    
                     client.makeUrl(filePath, {
                         downloadHack: false,
                         long: true
@@ -181,17 +215,18 @@ function updateAuthenticationStatus(err, client) {
                         }
                         console.log("data.url= " + data.url);
                         picture_url = data.url.replace("www.dropbox.com","dl.dropboxusercontent.com");
-                        console.log("picture_url inside= " + picture_url);                    
+                        console.log("picture_url inside= " + picture_url);
+                        finished = true;                    
                     });
                                 
-                    
-                    console.log("Picture URL outside2= " + picture_url);
+                    console.log("finished after= " + finished);
+                    console.log("Picture URL outside2= " + picture_url);*/
                     
                     numItems++;
-                    var html = _.template('<tr id="${id}"><td>${number}</td><td><a href="${picture_url}" target="_blank"><img src="${thumbnail}" alt="Thumbnail"></a></td><td>${date}</td><td>${artifact}</td><td>${description}</td><td>${GPS}</td></tr>', {
+                    var html = _.template('<tr id="${id}"><td id="num">${number}</td><td id="thumb"><a href="${picture_url}" target="_blank"><img src="${thumbnail}" alt="Thumbnail"></a></td><td id="date">${date}</td><td id="artifact">${artifact}</td><td id="description">${description}</td><td id="gps">${GPS}</td><td id="edit"><a href="#" id="record_edit"><span class="glyphicon glyphicon-pencil"></span></a><a href="#" id="record_delete"><span class="glyphicon glyphicon-trash"></span></a></td></tr>', {
                         id: record.getId(),
                         number: numItems,
-                        pictureUrl: picture_url,
+                        pictureUrl: record.get('INTERNET_URL'),
                         thumbnail: thumbnail_url,
                         date: record.get('DATE'),
                         artifact: record.get('ARTIFACT_TYPE'),
@@ -215,15 +250,24 @@ function updateAuthenticationStatus(err, client) {
             //$('.role').prop('disabled', datastore.getEffectiveRole() === 'viewer');
 
             // Handle deleting a record
-            /*$('#items li button').click(function (e) {
-                e.preventDefault();
-
-                var recordId = $(this).parent().attr('id');
-                datastore.getTable('items').get(recordId).deleteRecord();
-            });*/
+            $("#project-data tr a#record_delete").confirm({
+                title:"Delete record",
+                text: "Are you sure you want to delete this record?",
+                confirm: function(button) {
+                    var recordId = $("#project-data tr a#record_delete").parents('tr').attr('id');
+                    datastore.getTable(tableName).get(recordId).deleteRecord();
+                    
+                },
+                cancel: function(button) {
+                    // do nothing
+                },
+                confirmButton: "Yes I am",
+                cancelButton: "No"
+            });
         }
+
         // Update on changes.
-        //datastore.recordsChanged.addListener(updateList);
+        datastore.recordsChanged.addListener(updateList);
         
         // Update UI with initial data.
         updateList();
@@ -289,7 +333,6 @@ function updateAuthenticationStatus(err, client) {
                 datastore = ds;
 
                 // Update the UI with items from this datastore.
-                
                 populateItems();
             });
         }
