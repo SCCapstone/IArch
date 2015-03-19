@@ -281,13 +281,13 @@ public class MainActivity extends Activity {
         // Click actions
         switch(position) {
         case 0: // Camera
-        	//takePicture(view);
+        	takePicture(view);
         break;
         case 1: // Map
-        	//displayMap(view);
+        	displayMap(view);
         break;
         case 2: // Project Management
-        	//gallery(view);
+        	gallery(view);
         break;
         case 3: // Options
         	Toast.makeText(MainActivity.this, "Options", 
