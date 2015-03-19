@@ -18,7 +18,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.ListView;
 import android.widget.Toast;
 import com.dropbox.sync.android.DbxAccount;
@@ -44,7 +43,6 @@ public class MainActivity extends Activity {
     
 	static final int REQUEST_LINK_TO_DBX = 0;
 	
-	private Button mLinkButton;
 	static DbxAccountManager mAccountManager;
 	static DbxDatastoreManager mDatastoreManager;
 	
@@ -269,15 +267,13 @@ public boolean export(){
 	}
 
     private void showLinkedView() {
-    	mLinkButton = MainFragment.mLinkButton;
-        mLinkButton.setText("Unlink from Dropbox");
+    	MainFragment.mLinkButton.setText("Unlink from Dropbox");
         navDrawerItems[4] = "Logout";
         mDrawerList.setAdapter(new ArrayAdapter<String>(this,R.layout.drawer_list_item, navDrawerItems));
     }
 
     private void showUnlinkedView() {
-    	mLinkButton = MainFragment.mLinkButton;
-    	mLinkButton.setText("Connect to Dropbox");
+    	MainFragment.mLinkButton.setText("Connect to Dropbox");
     	navDrawerItems[4] = "Login";
     	mDrawerList.setAdapter(new ArrayAdapter<String>(this,R.layout.drawer_list_item, navDrawerItems));
     }
