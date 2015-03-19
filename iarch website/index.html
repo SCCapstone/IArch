@@ -9,11 +9,11 @@
     <meta name="author" content="">
     <link rel="icon" href="../../favicon.ico">
 
-    <title>Dashboard Template for Bootstrap</title>
+    <title>iArch Project Site</title>
 
     <!-- Bootstrap core CSS -->
     <!--<link href="../../dist/css/bootstrap.min.css" rel="stylesheet"> -->
-    <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
 
     <!-- Custom styles for this template -->
     <link href="css/dashboard.css" rel="stylesheet">
@@ -48,11 +48,20 @@
         </div>
         <div id="navbar" class="navbar-collapse collapse">
           <ul class="nav navbar-nav navbar-right">
-            <li><a href="#">Export Settings</a></li>
+            <li>
+              <a href="#" id="web-options" data-toggle="dropdown" aria-expanded="false">
+                <span id="options">Options</span>
+                <span class="caret"></span>
+              </a>
+              <ul class="dropdown-menu" role="menu">
+                <li><a href="#" id="export">Export</a></li>
+                <li><a href="#" id="project_delete">Delete current project</a></li>
+              </ul>
+            </li>
             <li><a href="#" id="about">About</a></li>
             <li>
               <a href="#" id="dropbox-user" data-toggle="dropdown" aria-expanded="false">
-                <span id="name">Login</span>
+                <span id="name"></span>
                 <span class="caret"></span>
               </a>
               <ul class="dropdown-menu" role="menu">
@@ -76,21 +85,20 @@
         </div>
 
         <div class="md-modal" id="login-modal">
-        <div class="md-content">
-            <h3>Log in with Dropbox</h3>
-            <div>
-                <p>This app reads and writes lists to your Dropbox account. Please click the button below to log in.</p>
-                <button id="connect">Connect with Dropbox</button>
-            </div>
-        </div>
-    </div>
+          <div class="md-content">
+              <h3>Log in with Dropbox</h3>
+              <div>
+                  <p>This app reads and writes lists to your Dropbox account. Please click the button below to log in.</p>
+                  <button id="connect">Connect with Dropbox</button>
+              </div>
+          </div>
+      </div>
 
         <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
           <h1 class="page-header">iArch Project Website</h1>
           <div id="project-data">
             <ul></ul>
             <h2 class="sub-header"></h2>
-            <div class="table-responsive">
               <table class="table table-striped">
                 <thead>
                   <tr>
@@ -100,6 +108,7 @@
                     <th>Artifact</th>
                     <th>Description</th>
                     <th>GPS</th>
+                    <th><span class="glyphicon glyphicon-edit"></span></th>
                   </tr>
                 </thead>
                 <tbody>    </tbody>
@@ -116,7 +125,7 @@
     <!-- jQuery -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
     <!-- Boostrap -->
-    <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
     <script src="js/docs.min.js"></script>
     <!-- Dropbox -->
     <script src="https://www.dropbox.com/static/api/dropbox-datastores-1.2-latest.js"></script>
@@ -125,5 +134,7 @@
     <script src="js/app.js"></script>
     <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
     <script src="js/ie10-viewport-bug-workaround.js"></script>
+    <!-- Plugins -->
+    <script src="js/jquery.confirm.js"></script>
   </body>
 </html>
