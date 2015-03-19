@@ -1,19 +1,7 @@
 package com.github.IArch;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
-
-import com.dropbox.sync.android.DbxDatastore;
-import com.dropbox.sync.android.DbxException;
-import com.dropbox.sync.android.DbxFields;
-import com.dropbox.sync.android.DbxFile;
-import com.dropbox.sync.android.DbxFileSystem;
-import com.dropbox.sync.android.DbxRecord;
-import com.dropbox.sync.android.DbxTable;
-import com.dropbox.sync.android.DbxException.Unauthorized;
-import com.dropbox.sync.android.DbxPath;
-import com.dropbox.sync.android.DbxPath.InvalidPathException;
 
 import android.app.Fragment;
 import android.app.FragmentTransaction;
@@ -25,11 +13,11 @@ import android.os.Environment;
 import android.view.ActionMode;
 import android.view.LayoutInflater;
 import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.Toast;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.GridView;
 
@@ -43,6 +31,7 @@ public class GalleryFragment extends Fragment {
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState) {
 		
+		setHasOptionsMenu(true);
 		View galleryView = inflater.inflate(R.layout.fragment_gallery, container, false);
 		
 		gridView = (GridView) galleryView.findViewById(R.id.gridView);
@@ -143,133 +132,14 @@ public class GalleryFragment extends Fragment {
     return inSampleSize;
 }
 
-		
 	@Override
-	public boolean onOptionsItemSelected(MenuItem item) {
-		// Handle action bar item clicks here. The action bar will
-		// automatically handle clicks on the Home/Up button, so long
-		// as you specify a parent activity in AndroidManifest.xml.
+	public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+		// Inflate the menu; this adds items to the action bar if it is present.
 		
-		// The action bar home/up action should open or close the drawer.
-        // ActionBarDrawerToggle will take care of this.
-       
-		switch (item.getItemId()) {
-		case R.id.action_upload:
-			Toast.makeText(getActivity(), "This will sync eventually!", 
-					Toast.LENGTH_LONG).show();
-			return true;
-		case R.id.action_export:
-			System.out.println("START EXPORTING");
-			export();
-			Toast.makeText(getActivity(), "Data Exported!", 
-					Toast.LENGTH_LONG).show();
-			String longFileName = Chooser.fileName.toString();
-			String[] shortFileName = longFileName.split("/");
-			System.out.println(shortFileName[6]);
-			System.out.println("FINISHED EXPORTING");
-			//export();
-			return true;
-		case R.id.action_settings:
-			Toast.makeText(getActivity(), "No settings yet", 
-					Toast.LENGTH_LONG).show();
-			return true;
-		default:
-			return super.onOptionsItemSelected(item);
-		}
+		inflater.inflate(R.menu.gallery_fragment, menu);
+		
 	}
-	
-	public boolean export(){
 		
-		String longFileName = Chooser.fileName.toString();
-		String[] shortFileName = longFileName.split("/");
-		File path = new File(Environment.getExternalStoragePublicDirectory(
-				Environment.DIRECTORY_PICTURES) + "/iArch/" + shortFileName[6]);
-		DbxPath remotePath = new DbxPath(shortFileName[6] + "/" + shortFileName[6] + ".csv");
-	    File[] imageFiles = path.listFiles();
-	    String finalString = "";
-	    
-		try{
-			DbxFileSystem dbxFs = DbxFileSystem.forAccount(MainActivity.mAccountManager.getLinkedAccount());
-			//if remote file already exists, delete it before exporting new file
-			if (dbxFs.exists(remotePath)) {
-				dbxFs.delete(remotePath);
-			}
-			DbxFile exportFile = dbxFs.create(remotePath);
-			
-			try {
-			    //testFile.writeString("Hello Dropbox!");
-				
-				finalString += "Date,Project Name,Description,Longitude,Latitude,Artifact Type,Location\n";
-				
-				for(int i = 0; i<imageFiles.length;i++)
-				{
-					String[] splitFile = imageFiles[i].toString().split("/");
-					
-					//open datastore and get fresh data
-					DbxDatastore datastore = MainActivity.mDatastoreManager.openDatastore(splitFile[6]);
-					datastore.sync();
-					
-					//open table
-					DbxTable tasksTbl = datastore.getTable("Picture_Data");
-					
-					//query table for results
-					DbxFields queryParams = new DbxFields().set("LOCAL_FILENAME", imageFiles[i].toString());
-					DbxTable.QueryResult results = tasksTbl.query(queryParams);
-					
-					if (results.hasResults()) {
-						DbxRecord firstResult = results.iterator().next();
-						
-						finalString += firstResult.getString("DATE");
-						finalString += ",";
-						finalString += firstResult.getString("PROJECT_NAME");
-						finalString += ",";
-						finalString += firstResult.getString("DESCRIPTION");
-						finalString += ",";
-						finalString += firstResult.getDouble("LONGITUDE");
-						finalString += ",";
-						finalString += firstResult.getDouble("LATITUDE");
-						finalString += ",";
-						finalString += firstResult.getString("ARTIFACT_TYPE");
-						finalString += ",";
-						finalString += firstResult.getString("LOCATION");
-						finalString += "\n";
-						
-						
-					
-						//close datastores
-						datastore.close();
-					} else {
-						//picture clicked had no data attached to it, do something here
-						datastore.close();
-					}
-					
-				}
-				
-				exportFile.writeString(finalString);
-				
-			    
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}finally {
-			    exportFile.close();
-			}
-			
-		}catch (Unauthorized e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-			
-		} catch (InvalidPathException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (DbxException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		
-		return false;
-	}
-	
 	public class MultiChoiceModeListener implements GridView.MultiChoiceModeListener {
 
 		@Override

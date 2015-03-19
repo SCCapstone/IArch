@@ -21,7 +21,6 @@ public class ChooserFragment extends Fragment {
 	private ListView listView;
 	private ListViewAdapter customGridAdapter;
 	public static File fileName = null;
-	private CharSequence mTitle;
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
