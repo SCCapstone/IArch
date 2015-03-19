@@ -117,6 +117,98 @@ public class MainActivity extends Activity {
 		}
 	}
 	
+public boolean export(){
+		
+		String longFileName = ChooserFragment.fileName.toString();
+		String[] shortFileName = longFileName.split("/");
+		File path = new File(Environment.getExternalStoragePublicDirectory(
+				Environment.DIRECTORY_PICTURES) + "/iArch/" + shortFileName[6]);
+		DbxPath remotePath = new DbxPath(shortFileName[6] + "/" + shortFileName[6] + ".csv");
+	    File[] imageFiles = path.listFiles();
+	    String finalString = "";
+	    
+		try{
+			DbxFileSystem dbxFs = DbxFileSystem.forAccount(MainActivity.mAccountManager.getLinkedAccount());
+			//if remote file already exists, delete it before exporting new file
+			if (dbxFs.exists(remotePath)) {
+				dbxFs.delete(remotePath);
+			}
+			DbxFile exportFile = dbxFs.create(remotePath);
+			
+			try {
+			    //testFile.writeString("Hello Dropbox!");
+				
+				finalString += "Date,Project Name,Description,Longitude,Latitude,Artifact Type,Location\n";
+				
+				for(int i = 0; i<imageFiles.length;i++)
+				{
+					String[] splitFile = imageFiles[i].toString().split("/");
+					
+					//open datastore and get fresh data
+					DbxDatastore datastore = MainActivity.mDatastoreManager.openDatastore(splitFile[6]);
+					datastore.sync();
+					
+					//open table
+					DbxTable tasksTbl = datastore.getTable("Picture_Data");
+					
+					//query table for results
+					DbxFields queryParams = new DbxFields().set("LOCAL_FILENAME", imageFiles[i].toString());
+					DbxTable.QueryResult results = tasksTbl.query(queryParams);
+					
+					if (results.hasResults()) {
+						DbxRecord firstResult = results.iterator().next();
+						
+						finalString += firstResult.getString("DATE");
+						finalString += ",";
+						finalString += firstResult.getString("PROJECT_NAME");
+						finalString += ",";
+						finalString += firstResult.getString("DESCRIPTION");
+						finalString += ",";
+						finalString += firstResult.getDouble("LONGITUDE");
+						finalString += ",";
+						finalString += firstResult.getDouble("LATITUDE");
+						finalString += ",";
+						finalString += firstResult.getString("ARTIFACT_TYPE");
+						finalString += ",";
+						finalString += firstResult.getString("LOCATION");
+						finalString += "\n";
+						
+						
+					
+						//close datastores
+						datastore.close();
+					} else {
+						//picture clicked had no data attached to it, do something here
+						datastore.close();
+					}
+					
+				}
+				
+				exportFile.writeString(finalString);
+				
+			    
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}finally {
+			    exportFile.close();
+			}
+			
+		}catch (Unauthorized e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			
+		} catch (InvalidPathException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (DbxException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		return false;
+	}
+	
 	@Override
 	protected void onResume() {
 		super.onResume();
@@ -333,96 +425,6 @@ public class MainActivity extends Activity {
         }
     }
 
-public boolean export(){
-		
-		String longFileName = ChooserFragment.fileName.toString();
-		String[] shortFileName = longFileName.split("/");
-		File path = new File(Environment.getExternalStoragePublicDirectory(
-				Environment.DIRECTORY_PICTURES) + "/iArch/" + shortFileName[6]);
-		DbxPath remotePath = new DbxPath(shortFileName[6] + "/" + shortFileName[6] + ".csv");
-	    File[] imageFiles = path.listFiles();
-	    String finalString = "";
-	    
-		try{
-			DbxFileSystem dbxFs = DbxFileSystem.forAccount(MainActivity.mAccountManager.getLinkedAccount());
-			//if remote file already exists, delete it before exporting new file
-			if (dbxFs.exists(remotePath)) {
-				dbxFs.delete(remotePath);
-			}
-			DbxFile exportFile = dbxFs.create(remotePath);
-			
-			try {
-			    //testFile.writeString("Hello Dropbox!");
-				
-				finalString += "Date,Project Name,Description,Longitude,Latitude,Artifact Type,Location\n";
-				
-				for(int i = 0; i<imageFiles.length;i++)
-				{
-					String[] splitFile = imageFiles[i].toString().split("/");
-					
-					//open datastore and get fresh data
-					DbxDatastore datastore = MainActivity.mDatastoreManager.openDatastore(splitFile[6]);
-					datastore.sync();
-					
-					//open table
-					DbxTable tasksTbl = datastore.getTable("Picture_Data");
-					
-					//query table for results
-					DbxFields queryParams = new DbxFields().set("LOCAL_FILENAME", imageFiles[i].toString());
-					DbxTable.QueryResult results = tasksTbl.query(queryParams);
-					
-					if (results.hasResults()) {
-						DbxRecord firstResult = results.iterator().next();
-						
-						finalString += firstResult.getString("DATE");
-						finalString += ",";
-						finalString += firstResult.getString("PROJECT_NAME");
-						finalString += ",";
-						finalString += firstResult.getString("DESCRIPTION");
-						finalString += ",";
-						finalString += firstResult.getDouble("LONGITUDE");
-						finalString += ",";
-						finalString += firstResult.getDouble("LATITUDE");
-						finalString += ",";
-						finalString += firstResult.getString("ARTIFACT_TYPE");
-						finalString += ",";
-						finalString += firstResult.getString("LOCATION");
-						finalString += "\n";
-						
-						
-					
-						//close datastores
-						datastore.close();
-					} else {
-						//picture clicked had no data attached to it, do something here
-						datastore.close();
-					}
-					
-				}
-				
-				exportFile.writeString(finalString);
-				
-			    
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}finally {
-			    exportFile.close();
-			}
-			
-		}catch (Unauthorized e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-			
-		} catch (InvalidPathException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (DbxException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		
-		return false;
-	}
+
 	
 }
