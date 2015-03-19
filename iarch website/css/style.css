@@ -1,6 +1,6 @@
 
 #sidebar-header { 
-	font-family: Oswald; 
+	font-family: Roboto; 
 	text-transform: uppercase; 
 	border-bottom: 1px solid #aaa; 
 	margin-bottom: 0; 
@@ -50,7 +50,7 @@ div#project-list ul {
 	padding: 0;
 	//text-transform: uppercase;
 	margin: 0;
-	text-align: center;
+	//text-align: center;
 }
 
 div#project-list ul li {
@@ -126,6 +126,7 @@ ul li button {
 ul li button.enabled {
 	visibility: visible;
 	margin-left: 14px;
+	color: #666;
 }
 ul li button:hover {
 	color: #B66;
@@ -287,7 +288,36 @@ table.database {
 	border-collapse: collapse;
 }
 
-/*th, td {
-    border: 1px solid black;
-    border-collapse: collapse;
+#record_edit {
+	margin-right: 20px;
+	color: #000;
+}
+
+#record_edit:hover {
+	color: #0000FF;
+}
+
+#record_delete {
+	color: #000;
+}
+
+#record_delete:hover {
+	color: #0000FF;
+}
+
+/*#project_delete {
+	color: #000;
+	font-size: 13px;
+	display:inline;
+	margin-left: 15px;
+}
+
+#project_delete:hover {
+	background: transparent;
+	color: #0000FF;
 }*/
+
+#wrap {
+	text-align: left;
+	word-wrap: break-word;
+}
