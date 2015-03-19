@@ -401,8 +401,8 @@ public boolean export(){
     private void selectItem(int position, View view) {
     	
     	// update selected item and title, then close the drawer
-        //mDrawerList.setItemChecked(position, true);
-        //mDrawerLayout.closeDrawer(mDrawerList);
+        mDrawerList.setItemChecked(position, true);
+        mDrawerLayout.closeDrawer(mDrawerList);
         // Click actions
         switch(position) {
         case 0: // Camera
