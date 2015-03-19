@@ -271,15 +271,15 @@ public boolean export(){
     private void showLinkedView() {
     	mLinkButton = MainFragment.mLinkButton;
         mLinkButton.setText("Unlink from Dropbox");
-        //navDrawerItems[4] = "Logout";
-        //mDrawerList.setAdapter(new ArrayAdapter<String>(this,R.layout.drawer_list_item, navDrawerItems));
+        navDrawerItems[4] = "Logout";
+        mDrawerList.setAdapter(new ArrayAdapter<String>(this,R.layout.drawer_list_item, navDrawerItems));
     }
 
     private void showUnlinkedView() {
     	mLinkButton = MainFragment.mLinkButton;
     	mLinkButton.setText("Connect to Dropbox");
-    	//navDrawerItems[4] = "Login";
-    	//mDrawerList.setAdapter(new ArrayAdapter<String>(this,R.layout.drawer_list_item, navDrawerItems));
+    	navDrawerItems[4] = "Login";
+    	mDrawerList.setAdapter(new ArrayAdapter<String>(this,R.layout.drawer_list_item, navDrawerItems));
     }
     
     private void onClickLinkToDropbox() {
