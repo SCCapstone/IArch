@@ -69,7 +69,7 @@ public class MainActivity extends Activity {
 		setUpNavDrawer();
 		
 		mAccountManager = DbxAccountManager.getInstance(getApplicationContext(), appKey, appSecret);
-			    
+
 	}
     
 	@Override
@@ -364,8 +364,19 @@ public boolean export(){
 	//Map Button OnClick
 	public void displayMap (View view) {
 		//Do something in response to Button01
-		Intent intent = new Intent(this, DisplayMapActivity.class);
-		startActivity(intent);
+		//Intent intent = new Intent(this, DisplayMapActivity.class);
+		//startActivity(intent);
+		// Create new fragment and transaction
+				Fragment newFragment = new DisplayMapFragment();
+				FragmentTransaction transaction = getFragmentManager().beginTransaction();
+
+				// Replace whatever is in the fragment_container view with this fragment,
+				// and add the transaction to the back stack
+				transaction.replace(R.id.container, newFragment);
+				transaction.addToBackStack(null);
+
+				// Commit the transaction
+				transaction.commit();
 	}
 	
 	public void gallery(View view)
@@ -383,11 +394,6 @@ public boolean export(){
 
 		// Commit the transaction
 		transaction.commit();
-	}
-	
-	public void dropboxButtonClick(View view)
-	{
-		onClickLinkToDropbox();
 	}
 	
 	// The click listener for ListView in the navigation drawer 

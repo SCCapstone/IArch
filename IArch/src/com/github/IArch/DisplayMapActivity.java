@@ -58,7 +58,7 @@ public class DisplayMapActivity extends FragmentActivity
     DbxDatastore datastore;
     
     
- // These settings are the same as the settings for the map. They will in fact give you updates
+    // These settings are the same as the settings for the map. They will in fact give you updates
     // at the maximal rates currently possible.
     private static final LocationRequest REQUEST = LocationRequest.create()
             .setInterval(5000)         // 5 seconds
