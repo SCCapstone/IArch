@@ -16,6 +16,7 @@ import com.dropbox.sync.android.DbxPath;
 import com.dropbox.sync.android.DbxPath.InvalidPathException;
 
 import android.app.Fragment;
+import android.app.FragmentTransaction;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
@@ -58,7 +59,7 @@ public class GalleryFragment extends Fragment {
 				//		Toast.LENGTH_SHORT).show();
 				
 				//get files in images directory
-				String longFileName = Chooser.fileName.toString();
+				String longFileName = ChooserFragment.fileName.toString();
 				String[] shortFileName = longFileName.split("/");
 				File path = new File(Environment.getExternalStoragePublicDirectory(
 						Environment.DIRECTORY_PICTURES) + "/iArch/" + shortFileName[6]);
@@ -69,6 +70,20 @@ public class GalleryFragment extends Fragment {
 				
 			    //Intent intent = new Intent(GalleryFragment.this, ImageDetails.class);
 			    //startActivity(intent);
+			    //Intent intent = new Intent(Chooser.this, Gallery.class);
+			    //startActivity(intent);
+				// Create new fragment and transaction
+				Fragment newFragment = new ImageDetailsFragment();
+				FragmentTransaction transaction = getFragmentManager().beginTransaction();
+
+				// Replace whatever is in the fragment_container view with this fragment,
+				// and add the transaction to the back stack
+				transaction.replace(R.id.container, newFragment);
+				transaction.addToBackStack(null);
+
+				// Commit the transaction
+				transaction.commit();
+			    
 			}
 
 		});
