@@ -1,6 +1,8 @@
 package com.github.IArch;
 
 import android.app.Activity;
+import android.app.Fragment;
+import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.widget.DrawerLayout;
@@ -256,8 +258,19 @@ public class MainActivity extends Activity {
 	
 	public void gallery(View view)
 	{
-		Intent intent = new Intent(this,Chooser.class);
-		startActivity(intent);
+		//Intent intent = new Intent(this,Chooser.class);
+		//startActivity(intent);
+		// Create new fragment and transaction
+		Fragment newFragment = new ChooserFragment();
+		FragmentTransaction transaction = getFragmentManager().beginTransaction();
+
+		// Replace whatever is in the fragment_container view with this fragment,
+		// and add the transaction to the back stack
+		transaction.replace(R.id.container, newFragment);
+		transaction.addToBackStack(null);
+
+		// Commit the transaction
+		transaction.commit();
 	}
 	
 	public void dropboxButtonClick(View view)
