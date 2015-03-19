@@ -139,7 +139,6 @@ public class DisplayMapFragment extends Fragment implements
 			googleMap.animateCamera(CameraUpdateFactory.zoomTo(zoom), 2000, null);
 		}
 		zoomCounter++;
-		System.out.println("zoomCounter: " + zoomCounter);
 		
 	}
 
