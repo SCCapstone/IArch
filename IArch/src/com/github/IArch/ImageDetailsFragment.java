@@ -35,6 +35,9 @@ public class ImageDetailsFragment extends Fragment implements OnClickListener {
 		fileLocation = GalleryFragment.fileName.toString();
 		dropboxStuff();
 		
+		//show actionbar in case it was hidden when displaying full screen image
+		getActivity().getActionBar().show();
+		
 		return galleryView;
 	}
 

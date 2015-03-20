@@ -14,6 +14,7 @@ public class FullscreenImageFragment extends Fragment {
 	String fileLocation;
 	View galleryView;
 	
+	
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState) {
@@ -23,6 +24,8 @@ public class FullscreenImageFragment extends Fragment {
 		fileLocation = ImageDetailsFragment.fileLocation.toString();
 		setPic(fileLocation);
 		
+		getActivity().getActionBar().hide();
+				
 		return galleryView;
 	}
 
