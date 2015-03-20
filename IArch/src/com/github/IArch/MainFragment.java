@@ -30,6 +30,13 @@ public class MainFragment extends Fragment {
       	    } 
       	}); 
         
+      	//make sure dropbox button is displaying correct text
+      	if (MainActivity.mAccountManager.hasLinkedAccount()) {
+      		showLinkedView();
+      	} else {
+      		showUnlinkedView();
+      	}
+      	
         return rootView;
     }
     
