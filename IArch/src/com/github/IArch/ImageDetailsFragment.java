@@ -7,26 +7,31 @@ import com.dropbox.sync.android.DbxRecord;
 import com.dropbox.sync.android.DbxTable;
 
 import android.app.Fragment;
+import android.app.FragmentTransaction;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-public class ImageDetailsFragment extends Fragment {
+public class ImageDetailsFragment extends Fragment implements OnClickListener {
 
-	String fileLocation = GalleryFragment.fileName.toString();
+	static String fileLocation = GalleryFragment.fileName.toString();
 	View galleryView;
+	ImageView image;
 	
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState) {
 		
 		galleryView = inflater.inflate(R.layout.fragment_image_details, container, false);
-				
+		image = (ImageView) galleryView.findViewById(R.id.imageView1);	
+		image.setOnClickListener(this);
+		
 		dropboxStuff();
 		
 		return galleryView;
@@ -154,5 +159,21 @@ public class ImageDetailsFragment extends Fragment {
 			//show picture that was taken
 			setPic(fileLocation);
 		}		
+	}
+
+	@Override
+	public void onClick(View v) {
+		// Create new fragment and transaction
+				Fragment newFragment = new FullscreenImageFragment();
+				FragmentTransaction transaction = getFragmentManager().beginTransaction();
+
+				// Replace whatever is in the fragment_container view with this fragment,
+				// and add the transaction to the back stack
+				transaction.replace(R.id.container, newFragment);
+				transaction.addToBackStack(null);
+
+				// Commit the transaction
+				transaction.commit();
+		
 	}
 }
