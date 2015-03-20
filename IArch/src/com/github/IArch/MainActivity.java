@@ -266,31 +266,7 @@ public boolean export(){
         mDrawerLayout.setDrawerListener(mDrawerToggle);
 	}
 
-    private void showLinkedView() {
-    	MainFragment.mLinkButton.setText("Unlink from Dropbox");
-        navDrawerItems[4] = "Logout";
-        mDrawerList.setAdapter(new ArrayAdapter<String>(this,R.layout.drawer_list_item, navDrawerItems));
-    }
-
-    private void showUnlinkedView() {
-    	MainFragment.mLinkButton.setText("Connect to Dropbox");
-    	navDrawerItems[4] = "Login";
-    	mDrawerList.setAdapter(new ArrayAdapter<String>(this,R.layout.drawer_list_item, navDrawerItems));
-    }
-    
-    private void onClickLinkToDropbox() {
-	
-    	if (mAccountManager.hasLinkedAccount()) {
-    		//if already linked to dropbox and button is clicked, unlink
-    		mAccountManager.unlink();
-        	showUnlinkedView();
-    	} else {
-    		mAccountManager.startLink((Activity)MainActivity.this, REQUEST_LINK_TO_DBX);
-    		showLinkedView();
-    	}
-    }
-    
-	@Override
+    @Override
 	public void onActivityResult(int requestCode, int resultCode, Intent data) {
 	    if (requestCode == REQUEST_LINK_TO_DBX) {
 	        if (resultCode == Activity.RESULT_OK) {
@@ -427,6 +403,28 @@ public boolean export(){
         }
     }
 
-
+    private void onClickLinkToDropbox() {
 	
+    	if (mAccountManager.hasLinkedAccount()) {
+    		//if already linked to dropbox and button is clicked, unlink
+    		mAccountManager.unlink();
+        	showUnlinkedView();
+    	} else {
+    		mAccountManager.startLink((Activity)MainActivity.this, REQUEST_LINK_TO_DBX);
+    		showLinkedView();
+    	}
+    }
+
+    private void showLinkedView() {
+    	MainFragment.mLinkButton.setText("Unlink from Dropbox");
+        navDrawerItems[4] = "Logout";
+        mDrawerList.setAdapter(new ArrayAdapter<String>(this,R.layout.drawer_list_item, navDrawerItems));
+    }
+
+    private void showUnlinkedView() {
+    	MainFragment.mLinkButton.setText("Connect to Dropbox");
+    	navDrawerItems[4] = "Login";
+    	mDrawerList.setAdapter(new ArrayAdapter<String>(this,R.layout.drawer_list_item, navDrawerItems));
+    }
+    
 }
