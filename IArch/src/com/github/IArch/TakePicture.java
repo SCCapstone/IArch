@@ -15,6 +15,7 @@ import com.dropbox.sync.android.DbxPath;
 import com.dropbox.sync.android.DbxPath.InvalidPathException;
 import com.dropbox.sync.android.DbxRecord;
 import com.dropbox.sync.android.DbxTable;
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
@@ -36,7 +37,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-public class TakePicture extends Activity {
+@SuppressLint("SimpleDateFormat") public class TakePicture extends Activity {
 
 	public static final int MEDIA_TYPE_IMAGE = 1;
 	private static final int CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE = 100;
@@ -328,7 +329,6 @@ public class TakePicture extends Activity {
 			} finally {
 				//close remote file so other things can be done
 			    testFile.close();
-			    return true;
 			}
 			} catch (Unauthorized e) {
 				// TODO Auto-generated catch block
@@ -375,7 +375,7 @@ public class TakePicture extends Activity {
 	    return BitmapFactory.decodeFile(file, options);
 	}
 		
-	public static int calculateInSampleSize(BitmapFactory.Options options, int reqWidth, int reqHeight) {
+	@SuppressLint("SimpleDateFormat") public static int calculateInSampleSize(BitmapFactory.Options options, int reqWidth, int reqHeight) {
 	    // Raw height and width of image
 	    final int height = options.outHeight;
 	    final int width = options.outWidth;
