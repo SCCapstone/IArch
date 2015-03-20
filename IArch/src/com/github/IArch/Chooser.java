@@ -12,13 +12,13 @@ import android.os.Environment;
 import android.view.Menu;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.GridView;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.ListView;
 
 public class Chooser extends Activity {
 
-	private GridView gridView;
-	private GridViewAdapter customGridAdapter;
+	private ListView listView;
+	private ListViewAdapter customGridAdapter;
 	public static File fileName = null;
 	private CharSequence mTitle;
 
@@ -30,12 +30,12 @@ public class Chooser extends Activity {
 		mTitle = getString(R.string.project_management);
 		getActionBar().setTitle(mTitle);
 
-		gridView = (GridView) findViewById(R.id.gridView);
-		customGridAdapter = new GridViewAdapter(this, R.layout.row_grid, getData());
-		gridView.setAdapter(customGridAdapter);
+		listView = (ListView) findViewById(R.id.listView);
+		customGridAdapter = new ListViewAdapter(this, R.layout.row_list, getData());
+		listView.setAdapter(customGridAdapter);
 		
 		//handle item click
-		gridView.setOnItemClickListener(new OnItemClickListener() {
+		listView.setOnItemClickListener(new OnItemClickListener() {
 			public void onItemClick(AdapterView<?> parent, View v,
 				int position, long id) {
 				//Toast.makeText(Gallery.this, position + "#Selected",
@@ -123,7 +123,7 @@ public class Chooser extends Activity {
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.
-		getMenuInflater().inflate(R.menu.gallery, menu);
+		getMenuInflater().inflate(R.menu.chooser, menu);
 		return true;
 	}
 	
