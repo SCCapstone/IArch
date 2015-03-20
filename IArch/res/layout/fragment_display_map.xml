@@ -15,16 +15,16 @@
       android:layout_height="wrap_content"
       android:layout_gravity="bottom|right"
       android:background="@android:color/white"
-      android:orientation="vertical"
+      android:orientation="horizontal"
       android:padding="5dp">
-       
+       <!--  
         <TextView
     	android:id="@+id/pins"
     	android:layout_width="match_parent"
     	android:layout_height="wrap_content" 
     	android:text="@string/map_pins"
     	android:textColor="@android:color/black"/>
-        
+        -->
       	<Spinner
         android:id="@+id/spinner"
         android:layout_width="wrap_content"
