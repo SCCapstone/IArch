@@ -11,7 +11,7 @@ import android.widget.ImageView;
 
 public class FullscreenImageFragment extends Fragment {
 
-	String fileLocation = ImageDetailsFragment.fileLocation.toString();
+	String fileLocation;
 	View galleryView;
 	
 	@Override
@@ -20,6 +20,7 @@ public class FullscreenImageFragment extends Fragment {
 		
 		galleryView = inflater.inflate(R.layout.fragment_fullscreen_image, container, false);
 		
+		fileLocation = ImageDetailsFragment.fileLocation.toString();
 		setPic(fileLocation);
 		
 		return galleryView;

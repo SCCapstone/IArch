@@ -20,7 +20,7 @@ import android.widget.TextView;
 
 public class ImageDetailsFragment extends Fragment implements OnClickListener {
 
-	static String fileLocation = GalleryFragment.fileName.toString();
+	static String fileLocation;
 	View galleryView;
 	ImageView image;
 	
@@ -32,6 +32,7 @@ public class ImageDetailsFragment extends Fragment implements OnClickListener {
 		image = (ImageView) galleryView.findViewById(R.id.imageView1);	
 		image.setOnClickListener(this);
 		
+		fileLocation = GalleryFragment.fileName.toString();
 		dropboxStuff();
 		
 		return galleryView;
