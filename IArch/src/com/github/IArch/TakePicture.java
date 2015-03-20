@@ -322,13 +322,14 @@ import android.widget.Toast;
 				//close datastore
 				datastore.close();
 				
-				
+				return true;
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			} finally {
 				//close remote file so other things can be done
 			    testFile.close();
+			    //return true;
 			}
 			} catch (Unauthorized e) {
 				// TODO Auto-generated catch block
