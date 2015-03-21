@@ -116,31 +116,6 @@ function updateAuthenticationStatus(err, client) {
             });
 
 
-
-        /*$('#project-list li button').click(function (e) {
-            e.preventDefault();
-
-            var dsid = $(this).parent().attr('id');
-
-            // If this is the list we're currently viewing
-            if (datastore !== null && datastore.getId() === dsid) {
-                // Close the datastore and null it
-                datastore.close();
-                datastore = null;
-
-                // Select the first remaining list
-                var first = _.find($('#project-list li'), function (li) {
-                    return $(li).attr('id') !== dsid;
-                });
-                window.location.hash = $(first).attr('id') || '';
-            }
-
-            // Delete the datastore
-            datastoreManager.deleteDatastore(dsid, function () { });
-
-            return false;
-        });*/
-
         // Notify the user if the datastore they're viewing is removed
         var dsidList = _.map(e.getDatastoreInfos(), function (info) { return info.getId(); });
         var deleted = _.difference(previousList, dsidList);
@@ -185,7 +160,7 @@ function updateAuthenticationStatus(err, client) {
         // changes to the datastore.
         function updateList() {
             //var items = datastore.getTable('items').query();
-            var items = datastore.getTable('Picture_Data').query();
+            var items = datastore.getTable(tableName).query();
             var numItems = 0;
             
             // Rebuild the list of items
@@ -254,7 +229,8 @@ function updateAuthenticationStatus(err, client) {
                 title:"Delete record",
                 text: "Are you sure you want to delete this record?",
                 confirm: function(button) {
-                    var recordId = $("#project-data tr a#record_delete").parents('tr').attr('id');
+                    var recordId = $(button).parents('tr').attr('id');
+                    console.log("recordID= " + recordId);
                     datastore.getTable(tableName).get(recordId).deleteRecord();
                     
                 },
@@ -263,6 +239,12 @@ function updateAuthenticationStatus(err, client) {
                 },
                 confirmButton: "Yes I am",
                 cancelButton: "No"
+            });
+
+            // Handle editing a record
+            $("#project-data tr a#record_edit").click(function (e) {
+                e.preventDefault();
+                alert("Coming soon!");
             });
         }
 
@@ -338,6 +320,17 @@ function updateAuthenticationStatus(err, client) {
         }
     }
 
+    $('#export').click(function (e) {
+        e.preventDefault();
+        alert("Coming soon!");
+    });
+
+    $('#share').click(function (e) {
+        e.preventDefault();
+        alert("Coming soon!");
+    });
+
+
 /*
     // Add a new list (datastore)
     $('#newList').submit(function (e) {
@@ -375,7 +368,7 @@ function updateAuthenticationStatus(err, client) {
     });
 */
 
-    // Add a new item (record) to a list (datastore)
+    /*// Add a new item (record) to a list (datastore)
     $('#newItem').submit(function (e) {
         e.preventDefault();
 
@@ -392,7 +385,7 @@ function updateAuthenticationStatus(err, client) {
         $('#itemName').val('');
 
         return false;
-    });
+    });*/
 
     // On hash changes, select the new list (datastore)
     $(window).hashchange(function (e) {
