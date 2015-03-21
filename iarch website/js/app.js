@@ -88,7 +88,6 @@ function updateAuthenticationStatus(err, client) {
                 title:"Delete current project",
                 text: "Are you sure you want to delete this entire project? This is permanent!",
                 confirm: function(button) {
-                   console.log("dsid=" + selectedDsid);
                     // If this is the list we're currently viewing
                     if (datastore !== null && datastore.getId() === selectedDsid) {
                         // Close the datastore and null it
@@ -101,7 +100,17 @@ function updateAuthenticationStatus(err, client) {
                         });
                         window.location.hash = $(first).attr('id') || '';
                     }
-
+                    
+                    // Delete the project directory with associated project images
+                    client.remove(selectedDsid,
+                        function (error, data) {
+                            if (error) {
+                                return console.log("ERROR: " + error); // Something went wrong.
+                            }
+                            
+                            // otherwise directory is deleted                  
+                    });    
+                    
                     // Delete the datastore
                     datastoreManager.deleteDatastore(selectedDsid, function () { });
 
@@ -230,9 +239,20 @@ function updateAuthenticationStatus(err, client) {
                 text: "Are you sure you want to delete this record?",
                 confirm: function(button) {
                     var recordId = $(button).parents('tr').attr('id');
-                    console.log("recordID= " + recordId);
+                    var filePath = getImageFilePath(recordId);
+
+                    // Delete the datastore record
                     datastore.getTable(tableName).get(recordId).deleteRecord();
-                    
+
+                    // Delete the image associated with that record
+                    client.remove(filePath,
+                        function (error, data) {
+                            if (error) {
+                                return console.log("ERROR: " + error); // Something went wrong.
+                            }
+                            
+                            // otherwise file is deleted                  
+                    });                    
                 },
                 cancel: function(button) {
                     // do nothing
@@ -254,6 +274,15 @@ function updateAuthenticationStatus(err, client) {
         // Update UI with initial data.
         updateList();
 
+    }
+
+    // Get the file path of image relative to user's dropbox account
+    function getImageFilePath(recordId) {
+        var record = datastore.getTable(tableName).get(recordId);
+        var projectName = record.get('PROJECT_NAME');
+        var fileName = record.get('LOCAL_FILENAME').split('/');
+        var filePath = projectName + '/' + fileName[fileName.length-1];
+        return filePath;
     }
 
     // Handle the user selecting a list.
