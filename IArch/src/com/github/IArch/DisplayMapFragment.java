@@ -15,7 +15,6 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
-import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.AdapterView.OnItemSelectedListener;
 
@@ -206,11 +205,11 @@ public class DisplayMapFragment extends Fragment implements
     	if (MainActivity.mAccountManager.hasLinkedAccount()) {	
     		//open datastore and get fresh data
 			try {
-				datastore = MainActivity.mDatastoreManager.openDatastore(datastoreName);
+				datastore = MainActivity.mDatastoreManager.openDatastore("default_user");
 				datastore.sync();
 				
 				//open table
-				DbxTable tasksTbl = datastore.getTable("Picture_Data");
+				DbxTable tasksTbl = datastore.getTable(datastoreName);
 				
 				//query table for results
 				DbxTable.QueryResult results = tasksTbl.query();
@@ -279,8 +278,8 @@ public class DisplayMapFragment extends Fragment implements
 	}
 	
 	void hideSpinner() {
-		TextView pins = (TextView) view.findViewById(R.id.pins);
-		pins.setVisibility(View.GONE);
+		//TextView pins = (TextView) view.findViewById(R.id.pins);
+		//pins.setVisibility(View.GONE);
 		
 		Spinner spinner = (Spinner) view.findViewById(R.id.spinner);
         spinner.setVisibility(View.GONE);

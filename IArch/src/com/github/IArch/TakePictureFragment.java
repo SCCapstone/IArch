@@ -4,8 +4,6 @@ import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.Locale;
-
 import com.dropbox.sync.android.DbxDatastore;
 import com.dropbox.sync.android.DbxException;
 import com.dropbox.sync.android.DbxException.Unauthorized;
@@ -310,15 +308,11 @@ import android.widget.Toast;
 			    //create remote file and assign it to photo
 				File fileVar = new File(fileLocation);
 			    testFile.writeFromExistingFile(fileVar, false);
-			  
 			    //set up dropbox datastores
-			    //DbxDatastore datastore = MainActivity.mDatastoreManager.openDefaultDatastore();
-			    //format data to meet dropbox datastore name requirements
-			    String lowercaseProjectName = projectName.toLowerCase(Locale.US);
-			    lowercaseProjectName = lowercaseProjectName.replace(" ", "_");
+			    //DbxDatastore datastore = MainActivity.mDatastoreManager.openDefaultDatastore();		    
+			    DbxDatastore datastore = MainActivity.mDatastoreManager.openOrCreateDatastore("default_user");
+			    DbxTable dataTbl = datastore.getTable(projectName);
 			    
-			    DbxDatastore datastore = MainActivity.mDatastoreManager.openOrCreateDatastore(lowercaseProjectName);
-				DbxTable dataTbl = datastore.getTable("Picture_Data");
 				@SuppressWarnings("unused")
 				DbxRecord task = dataTbl.insert().set("LOCAL_FILENAME", fileLocation).
 						set("DATE", date).
@@ -328,7 +322,6 @@ import android.widget.Toast;
 						set("ARTIFACT_TYPE", artifact).
 						set("DESCRIPTION", description);
 					
-				
 				//sync datastore
 				datastore.sync();
 				

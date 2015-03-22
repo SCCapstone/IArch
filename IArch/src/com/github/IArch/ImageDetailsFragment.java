@@ -100,11 +100,11 @@ public class ImageDetailsFragment extends Fragment implements OnClickListener {
 			
 			try {
 				//open datastore and get fresh data
-				DbxDatastore datastore = MainActivity.mDatastoreManager.openDatastore(splitFile[6]);
+				DbxDatastore datastore = MainActivity.mDatastoreManager.openDatastore("default_user");
 				datastore.sync();
 				
 				//open table
-				DbxTable tasksTbl = datastore.getTable("Picture_Data");
+				DbxTable tasksTbl = datastore.getTable(splitFile[6]);
 				
 				//query table for results
 				DbxFields queryParams = new DbxFields().set("LOCAL_FILENAME", fileLocation);
