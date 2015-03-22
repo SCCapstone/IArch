@@ -109,18 +109,18 @@ public class ImageDetailsFragment extends Fragment {
 					String description = firstResult.getString("DESCRIPTION");
 					Double longitude = firstResult.getDouble("LONGITUDE");
 					Double latitude = firstResult.getDouble("LATITUDE");
-					String latLong = "Latitude: " + latitude + " Longitude: " + longitude;
+					String latLong = "Latitude: " + latitude + "\nLongitude: " + longitude;
 					String artifactType = firstResult.getString("ARTIFACT_TYPE");
 					String location = firstResult.getString("LOCATION");
 				
 					//set text for textViews
 					if (date != null) {
 						TextView dateField = (TextView) galleryView.findViewById(R.id.date);
-						dateField.setText(date);
+						dateField.setText("Date: " + date);
 					}
 					if (projectName != null) {
 						TextView nameField = (TextView) galleryView.findViewById(R.id.project_name);
-						nameField.setText("Project Name : " + projectName);
+						nameField.setText("Project: " + projectName);
 					}
 					if (description != null) {
 						TextView descriptionField = (TextView) galleryView.findViewById(R.id.description);
