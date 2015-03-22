@@ -324,8 +324,19 @@ public boolean export(){
 	public void takePicture(View view)
 	{
 		if (mAccountManager.hasLinkedAccount()) {
-		Intent intent = new Intent(this, TakePicture.class);
-		startActivity(intent);
+		//Intent intent = new Intent(this, TakePicture.class);
+		//startActivity(intent);
+		// Create new fragment and transaction
+				Fragment newFragment = new TakePictureFragment();
+				FragmentTransaction transaction = getFragmentManager().beginTransaction();
+
+				// Replace whatever is in the fragment_container view with this fragment,
+				// and add the transaction to the back stack
+				transaction.replace(R.id.container, newFragment);
+				transaction.addToBackStack(null);
+
+				// Commit the transaction
+				transaction.commit();
 		}
 		else {
 			Toast.makeText(MainActivity.this, "Error : Not connected to Dropbox", 
