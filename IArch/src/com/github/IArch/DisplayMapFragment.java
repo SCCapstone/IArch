@@ -3,6 +3,7 @@ package com.github.IArch;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
 
 import android.app.Fragment;
 import android.content.Context;
@@ -15,13 +16,13 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
-import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.AdapterView.OnItemSelectedListener;
 
 import com.dropbox.sync.android.DbxDatastore;
 import com.dropbox.sync.android.DbxDatastoreInfo;
 import com.dropbox.sync.android.DbxException;
+import com.dropbox.sync.android.DbxFields;
 import com.dropbox.sync.android.DbxRecord;
 import com.dropbox.sync.android.DbxTable;
 import com.google.android.gms.common.ConnectionResult;
@@ -198,7 +199,7 @@ public class DisplayMapFragment extends Fragment implements
 	@Override
 	public void onConnectionSuspended(int arg0) {
 	}
-
+/*
 	//add location of photos in database as map pins
     private void mapPins(String datastoreName) {
     	//reset map pins
@@ -237,19 +238,28 @@ public class DisplayMapFragment extends Fragment implements
 			
     	}
 	}
-	
+	*/
     public void addItemsOnSpinner() {
         Spinner spinner = (Spinner) view.findViewById(R.id.spinner);
         List<String> list = new ArrayList<String>();
-        
-		ArrayList<DbxDatastoreInfo> infos = new ArrayList<DbxDatastoreInfo>();
+                
 		try {
-			//query database for datastore names
-			infos.addAll(MainActivity.mDatastoreManager.listDatastores());
+			//query datastore for table names
+			datastore = MainActivity.mDatastoreManager.openDatastore("default_user");
+			datastore.sync();
 			
-			for (int i=0; i<infos.size(); i++) {
-				DbxDatastoreInfo data = infos.get(i);
-				String id = data.id;
+			Set<DbxTable> tables = datastore.getTables();
+			Iterator<DbxTable> it = tables.iterator();
+			
+			while (it.hasNext()) {
+				//DbxFields queryParams = new DbxFields().set("LOCAL_FILENAME", "home");
+				DbxTable.QueryResult results = it.next().query();
+				System.out.println("results: " + results);
+			}
+			
+			
+			/*for (int i=0; i<tables.size(); i++) {
+				String id = tables.toString();
 				list.add(id);
 				ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_item, list);
 				dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -261,7 +271,7 @@ public class DisplayMapFragment extends Fragment implements
 							View view, int position, long id) {
 						System.out.println("ITEM SELECTED AT POSITION: " + position);
 						String selectedItem = parent.getItemAtPosition(position).toString();
-						mapPins(selectedItem);
+						//mapPins(selectedItem);
 					}
 
 					@Override
@@ -273,14 +283,16 @@ public class DisplayMapFragment extends Fragment implements
 				
 				
 			}
+			*/
 		} catch (DbxException e) {
 			e.printStackTrace();
 		}
+		datastore.close();
 	}
 	
 	void hideSpinner() {
-		TextView pins = (TextView) view.findViewById(R.id.pins);
-		pins.setVisibility(View.GONE);
+		//TextView pins = (TextView) view.findViewById(R.id.pins);
+		//pins.setVisibility(View.GONE);
 		
 		Spinner spinner = (Spinner) view.findViewById(R.id.spinner);
         spinner.setVisibility(View.GONE);

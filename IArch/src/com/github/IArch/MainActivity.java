@@ -143,12 +143,12 @@ public boolean export(){
 					String[] splitFile = imageFiles[i].toString().split("/");
 					
 					//open datastore and get fresh data
-					DbxDatastore datastore = MainActivity.mDatastoreManager.openDatastore(splitFile[6]);
+					DbxDatastore datastore = MainActivity.mDatastoreManager.openDatastore("default_user");
 					datastore.sync();
 					
 					//open table
-					DbxTable tasksTbl = datastore.getTable("Picture_Data");
-					
+					DbxTable tasksTbl = datastore.getTable(splitFile[6]);
+			
 					//query table for results
 					DbxFields queryParams = new DbxFields().set("LOCAL_FILENAME", imageFiles[i].toString());
 					DbxTable.QueryResult results = tasksTbl.query(queryParams);
@@ -324,8 +324,19 @@ public boolean export(){
 	public void takePicture(View view)
 	{
 		if (mAccountManager.hasLinkedAccount()) {
-		Intent intent = new Intent(this, TakePicture.class);
-		startActivity(intent);
+		//Intent intent = new Intent(this, TakePicture.class);
+		//startActivity(intent);
+		// Create new fragment and transaction
+				Fragment newFragment = new TakePictureFragment();
+				FragmentTransaction transaction = getFragmentManager().beginTransaction();
+
+				// Replace whatever is in the fragment_container view with this fragment,
+				// and add the transaction to the back stack
+				transaction.replace(R.id.container, newFragment);
+				transaction.addToBackStack(null);
+
+				// Commit the transaction
+				transaction.commit();
 		}
 		else {
 			Toast.makeText(MainActivity.this, "Error : Not connected to Dropbox", 

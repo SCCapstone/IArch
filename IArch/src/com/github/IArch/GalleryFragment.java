@@ -3,6 +3,9 @@ package com.github.IArch;
 import java.io.File;
 import java.util.ArrayList;
 
+import com.dropbox.sync.android.DbxDatastore;
+import com.dropbox.sync.android.DbxException;
+
 import android.app.Fragment;
 import android.app.FragmentTransaction;
 import android.graphics.Bitmap;
@@ -76,6 +79,19 @@ public class GalleryFragment extends Fragment {
 			}
 
 		});
+		
+		//sync datastores so that no fields will be empty when picture clicked the first 
+		//time or after user disconnects and reconnects dropbox
+		DbxDatastore datastore;
+		try {
+			datastore = MainActivity.mDatastoreManager.openDatastore("default_user");
+			datastore.sync();
+			datastore.close();
+		} catch (DbxException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
 		return galleryView;
 	}
 
