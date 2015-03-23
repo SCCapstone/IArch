@@ -14,6 +14,7 @@ import com.dropbox.sync.android.DbxPath.InvalidPathException;
 import com.dropbox.sync.android.DbxRecord;
 import com.dropbox.sync.android.DbxTable;
 import android.annotation.SuppressLint;
+import android.app.ActionBar;
 import android.app.Fragment;
 import android.content.Context;
 import android.content.Intent;
@@ -70,6 +71,7 @@ import android.widget.Toast;
             Bundle savedInstanceState) {
 		
 		view = inflater.inflate(R.layout.fragment_take_picture, container, false);
+		getActionBar().setTitle(R.string.title_fragment_take_picture);
 		
 		dropboxButton = (Button) view.findViewById(R.id.sync);	
 		dropboxButton.setOnClickListener(this);
@@ -100,6 +102,10 @@ import android.widget.Toast;
 		return view;
 	}
 
+	private ActionBar getActionBar() {
+	    return getActivity().getActionBar();
+	}
+	
 	@Override
     public void onResume() {
 		super.onResume();

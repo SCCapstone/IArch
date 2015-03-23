@@ -1,5 +1,6 @@
 package com.github.IArch;
 
+import android.app.ActionBar;
 import android.app.Fragment;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -20,6 +21,8 @@ public class MainFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_main, container, false);
+        getActionBar().setTitle(R.string.title_fragment_main);
+        
         mLinkButton = (Button) rootView.findViewById(R.id.link_button);
         
         //dropbox button listener 
@@ -39,6 +42,10 @@ public class MainFragment extends Fragment {
       	
         return rootView;
     }
+    
+    private ActionBar getActionBar() {
+	    return getActivity().getActionBar();
+	}
     
     private void onClickLinkToDropbox() {
     	

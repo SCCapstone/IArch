@@ -6,6 +6,7 @@ import com.dropbox.sync.android.DbxFields;
 import com.dropbox.sync.android.DbxRecord;
 import com.dropbox.sync.android.DbxTable;
 
+import android.app.ActionBar;
 import android.app.Fragment;
 import android.app.FragmentTransaction;
 import android.graphics.Bitmap;
@@ -29,6 +30,7 @@ public class ImageDetailsFragment extends Fragment implements OnClickListener {
             Bundle savedInstanceState) {
 		
 		galleryView = inflater.inflate(R.layout.fragment_image_details, container, false);
+		getActionBar().setTitle(R.string.title_fragment_image_details);
 		image = (ImageView) galleryView.findViewById(R.id.imageView1);	
 		image.setOnClickListener(this);
 		
@@ -41,6 +43,10 @@ public class ImageDetailsFragment extends Fragment implements OnClickListener {
 		return galleryView;
 	}
 
+	private ActionBar getActionBar() {
+	    return getActivity().getActionBar();
+	}
+	
 	private void setPic(String file) {
 		//get dimensions of view
 		ImageView myImage = (ImageView) galleryView.findViewById(R.id.imageView1);
