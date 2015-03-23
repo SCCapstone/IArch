@@ -3,6 +3,8 @@ package com.github.IArch;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+
+import android.app.ActionBar;
 import android.app.Fragment;
 import android.content.Context;
 import android.location.Location;
@@ -64,6 +66,7 @@ public class DisplayMapFragment extends Fragment implements
 		zoomCounter = 0;
 		// inflate and return the layout
 		view = inflater.inflate(R.layout.fragment_display_map, container, false);
+		getActionBar().setTitle(R.string.title_fragment_display_map);
 		mMapView = (MapView) view.findViewById(R.id.mapView);
 		mMapView.onCreate(savedInstanceState);
 
@@ -82,6 +85,10 @@ public class DisplayMapFragment extends Fragment implements
 		setUpGoogleApiClientIfNeeded();
 		mGoogleApiClient.connect();
 		return view;
+	}
+	
+	private ActionBar getActionBar() {
+	    return getActivity().getActionBar();
 	}
 
 	@Override

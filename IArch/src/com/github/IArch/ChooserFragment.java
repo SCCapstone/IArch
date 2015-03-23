@@ -3,6 +3,7 @@ package com.github.IArch;
 import java.io.File;
 import java.util.ArrayList;
 
+import android.app.ActionBar;
 import android.app.Fragment;
 import android.app.FragmentTransaction;
 import android.graphics.Bitmap;
@@ -27,7 +28,8 @@ public class ChooserFragment extends Fragment {
             Bundle savedInstanceState) {
 		
 		View chooserView = inflater.inflate(R.layout.fragment_chooser, container, false);
-        
+        getActionBar().setTitle(R.string.title_fragment_chooser);
+		
 		listView = (ListView) chooserView.findViewById(R.id.listView);
 		customGridAdapter = new ListViewAdapter(getActivity(), R.layout.row_list, getData());
 		listView.setAdapter(customGridAdapter);
@@ -71,6 +73,10 @@ public class ChooserFragment extends Fragment {
 				});
 		
 		return chooserView;
+	}
+	
+	private ActionBar getActionBar() {
+	    return getActivity().getActionBar();
 	}
 	
 	private ArrayList<ImageItem> getData() {

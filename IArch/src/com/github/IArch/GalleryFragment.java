@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import com.dropbox.sync.android.DbxDatastore;
 import com.dropbox.sync.android.DbxException;
 
+import android.app.ActionBar;
 import android.app.Fragment;
 import android.app.FragmentTransaction;
 import android.graphics.Bitmap;
@@ -36,6 +37,7 @@ public class GalleryFragment extends Fragment {
 		
 		setHasOptionsMenu(true);
 		View galleryView = inflater.inflate(R.layout.fragment_gallery, container, false);
+		getActionBar().setTitle(R.string.title_fragment_gallery);
 		
 		gridView = (GridView) galleryView.findViewById(R.id.gridView);
 		customGridAdapter = new GridViewAdapter(getActivity(), R.layout.row_grid, getData());
@@ -96,6 +98,10 @@ public class GalleryFragment extends Fragment {
 		return galleryView;
 	}
 
+	private ActionBar getActionBar() {
+	    return getActivity().getActionBar();
+	}
+	
 	private ArrayList<ImageItem> getData() {
 		final ArrayList<ImageItem> imageItems = new ArrayList<ImageItem>();
 		
