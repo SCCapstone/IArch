@@ -275,7 +275,7 @@ public class DisplayMapFragment extends Fragment implements
 		} catch (DbxException e) {
 			e.printStackTrace();
 		}
-		datastore.close();
+		
 	}
 	
 	void hideSpinner() {
