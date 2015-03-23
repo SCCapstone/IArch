@@ -310,8 +310,8 @@ import android.widget.Toast;
 			    testFile.writeFromExistingFile(fileVar, false);
 			    //set up dropbox datastores
 			    //DbxDatastore datastore = MainActivity.mDatastoreManager.openDefaultDatastore();		    
-			    DbxDatastore datastore = MainActivity.mDatastoreManager.openOrCreateDatastore("default_user");
-			    DbxTable dataTbl = datastore.getTable(projectName);
+			    DbxDatastore datastore = MainActivity.mDatastoreManager.openOrCreateDatastore(projectName);
+			    DbxTable dataTbl = datastore.getTable("Picture_Data");
 			    
 				@SuppressWarnings("unused")
 				DbxRecord task = dataTbl.insert().set("LOCAL_FILENAME", fileLocation).
