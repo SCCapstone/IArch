@@ -84,7 +84,8 @@ public class GalleryFragment extends Fragment {
 		//time or after user disconnects and reconnects dropbox
 		DbxDatastore datastore;
 		try {
-			datastore = MainActivity.mDatastoreManager.openDatastore("default_user");
+			String[] splitFile = ChooserFragment.fileName.toString().split("/");
+			datastore = MainActivity.mDatastoreManager.openDatastore(splitFile[6]);
 			datastore.sync();
 			datastore.close();
 		} catch (DbxException e) {
