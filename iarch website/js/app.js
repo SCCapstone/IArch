@@ -88,7 +88,6 @@ function updateAuthenticationStatus(err, client) {
                 title:"Delete current project",
                 text: "Are you sure you want to delete this entire project? This is permanent!",
                 confirm: function(button) {
-                   console.log("dsid=" + selectedDsid);
                     // If this is the list we're currently viewing
                     if (datastore !== null && datastore.getId() === selectedDsid) {
                         // Close the datastore and null it
@@ -101,7 +100,17 @@ function updateAuthenticationStatus(err, client) {
                         });
                         window.location.hash = $(first).attr('id') || '';
                     }
-
+                    
+                    // Delete the project directory with associated project images
+                    client.remove(selectedDsid,
+                        function (error, data) {
+                            if (error) {
+                                return console.log("ERROR: " + error); // Something went wrong.
+                            }
+                            
+                            // otherwise directory is deleted                  
+                    });    
+                    
                     // Delete the datastore
                     datastoreManager.deleteDatastore(selectedDsid, function () { });
 
@@ -115,31 +124,6 @@ function updateAuthenticationStatus(err, client) {
                 cancelButton: "No"
             });
 
-
-
-        /*$('#project-list li button').click(function (e) {
-            e.preventDefault();
-
-            var dsid = $(this).parent().attr('id');
-
-            // If this is the list we're currently viewing
-            if (datastore !== null && datastore.getId() === dsid) {
-                // Close the datastore and null it
-                datastore.close();
-                datastore = null;
-
-                // Select the first remaining list
-                var first = _.find($('#project-list li'), function (li) {
-                    return $(li).attr('id') !== dsid;
-                });
-                window.location.hash = $(first).attr('id') || '';
-            }
-
-            // Delete the datastore
-            datastoreManager.deleteDatastore(dsid, function () { });
-
-            return false;
-        });*/
 
         // Notify the user if the datastore they're viewing is removed
         var dsidList = _.map(e.getDatastoreInfos(), function (info) { return info.getId(); });
@@ -185,7 +169,7 @@ function updateAuthenticationStatus(err, client) {
         // changes to the datastore.
         function updateList() {
             //var items = datastore.getTable('items').query();
-            var items = datastore.getTable('Picture_Data').query();
+            var items = datastore.getTable(tableName).query();
             var numItems = 0;
             
             // Rebuild the list of items
@@ -254,15 +238,33 @@ function updateAuthenticationStatus(err, client) {
                 title:"Delete record",
                 text: "Are you sure you want to delete this record?",
                 confirm: function(button) {
-                    var recordId = $("#project-data tr a#record_delete").parents('tr').attr('id');
+                    var recordId = $(button).parents('tr').attr('id');
+                    var filePath = getImageFilePath(recordId);
+
+                    // Delete the datastore record
                     datastore.getTable(tableName).get(recordId).deleteRecord();
-                    
+
+                    // Delete the image associated with that record
+                    client.remove(filePath,
+                        function (error, data) {
+                            if (error) {
+                                return console.log("ERROR: " + error); // Something went wrong.
+                            }
+                            
+                            // otherwise file is deleted                  
+                    });                    
                 },
                 cancel: function(button) {
                     // do nothing
                 },
                 confirmButton: "Yes I am",
                 cancelButton: "No"
+            });
+
+            // Handle editing a record
+            $("#project-data tr a#record_edit").click(function (e) {
+                e.preventDefault();
+                alert("Coming soon!");
             });
         }
 
@@ -272,6 +274,15 @@ function updateAuthenticationStatus(err, client) {
         // Update UI with initial data.
         updateList();
 
+    }
+
+    // Get the file path of image relative to user's dropbox account
+    function getImageFilePath(recordId) {
+        var record = datastore.getTable(tableName).get(recordId);
+        var projectName = record.get('PROJECT_NAME');
+        var fileName = record.get('LOCAL_FILENAME').split('/');
+        var filePath = projectName + '/' + fileName[fileName.length-1];
+        return filePath;
     }
 
     // Handle the user selecting a list.
@@ -338,6 +349,17 @@ function updateAuthenticationStatus(err, client) {
         }
     }
 
+    $('#export').click(function (e) {
+        e.preventDefault();
+        alert("Coming soon!");
+    });
+
+    $('#share').click(function (e) {
+        e.preventDefault();
+        alert("Coming soon!");
+    });
+
+
 /*
     // Add a new list (datastore)
     $('#newList').submit(function (e) {
@@ -375,7 +397,7 @@ function updateAuthenticationStatus(err, client) {
     });
 */
 
-    // Add a new item (record) to a list (datastore)
+    /*// Add a new item (record) to a list (datastore)
     $('#newItem').submit(function (e) {
         e.preventDefault();
 
@@ -392,7 +414,7 @@ function updateAuthenticationStatus(err, client) {
         $('#itemName').val('');
 
         return false;
-    });
+    });*/
 
     // On hash changes, select the new list (datastore)
     $(window).hashchange(function (e) {
