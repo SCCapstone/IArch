@@ -87,9 +87,11 @@ public class GalleryFragment extends Fragment {
 		DbxDatastore datastore;
 		try {
 			String[] splitFile = ChooserFragment.fileName.toString().split("/");
-			datastore = MainActivity.mDatastoreManager.openDatastore(splitFile[6]);
-			datastore.sync();
-			datastore.close();
+			if (MainActivity.mAccountManager.hasLinkedAccount()) {	
+				datastore = MainActivity.mDatastoreManager.openDatastore(splitFile[6]);
+				datastore.sync();
+				datastore.close();
+			}
 		} catch (DbxException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -158,7 +160,6 @@ public class GalleryFragment extends Fragment {
 	@Override
 	public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
 		// Inflate the menu; this adds items to the action bar if it is present.
-		
 		inflater.inflate(R.menu.gallery_fragment, menu);
 		
 	}
