@@ -4,6 +4,8 @@ import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Locale;
+
 import com.dropbox.sync.android.DbxDatastore;
 import com.dropbox.sync.android.DbxException;
 import com.dropbox.sync.android.DbxException.Unauthorized;
@@ -219,6 +221,9 @@ import android.widget.Toast;
 	{
 		EditText projectEditText = (EditText) view.findViewById(R.id.project_name);
 	    projectName = projectEditText.getText().toString();
+	    //convert projectName to something dropbox will accept as a datastore name
+	    projectName = projectName.toLowerCase(Locale.US);
+	    projectName = projectName.replace(" ", "_");
 	    
 	    EditText locationEditText = (EditText) view.findViewById(R.id.location_name);
 	    location = locationEditText.getText().toString();
