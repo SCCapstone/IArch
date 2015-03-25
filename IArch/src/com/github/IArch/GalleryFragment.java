@@ -53,7 +53,7 @@ public class GalleryFragment extends Fragment {
 				//		Toast.LENGTH_SHORT).show();
 				
 				//get files in images directory
-				String longFileName = ChooserFragment.fileName.toString();
+				String longFileName = ChooserFragment.folderName.toString();
 				String[] shortFileName = longFileName.split("/");
 				File path = new File(Environment.getExternalStoragePublicDirectory(
 						Environment.DIRECTORY_PICTURES) + "/iArch/" + shortFileName[6]);
@@ -86,7 +86,7 @@ public class GalleryFragment extends Fragment {
 		//time or after user disconnects and reconnects dropbox
 		DbxDatastore datastore;
 		try {
-			String[] splitFile = ChooserFragment.fileName.toString().split("/");
+			String[] splitFile = ChooserFragment.folderName.toString().split("/");
 			if (MainActivity.mAccountManager.hasLinkedAccount()) {	
 				datastore = MainActivity.mDatastoreManager.openDatastore(splitFile[6]);
 				datastore.sync();
@@ -107,7 +107,7 @@ public class GalleryFragment extends Fragment {
 	private ArrayList<ImageItem> getData() {
 		final ArrayList<ImageItem> imageItems = new ArrayList<ImageItem>();
 		
-		File path = new File(ChooserFragment.fileName.toString());
+		File path = new File(ChooserFragment.folderName.toString());
 	    File[] imageFiles = path.listFiles();
 	    
 	    for (int i = 0; i < imageFiles.length; i++) {
