@@ -68,6 +68,20 @@ public class MainActivity extends Activity {
 		
 		mAccountManager = DbxAccountManager.getInstance(getApplicationContext(), appKey, appSecret);
 
+		// Set up the datastore manager
+	    if (mAccountManager.hasLinkedAccount()) {
+	        try {
+	            // Use Dropbox datastores
+	            mDatastoreManager = DbxDatastoreManager.forAccount(mAccountManager.getLinkedAccount());
+	        } catch (DbxException.Unauthorized e) {
+	            System.out.println("Account was unlinked remotely");
+	        }
+	    }
+	    if (mDatastoreManager == null) {
+	        // Account isn't linked yet, use local datastores
+	        mDatastoreManager = DbxDatastoreManager.localManager(mAccountManager);
+	    }
+
 	}
     
 	@Override
@@ -134,9 +148,7 @@ public boolean export(){
 			DbxFile exportFile = dbxFs.create(remotePath);
 			
 			try {
-			    //testFile.writeString("Hello Dropbox!");
-				
-				finalString += "Date,Project Name,Description,Longitude,Latitude,Artifact Type,Location\n";
+			    finalString += "Date,Project Name,Description,Longitude,Latitude,Artifact Type,Location\n";
 				
 				for(int i = 0; i<imageFiles.length;i++)
 				{
@@ -171,20 +183,14 @@ public boolean export(){
 						finalString += firstResult.getString("LOCATION");
 						finalString += "\n";
 						
-						
-					
 						//close datastores
 						datastore.close();
 					} else {
 						//picture clicked had no data attached to it, do something here
 						datastore.close();
 					}
-					
 				}
-				
 				exportFile.writeString(finalString);
-				
-			    
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -212,7 +218,6 @@ public boolean export(){
 		super.onResume();
 		if (mAccountManager.hasLinkedAccount()) {
 		    showLinkedView();
-		    doDropboxStuff();
 		} else {
 			showUnlinkedView();
 		}
@@ -223,12 +228,7 @@ public boolean export(){
 		mTitle = "Home";
 		mDrawerTitle = getTitle();
 		navDrawerItems = getResources().getStringArray(R.array.nav_drawer_items_array);
-		// Adapt Login/Logout text to whether user is connected to Dropbox
-		/*if (mAccountManager.hasLinkedAccount())
-		{
-			navDrawerItems[4] = "Login";
-		}*/
-        mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
+		mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         mDrawerList = (ListView) findViewById(R.id.left_drawer);
         
         // set a custom shadow that overlays the main content when the drawer opens
@@ -244,7 +244,7 @@ public boolean export(){
         getActionBar().setDisplayHomeAsUpEnabled(true);
         getActionBar().setHomeButtonEnabled(true);
         
-     // ActionBarDrawerToggle ties together the the proper interactions
+        // ActionBarDrawerToggle ties together the the proper interactions
         // between the sliding drawer and the action bar app icon
         mDrawerToggle = new ActionBarDrawerToggle(
                 this,                  // host Activity 
@@ -270,7 +270,18 @@ public boolean export(){
 	public void onActivityResult(int requestCode, int resultCode, Intent data) {
 	    if (requestCode == REQUEST_LINK_TO_DBX) {
 	        if (resultCode == Activity.RESULT_OK) {
-	        	doDropboxStuff();
+	        	DbxAccount account = mAccountManager.getLinkedAccount();
+	        	try {
+	        		//Migrate any local datastores to the linked account
+	        		mDatastoreManager = DbxDatastoreManager.localManager(mAccountManager);
+	        		mDatastoreManager.migrateToAccount(account);
+	        		//Now use dropbox datastores
+	        		mDatastoreManager = DbxDatastoreManager.forAccount(account);
+	        		//Hide dropbox link button
+	        		
+	        	} catch (DbxException e) {
+	        		e.printStackTrace();
+	        	}
 	        } else {
 	            // Link failed or was cancelled by the user
 	        }
@@ -279,64 +290,20 @@ public boolean export(){
 	    }
 	}
 	
-	private void doDropboxStuff() {
-		DbxAccount account = mAccountManager.getLinkedAccount();
-        try {
-            // Migrate any local datastores to the linked account
-            //mDatastoreManager.migrateToAccount(account);
-            // Now use Dropbox datastores
-            mDatastoreManager = DbxDatastoreManager.forAccount(account);
-            
-        } catch (DbxException e) {
-            e.printStackTrace();
-        }
-        
-     // Set up the datastore manager
-	    if (mAccountManager.hasLinkedAccount()) {
-	        try {
-	            // Use Dropbox datastores
-	            mDatastoreManager = DbxDatastoreManager.forAccount(mAccountManager.getLinkedAccount());
-	        } catch (DbxException.Unauthorized e) {
-	            System.out.println("Account was unlinked remotely");
-	        }
-	    }
-	    if (mDatastoreManager == null) {
-	        // Account isn't linked yet, use local datastores
-	        mDatastoreManager = DbxDatastoreManager.localManager(mAccountManager);
-	    }
-	    /*
-	    //sync datastores just in case back button was pressed too soon
-	    DbxDatastore datastore;
-		try {
-			datastore = mDatastoreManager.openDefaultDatastore();
-			//sync datastore
-			datastore.sync();
-			
-			//close datastore
-			datastore.close();
-		} catch (DbxException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-	    */
-	}
-	
 	public void takePicture(View view)
 	{
 		if (mAccountManager.hasLinkedAccount()) {
-		//Intent intent = new Intent(this, TakePicture.class);
-		//startActivity(intent);
-		// Create new fragment and transaction
-				Fragment newFragment = new TakePictureFragment();
-				FragmentTransaction transaction = getFragmentManager().beginTransaction();
+			// Create new fragment and transaction
+			Fragment newFragment = new TakePictureFragment();
+			FragmentTransaction transaction = getFragmentManager().beginTransaction();
 
-				// Replace whatever is in the fragment_container view with this fragment,
-				// and add the transaction to the back stack
-				transaction.replace(R.id.container, newFragment);
-				transaction.addToBackStack(null);
+			// Replace whatever is in the fragment_container view with this fragment,
+			// and add the transaction to the back stack
+			transaction.replace(R.id.container, newFragment);
+			transaction.addToBackStack(null);
 
-				// Commit the transaction
-				transaction.commit();
+			// Commit the transaction
+			transaction.commit();
 		}
 		else {
 			Toast.makeText(MainActivity.this, "Error : Not connected to Dropbox", 
@@ -344,28 +311,23 @@ public boolean export(){
 		}
 	}
 	
-	//Map Button OnClick
+	
 	public void displayMap (View view) {
-		//Do something in response to Button01
-		//Intent intent = new Intent(this, DisplayMapActivity.class);
-		//startActivity(intent);
 		// Create new fragment and transaction
-				Fragment newFragment = new DisplayMapFragment();
-				FragmentTransaction transaction = getFragmentManager().beginTransaction();
+		Fragment newFragment = new DisplayMapFragment();
+		FragmentTransaction transaction = getFragmentManager().beginTransaction();
 
-				// Replace whatever is in the fragment_container view with this fragment,
-				// and add the transaction to the back stack
-				transaction.replace(R.id.container, newFragment);
-				transaction.addToBackStack(null);
+		// Replace whatever is in the fragment_container view with this fragment,
+		// and add the transaction to the back stack
+		transaction.replace(R.id.container, newFragment);
+		transaction.addToBackStack(null);
 
-				// Commit the transaction
-				transaction.commit();
+		// Commit the transaction
+		transaction.commit();
 	}
 	
 	public void gallery(View view)
 	{
-		//Intent intent = new Intent(this,Chooser.class);
-		//startActivity(intent);
 		// Create new fragment and transaction
 		Fragment newFragment = new ChooserFragment();
 		FragmentTransaction transaction = getFragmentManager().beginTransaction();
@@ -428,14 +390,12 @@ public boolean export(){
 
     private void showLinkedView() {
     	MainFragment.mLinkButton.setText("Unlink from Dropbox");
-        navDrawerItems[4] = "Logout";
-        mDrawerList.setAdapter(new ArrayAdapter<String>(this,R.layout.drawer_list_item, navDrawerItems));
+    	navDrawerItems[4] = "Logout";	
     }
 
     private void showUnlinkedView() {
     	MainFragment.mLinkButton.setText("Connect to Dropbox");
     	navDrawerItems[4] = "Login";
-    	mDrawerList.setAdapter(new ArrayAdapter<String>(this,R.layout.drawer_list_item, navDrawerItems));
     }
     
 }

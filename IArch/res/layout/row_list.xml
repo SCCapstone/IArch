@@ -17,4 +17,13 @@
         android:textSize="20sp" >
     </TextView>
 
+    <TextView
+        android:id="@+id/lastModText"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:gravity="left"
+        android:textSize="12sp" >
+    </TextView>
+    
 </LinearLayout>
