@@ -413,8 +413,10 @@ public boolean export(){
 
     private void showLinkedView() {
     	MainFragment.mLinkButton.setText("Unlink from Dropbox");
-        navDrawerItems[4] = "Logout";
-        //mDrawerList.setAdapter(new ArrayAdapter<String>(this,R.layout.drawer_list_item, navDrawerItems));
+    	navDrawerItems[4] = "Logout";
+    	//reset dropbox datastores to local
+    	mDatastoreManager = DbxDatastoreManager.localManager(mAccountManager);
+    	//mDrawerList.setAdapter(new ArrayAdapter<String>(this,R.layout.drawer_list_item, navDrawerItems));
     }
 
     private void showUnlinkedView() {
