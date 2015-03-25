@@ -105,7 +105,7 @@ public class MainActivity extends Activity {
        }
        
        switch (item.getItemId()) {
-		case R.id.action_upload:
+		case R.id.action_sync:
 			Toast.makeText(this, "This will sync eventually!", 
 					Toast.LENGTH_LONG).show();
 			return true;
@@ -114,11 +114,8 @@ public class MainActivity extends Activity {
 			export();
 			Toast.makeText(this, "Data Exported!", 
 					Toast.LENGTH_LONG).show();
-			String longFileName = ChooserFragment.fileName.toString();
-			String[] shortFileName = longFileName.split("/");
-			System.out.println(shortFileName[6]);
 			System.out.println("FINISHED EXPORTING");
-			//export();
+			
 			return true;
 		case R.id.action_settings:
 			Toast.makeText(this, "No settings yet", 

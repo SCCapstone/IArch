@@ -40,7 +40,7 @@
     <string name="action_camera">Camera</string>
     <string name="action_projects">Projects</string>
     <string name="action_gallery">Gallery</string>
-    <string name="action_upload">Sync</string>
+    <string name="action_sync">Sync</string>
     <string name="action_export">Export</string>
     <string name="action_export_project">Export Project</string>
     <string name="action_search">Search</string>
