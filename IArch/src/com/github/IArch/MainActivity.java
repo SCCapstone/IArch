@@ -358,12 +358,15 @@ public boolean export(){
         switch(position) {
         case 0: // Camera
         	takePicture(view);
+        	mTitle = "Camera";
         break;
         case 1: // Map
         	displayMap(view);
+        	mTitle = "Map";
         break;
         case 2: // Project Management
         	gallery(view);
+        	mTitle = "Projects";
         break;
         case 3: // Options
         	Toast.makeText(MainActivity.this, "Options", 

@@ -96,7 +96,7 @@ import android.widget.Toast;
 			}
 		
 			//store file path to variable
-			fileLocation = fileUri.getPath(); 
+			//fileLocation = fileUri.getPath(); 
 			
 		}
 		return view;
@@ -153,6 +153,9 @@ import android.widget.Toast;
 		//stop getting location updates; saves battery
 		stopLocation();
 		
+		//store file path to variable
+		fileLocation = fileUri.getPath();
+		
 		System.out.println("RESULT CODE: " + resultCode);
 		
 		if (requestCode == CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE && resultCode == RESULT_OK) {
@@ -203,6 +206,7 @@ import android.widget.Toast;
 		}
 		else
 		{
+			System.out.println("TRYING TO FIND THE RANDOM CRASH");
 			return null;
 		}
 		
@@ -275,10 +279,6 @@ import android.widget.Toast;
 							startActivityForResult(takePictureIntent,CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE);
 						}
 					}
-				
-					//store file path to variable
-					fileLocation = fileUri.getPath(); 
-					
 				}
 				// Need to add failure message
 			}
