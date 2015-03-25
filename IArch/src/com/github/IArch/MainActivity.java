@@ -109,7 +109,7 @@ public class MainActivity extends Activity {
 		case R.id.action_sync:
 			sync();
 			if (mAccountManager.hasLinkedAccount()) {
-				Toast.makeText(this, "Syncing " + projectName, 
+				Toast.makeText(this, "Syncing Project: " + projectName, 
 					Toast.LENGTH_LONG).show();
 			}
 			return true;
@@ -117,7 +117,7 @@ public class MainActivity extends Activity {
 			System.out.println("START EXPORTING");
 			export();
 			if (mAccountManager.hasLinkedAccount()) {
-				Toast.makeText(this, "Data Exported!", 
+				Toast.makeText(this, "Exporting Project: " + projectName, 
 					Toast.LENGTH_LONG).show();
 				System.out.println("FINISHED EXPORTING");
 			}
@@ -157,6 +157,7 @@ public class MainActivity extends Activity {
 		if (mAccountManager.hasLinkedAccount()) {
 			String longFileName = ChooserFragment.folderName.toString();
 			String[] shortFileName = longFileName.split("/");
+			projectName = shortFileName[6];
 			File path = new File(Environment.getExternalStoragePublicDirectory(
 					Environment.DIRECTORY_PICTURES) + "/iArch/" + shortFileName[6]);
 			DbxPath remotePath = new DbxPath(shortFileName[6] + "/" + shortFileName[6] + ".csv");
