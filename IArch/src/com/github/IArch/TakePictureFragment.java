@@ -279,10 +279,6 @@ import android.widget.Toast;
 							startActivityForResult(takePictureIntent,CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE);
 						}
 					}
-				
-					//store file path to variable
-					fileLocation = fileUri.getPath(); 
-					
 				}
 				// Need to add failure message
 			}
