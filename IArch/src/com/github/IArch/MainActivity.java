@@ -52,6 +52,7 @@ public class MainActivity extends Activity {
     private ActionBarDrawerToggle mDrawerToggle;
     private CharSequence mDrawerTitle;
     private CharSequence mTitle;
+    String projectName;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -105,20 +106,21 @@ public class MainActivity extends Activity {
        }
        
        switch (item.getItemId()) {
-		case R.id.action_upload:
-			Toast.makeText(this, "This will sync eventually!", 
+		case R.id.action_sync:
+			sync();
+			if (mAccountManager.hasLinkedAccount()) {
+				Toast.makeText(this, "Syncing " + projectName, 
 					Toast.LENGTH_LONG).show();
+			}
 			return true;
 		case R.id.action_export:
 			System.out.println("START EXPORTING");
 			export();
-			Toast.makeText(this, "Data Exported!", 
+			if (mAccountManager.hasLinkedAccount()) {
+				Toast.makeText(this, "Data Exported!", 
 					Toast.LENGTH_LONG).show();
-			String longFileName = ChooserFragment.fileName.toString();
-			String[] shortFileName = longFileName.split("/");
-			System.out.println(shortFileName[6]);
-			System.out.println("FINISHED EXPORTING");
-			//export();
+				System.out.println("FINISHED EXPORTING");
+			}
 			return true;
 		case R.id.action_settings:
 			Toast.makeText(this, "No settings yet", 
@@ -129,88 +131,115 @@ public class MainActivity extends Activity {
 		}
 	}
 	
-public boolean export(){
+	public void sync() {
+		if (mAccountManager.hasLinkedAccount()) {
+			String longFileName = ChooserFragment.folderName.toString();
+			String[] shortFileName = longFileName.split("/");
+			projectName = shortFileName[6];
 		
-		String longFileName = ChooserFragment.fileName.toString();
-		String[] shortFileName = longFileName.split("/");
-		File path = new File(Environment.getExternalStoragePublicDirectory(
-				Environment.DIRECTORY_PICTURES) + "/iArch/" + shortFileName[6]);
-		DbxPath remotePath = new DbxPath(shortFileName[6] + "/" + shortFileName[6] + ".csv");
-	    File[] imageFiles = path.listFiles();
-	    String finalString = "";
-	    
-		try{
-			DbxFileSystem dbxFs = DbxFileSystem.forAccount(MainActivity.mAccountManager.getLinkedAccount());
-			//if remote file already exists, delete it before exporting new file
-			if (dbxFs.exists(remotePath)) {
-				dbxFs.delete(remotePath);
-			}
-			DbxFile exportFile = dbxFs.create(remotePath);
-			
+			//open datastore and get fresh data
+			DbxDatastore datastore = null;
 			try {
-			    finalString += "Date,Project Name,Description,Longitude,Latitude,Artifact Type,Location\n";
-				
-				for(int i = 0; i<imageFiles.length;i++)
-				{
-					String[] splitFile = imageFiles[i].toString().split("/");
-					
-					//open datastore and get fresh data
-					DbxDatastore datastore = MainActivity.mDatastoreManager.openDatastore(splitFile[6]);
-					datastore.sync();
-					
-					//open table
-					DbxTable tasksTbl = datastore.getTable("Picture_Data");
-			
-					//query table for results
-					DbxFields queryParams = new DbxFields().set("LOCAL_FILENAME", imageFiles[i].toString());
-					DbxTable.QueryResult results = tasksTbl.query(queryParams);
-					
-					if (results.hasResults()) {
-						DbxRecord firstResult = results.iterator().next();
-						
-						finalString += firstResult.getString("DATE");
-						finalString += ",";
-						finalString += firstResult.getString("PROJECT_NAME");
-						finalString += ",";
-						finalString += firstResult.getString("DESCRIPTION");
-						finalString += ",";
-						finalString += firstResult.getDouble("LONGITUDE");
-						finalString += ",";
-						finalString += firstResult.getDouble("LATITUDE");
-						finalString += ",";
-						finalString += firstResult.getString("ARTIFACT_TYPE");
-						finalString += ",";
-						finalString += firstResult.getString("LOCATION");
-						finalString += "\n";
-						
-						//close datastores
-						datastore.close();
-					} else {
-						//picture clicked had no data attached to it, do something here
-						datastore.close();
-					}
-				}
-				exportFile.writeString(finalString);
-			} catch (IOException e) {
+				datastore = MainActivity.mDatastoreManager.openDatastore(shortFileName[6]);
+				datastore.sync();
+			} catch (DbxException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
-			}finally {
-			    exportFile.close();
 			}
-			
-		}catch (Unauthorized e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-			
-		} catch (InvalidPathException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (DbxException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			datastore.close();
+		} else {
+			Toast.makeText(this, "Error: Not connected to Dropbox", 
+					Toast.LENGTH_LONG).show();
+		}
+	}
+	
+	public boolean export() {
+		if (mAccountManager.hasLinkedAccount()) {
+			String longFileName = ChooserFragment.folderName.toString();
+			String[] shortFileName = longFileName.split("/");
+			File path = new File(Environment.getExternalStoragePublicDirectory(
+					Environment.DIRECTORY_PICTURES) + "/iArch/" + shortFileName[6]);
+			DbxPath remotePath = new DbxPath(shortFileName[6] + "/" + shortFileName[6] + ".csv");
+		    File[] imageFiles = path.listFiles();
+		    String finalString = "";
+		    
+			try{
+				DbxFileSystem dbxFs = DbxFileSystem.forAccount(MainActivity.mAccountManager.getLinkedAccount());
+				//if remote file already exists, delete it before exporting new file
+				if (dbxFs.exists(remotePath)) {
+					dbxFs.delete(remotePath);
+				}
+				DbxFile exportFile = dbxFs.create(remotePath);
+				
+				try {
+				    finalString += "Date,Project Name,Description,Longitude,Latitude,Artifact Type,Location\n";
+					
+					for(int i = 0; i<imageFiles.length;i++)
+					{
+						String[] splitFile = imageFiles[i].toString().split("/");
+						
+						//open datastore and get fresh data
+						DbxDatastore datastore = MainActivity.mDatastoreManager.openDatastore(splitFile[6]);
+						datastore.sync();
+						
+						//open table
+						DbxTable tasksTbl = datastore.getTable("Picture_Data");
+				
+						//query table for results
+						DbxFields queryParams = new DbxFields().set("LOCAL_FILENAME", imageFiles[i].toString());
+						DbxTable.QueryResult results = tasksTbl.query(queryParams);
+						
+						if (results.hasResults()) {
+							DbxRecord firstResult = results.iterator().next();
+							
+							finalString += firstResult.getString("DATE");
+							finalString += ",";
+							finalString += firstResult.getString("PROJECT_NAME");
+							finalString += ",";
+							finalString += firstResult.getString("DESCRIPTION");
+							finalString += ",";
+							finalString += firstResult.getDouble("LONGITUDE");
+							finalString += ",";
+							finalString += firstResult.getDouble("LATITUDE");
+							finalString += ",";
+							finalString += firstResult.getString("ARTIFACT_TYPE");
+							finalString += ",";
+							finalString += firstResult.getString("LOCATION");
+							finalString += "\n";
+							
+							//close datastores
+							datastore.close();
+						} else {
+							//picture clicked had no data attached to it, do something here
+							datastore.close();
+						}
+					}
+					exportFile.writeString(finalString);
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}finally {
+				    exportFile.close();
+				}
+				
+			}catch (Unauthorized e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+				
+			} catch (InvalidPathException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (DbxException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		} else {
+			Toast.makeText(this, "Error: Not connected to Dropbox", 
+					Toast.LENGTH_LONG).show();
 		}
 		
 		return false;
+		
 	}
 	
 	@Override

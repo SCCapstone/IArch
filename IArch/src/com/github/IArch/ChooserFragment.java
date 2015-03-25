@@ -21,8 +21,8 @@ import android.widget.ListView;
 public class ChooserFragment extends Fragment {
 
 	private ListView listView;
-	private ListViewAdapter customGridAdapter;
-	public static File fileName = null;
+	private ListViewAdapter customListAdapter;
+	public static File folderName = null;
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -32,26 +32,22 @@ public class ChooserFragment extends Fragment {
         getActionBar().setTitle(R.string.title_fragment_chooser);
 		
 		listView = (ListView) chooserView.findViewById(R.id.listView);
-		customGridAdapter = new ListViewAdapter(getActivity(), R.layout.row_list, getData());
-		listView.setAdapter(customGridAdapter);
+		customListAdapter = new ListViewAdapter(getActivity(), R.layout.row_list, getData());
+		listView.setAdapter(customListAdapter);
 		
 		//handle item click
 				listView.setOnItemClickListener(new OnItemClickListener() {
 					public void onItemClick(AdapterView<?> parent, View v,
 						int position, long id) {
-						//Toast.makeText(Gallery.this, position + "#Selected",
-						//		Toast.LENGTH_SHORT).show();
-						
-						//get files in images directory
+						//get projects in iArch directory
 						File path = new File(Environment.getExternalStoragePublicDirectory(
 								Environment.DIRECTORY_PICTURES) + "/iArch/");
-					    File[] imageFiles = path.listFiles();
+					    File[] projectNames = path.listFiles();
 					    //use it like imageFiles[position]
-					    fileName = imageFiles[position];
-					    System.out.println("image selected : " + imageFiles[position]);
-						if (fileName.isDirectory()) {
+					    folderName = projectNames[position];
+					    System.out.println("image selected : " + projectNames[position]);
+						if (folderName.isDirectory()) {
 							System.out.println("THIS IS A DIRECTORY");
-							
 							// Create new fragment and transaction
 							Fragment newFragment = new GalleryFragment();
 							FragmentTransaction transaction = getFragmentManager().beginTransaction();
@@ -88,26 +84,23 @@ public class ChooserFragment extends Fragment {
 	}
 	
 	private ArrayList<ImageItem> getData() {
-		final ArrayList<ImageItem> imageItems = new ArrayList<ImageItem>();
+		final ArrayList<ImageItem> projectItems = new ArrayList<ImageItem>();
 		
 		File path = new File(Environment.getExternalStoragePublicDirectory(
 				Environment.DIRECTORY_PICTURES) + "/iArch/");
-	    File[] imageFiles = path.listFiles();
+	    File[] projectNames = path.listFiles();
 	    Bitmap icon = BitmapFactory.decodeResource(getResources(), R.drawable.folder_icon_small);
 	    
-	    if (imageFiles != null) {
-	    	for (int i = 0; i < imageFiles.length; i++) {
-	    		String folderName = imageFiles[i].toString();
+	    if (projectNames != null) {
+	    	for (int i = 0; i < projectNames.length; i++) {
+	    		String folderName = projectNames[i].toString();
 	    		String[] shortFolderName = folderName.split("/");
-	    		Date lastMod = new Date(imageFiles[i].lastModified());
-	    		imageItems.add(new ImageItem(icon, shortFolderName[6], "Last Modified: " + lastMod.toString()));
-	    		
-	    		
-	    		//imageItems.add(new ImageItem(decodeSampledBitmapFromFile(imageFiles[i].getAbsolutePath(), 200, 200), shortFolderName[6]));
+	    		Date lastMod = new Date(projectNames[i].lastModified());
+	    		projectItems.add(new ImageItem(icon, shortFolderName[6], "Last Modified: " + lastMod.toString()));
 	    	}
 	    }
 	    
-		return imageItems;
+		return projectItems;
 	}
 	
 }
