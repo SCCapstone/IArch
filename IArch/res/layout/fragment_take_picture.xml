@@ -40,7 +40,9 @@
         android:layout_alignLeft="@+id/imageView1"
         android:layout_below="@+id/textView1"
         android:hint="@string/project_hint"
-        android:inputType="text" />
+        android:inputType="text"
+        android:digits="0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ
+        	abcdefghijklmnopqrstvwxyz-_ " />
     
      <EditText
         android:id="@+id/location_name"
