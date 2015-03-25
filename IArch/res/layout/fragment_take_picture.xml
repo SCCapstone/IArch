@@ -42,7 +42,7 @@
         android:hint="@string/project_hint"
         android:inputType="text"
         android:digits="0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ
-        	abcdefghijklmnopqrstvwxyz-_ " />
+        	abcdefghijklmnopqrstvwxyz-_. " />
     
      <EditText
         android:id="@+id/location_name"
