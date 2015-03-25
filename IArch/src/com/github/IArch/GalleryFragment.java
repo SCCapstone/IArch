@@ -113,7 +113,7 @@ public class GalleryFragment extends Fragment {
 	    for (int i = 0; i < imageFiles.length; i++) {
 	    	String folderName = imageFiles[i].toString();
 	    	String[] shortFolderName = folderName.split("/");
-	    	imageItems.add(new ImageItem(decodeSampledBitmapFromFile(imageFiles[i].getAbsolutePath(), 200, 200), shortFolderName[7]));
+	    	imageItems.add(new ImageItem(decodeSampledBitmapFromFile(imageFiles[i].getAbsolutePath(), 200, 200), shortFolderName[7], folderName));
 	    }
 	    
 		return imageItems;

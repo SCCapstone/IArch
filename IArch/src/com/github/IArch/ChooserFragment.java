@@ -2,6 +2,7 @@ package com.github.IArch;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Date;
 
 import android.app.ActionBar;
 import android.app.Fragment;
@@ -51,8 +52,6 @@ public class ChooserFragment extends Fragment {
 						if (fileName.isDirectory()) {
 							System.out.println("THIS IS A DIRECTORY");
 							
-							//Intent intent = new Intent(Chooser.this, Gallery.class);
-						    //startActivity(intent);
 							// Create new fragment and transaction
 							Fragment newFragment = new GalleryFragment();
 							FragmentTransaction transaction = getFragmentManager().beginTransaction();
@@ -65,8 +64,17 @@ public class ChooserFragment extends Fragment {
 							// Commit the transaction
 							transaction.commit();
 						} else {
-							//Intent intent = new Intent(Chooser.this, ImageDetails.class);
-						    //startActivity(intent);
+							// Create new fragment and transaction
+							Fragment newFragment = new ImageDetailsFragment();
+							FragmentTransaction transaction = getFragmentManager().beginTransaction();
+
+							// Replace whatever is in the fragment_container view with this fragment,
+							// and add the transaction to the back stack
+							transaction.replace(R.id.container, newFragment);
+							transaction.addToBackStack(null);
+
+							// Commit the transaction
+							transaction.commit();
 						}
 					}
 
@@ -91,7 +99,10 @@ public class ChooserFragment extends Fragment {
 	    	for (int i = 0; i < imageFiles.length; i++) {
 	    		String folderName = imageFiles[i].toString();
 	    		String[] shortFolderName = folderName.split("/");
-	    		imageItems.add(new ImageItem(icon, shortFolderName[6]));
+	    		Date lastMod = new Date(imageFiles[i].lastModified());
+	    		imageItems.add(new ImageItem(icon, shortFolderName[6], "Last Modified: " + lastMod.toString()));
+	    		
+	    		
 	    		//imageItems.add(new ImageItem(decodeSampledBitmapFromFile(imageFiles[i].getAbsolutePath(), 200, 200), shortFolderName[6]));
 	    	}
 	    }

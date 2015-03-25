@@ -32,7 +32,7 @@ public class ListViewAdapter extends ArrayAdapter<ImageItem> {
 			row = inflater.inflate(layoutResourceId, parent, false);
 			holder = new ViewHolder();
 			holder.imageTitle = (TextView) row.findViewById(R.id.text);
-			//holder.image = (ImageView) row.findViewById(R.id.image);
+			holder.lastModified = (TextView) row.findViewById(R.id.lastModText);
 			row.setTag(holder);
 		} else {
 			holder = (ViewHolder) row.getTag();
@@ -40,12 +40,12 @@ public class ListViewAdapter extends ArrayAdapter<ImageItem> {
 
 		ImageItem item = data.get(position);
 		holder.imageTitle.setText(item.getTitle());
-		//holder.image.setImageBitmap(item.getImage());
+		holder.lastModified.setText(item.getLastModified());
 		return row;
 	}
 
 	static class ViewHolder {
 		TextView imageTitle;
-		//ImageView image;
+		TextView lastModified;
 	}
 }

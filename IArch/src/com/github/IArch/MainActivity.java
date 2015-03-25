@@ -273,6 +273,7 @@ public boolean export(){
 	        	DbxAccount account = mAccountManager.getLinkedAccount();
 	        	try {
 	        		//Migrate any local datastores to the linked account
+	        		mDatastoreManager = DbxDatastoreManager.localManager(mAccountManager);
 	        		mDatastoreManager.migrateToAccount(account);
 	        		//Now use dropbox datastores
 	        		mDatastoreManager = DbxDatastoreManager.forAccount(account);
@@ -389,9 +390,7 @@ public boolean export(){
 
     private void showLinkedView() {
     	MainFragment.mLinkButton.setText("Unlink from Dropbox");
-    	navDrawerItems[4] = "Logout";
-    	//reset dropbox datastores to local
-    	mDatastoreManager = DbxDatastoreManager.localManager(mAccountManager);
+    	navDrawerItems[4] = "Logout";	
     }
 
     private void showUnlinkedView() {
