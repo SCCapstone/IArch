@@ -47,6 +47,7 @@ function updateAuthenticationStatus(err, client) {
     var datastoreManager = client.getDatastoreManager();
     var datastore = null;
     var selectedDsid = null;
+    var selectedRecId = null;
     var tableName = "Picture_Data"
     var previousList = [];
     datastoreManager.datastoreListChanged.addListener(function (e) {
@@ -63,7 +64,7 @@ function updateAuthenticationStatus(err, client) {
             // Generate list items like this:
             // <li id="{datastore ID}">{title of datastore} <button class="enabled">X</button></li>
             .map(function (info) {
-                var html = _.template('<li id="${dsid}"><div id="wrap">${dsid}</div></li>', {
+                var html = _.template('<li id="${dsid}"><div id="wrap">${title}</div></li>', {
                     dsid: info.getId(),
                     title: info.getTitle()
                 });
@@ -163,7 +164,8 @@ function updateAuthenticationStatus(err, client) {
         $("#dvLoading").show();
         //$('#items h1').text(datastore.getTitle());
         var projectName = datastore.getId();
-        $('#project-data h2').text(projectName);
+        var projectTitle = datastore.getTitle();
+        $('#project-data h2').text(projectTitle);
 
         // Update the list, once on inital open and subsequently on
         // changes to the datastore.
@@ -207,12 +209,13 @@ function updateAuthenticationStatus(err, client) {
                     console.log("Picture URL outside2= " + picture_url);*/
                     
                     numItems++;
-                    var html = _.template('<tr id="${id}"><td id="num">${number}</td><td id="thumb"><a href="${picture_url}" target="_blank"><img src="${thumbnail}" alt="Thumbnail"></a></td><td id="date">${date}</td><td id="artifact">${artifact}</td><td id="description">${description}</td><td id="gps">${GPS}</td><td id="edit"><a href="#" id="record_edit"><span class="glyphicon glyphicon-pencil"></span></a><a href="#" id="record_delete"><span class="glyphicon glyphicon-trash"></span></a></td></tr>', {
+                    var html = _.template('<tr id="${id}"><td id="num">${number}</td><td id="thumb"><a href="${picture_url}" target="_blank"><img src="${thumbnail}" alt="Thumbnail"></a></td><td id="date">${date}</td><td id="location">${location}</td><td id="artifact">${artifact}</td><td id="description">${description}</td><td id="gps">${GPS}</td><td id="edit"><a href="#" id="record_edit"><span class="glyphicon glyphicon-pencil"></span></a><a href="#" id="record_delete"><span class="glyphicon glyphicon-trash"></span></a></td></tr>', {
                         id: record.getId(),
                         number: numItems,
                         pictureUrl: record.get('INTERNET_URL'),
                         thumbnail: thumbnail_url,
                         date: record.get('DATE'),
+                        location: record.get('LOCATION'),
                         artifact: record.get('ARTIFACT_TYPE'),
                         description: record.get('DESCRIPTION'),
                         GPS: record.get('LATITUDE').toString() + " " + record.get('LONGITUDE').toString()
@@ -264,7 +267,21 @@ function updateAuthenticationStatus(err, client) {
             // Handle editing a record
             $("#project-data tr a#record_edit").click(function (e) {
                 e.preventDefault();
-                alert("Coming soon!");
+                // Get the proper record details
+                var recordId = $(this).parents('tr').attr('id');
+                selectedRecId = recordId;
+                var record = datastore.getTable(tableName).get(recordId);
+                var location = record.get('LOCATION');
+                var artifact = record.get('ARTIFACT_TYPE');
+                var description = record.get('DESCRIPTION');
+
+                // Show the form
+                $('#form-modal').addClass('md-show');
+
+                // Display current values in form
+                $('#form_location').val(location);
+                $('#form_artifact').val(artifact);
+                $('#form_description').val(description);
             });
         }
 
@@ -275,6 +292,33 @@ function updateAuthenticationStatus(err, client) {
         updateList();
 
     }
+
+    // Update record when user has confirmed edits
+    $( "#record_form_edit" ).submit(function (event) {
+        event.preventDefault();
+        // Grab the form values
+        var location = $('#form_location').val();
+        var artifact = $('#form_artifact').val();
+        var description = $('#form_description').val();
+
+        // Get the proper record
+        var record = datastore.getTable(tableName).get(selectedRecId);
+
+        // Update the record values
+        record.set('LOCATION', location);
+        record.set('ARTIFACT_TYPE', artifact);
+        record.set('DESCRIPTION', description);
+
+        // Hide edit form
+        $('#form-modal').removeClass('md-show');
+    });
+
+    // Cancel submitting a record edit
+    $("#form_cancel").click(function (e) {
+        e.preventDefault();
+        // Hide edit form
+        $('#form-modal').removeClass('md-show');
+    });
 
     // Get the file path of image relative to user's dropbox account
     function getImageFilePath(recordId) {

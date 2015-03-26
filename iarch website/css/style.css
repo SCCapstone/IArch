@@ -199,7 +199,7 @@ ul li button:hover {
 	color: #3d3d3d;
 	background: #eee;
 	position: relative;
-	border-radius: 3px;
+	//border-radius: 3px;
 	margin: 0 auto;
 	-webkit-transform: scale(0.7);
 	-moz-transform: scale(0.7);
@@ -255,6 +255,26 @@ p.sharing {
 	font-size: 16px;
 	cursor: pointer;
 }
+
+#form-content {
+	padding: 10px;
+}
+
+#form-content h3 {
+	background: #eee;
+}
+
+#form_buttons {
+	text-align: center;
+}
+
+#form_submit, #form_cancel {
+	margin-left: 10px;
+	margin-right: 10px;
+	display: inline;
+}
+
+
 
 /*td { padding-right: 14px; }
 table { border-collapse: collapse; }*/

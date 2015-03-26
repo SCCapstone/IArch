@@ -93,7 +93,39 @@
                   <button id="connect">Connect with Dropbox</button>
               </div>
           </div>
-      </div>
+        </div>
+
+        <div class="md-modal" id="form-modal">
+          <div class="md-content" id="form-content">
+              <h3>Edit Record</h3>
+              <form role="form" id="record_form_edit">
+                <div class="form-group">
+                  <label for="location">Location:</label>
+                  <input type="text" class="form-control" id="form_location">
+                  <label for="artifact">Artifact:</label>
+                  <input type="text" class="form-control" id="form_artifact">
+                </div>
+                <div class="form-group">
+                  <label for="description">Description:</label>
+                  <textarea rows="4" class="form-control" id="form_description"></textarea>
+                </div>
+                <div id="form_buttons">
+                  <button type="submit" class="btn btn-default" id="form_submit">Submit</button>
+                  <button class="btn btn-default" id="form_cancel">Cancel</button>
+                <!--<table>
+                  <tr>
+                    <th>
+                      <button type="submit" class="btn btn-default" id="form_submit">Submit</button>
+                    </th>
+                    <th>
+                      <button class="btn btn-default" id="form_cancel">Cancel</button>
+                    </th>
+                  </tr>
+                </table>-->
+              </div>
+              </form>
+          </div>
+        </div>
 
         <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
           <h1 class="page-header">iArch Project Website</h1>
@@ -106,6 +138,7 @@
                     <th>#</th>
                     <th>Thumbnail</th>
                     <th>Date</th>
+                    <th>Location</th>
                     <th>Artifact</th>
                     <th>Description</th>
                     <th>GPS</th>
