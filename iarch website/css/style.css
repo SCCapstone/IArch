@@ -318,17 +318,19 @@ table.database {
 	color: #000;
 }
 
-#record_edit:hover {
+#record_edit:hover, #record_delete:hover, #sort_date:hover, #sort_location:hover, #sort_artifact:hover, #sort_description:hover, #sort_gps:hover {
 	color: #0000FF;
 }
 
-#record_delete {
+#record_delete, #sort_date, #sort_location, #sort_artifact, #sort_description, #sort_gps {
 	color: #000;
 }
 
-#record_delete:hover {
-	color: #0000FF;
-}
+
+
+
+
+
 
 /*#project_delete {
 	color: #000;

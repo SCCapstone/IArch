@@ -48,6 +48,7 @@ function updateAuthenticationStatus(err, client) {
     var datastore = null;
     var selectedDsid = null;
     var selectedRecId = null;
+    var sortParameter = 'DESCRIPTION';
     var tableName = "Picture_Data"
     var previousList = [];
     datastoreManager.datastoreListChanged.addListener(function (e) {
@@ -159,6 +160,40 @@ function updateAuthenticationStatus(err, client) {
         }
     }
 
+
+    // Sort on different criteria (default is DATE)
+
+    $('#sort_date').click(function (e) {
+        e.preventDefault();
+        sortParameter = 'DATE';
+        // Add something to avoid reloading if already selected
+        populateItems();
+    });
+
+    $('#sort_location').click(function (e) {
+        e.preventDefault();
+        sortParameter = 'LOCATION';
+        populateItems();
+    });
+
+    $('#sort_artifact').click(function (e) {
+        e.preventDefault();
+        sortParameter = 'ARTIFACT_TYPE';
+        populateItems();
+    });
+
+    $('#sort_description').click(function (e) {
+        e.preventDefault();
+        sortParameter = 'DESCRIPTION';
+        populateItems();
+    });
+
+    $('#sort_gps').click(function (e) {
+        e.preventDefault();
+        sortParameter = 'GPS';
+        populateItems();
+    });
+
     // Populate the right-hand side of the screen (list items)
     function populateItems() {
         $("#dvLoading").show();
@@ -179,8 +214,8 @@ function updateAuthenticationStatus(err, client) {
                 _.chain(items)
                 // Sort by created date
                 .sortBy(function (record) {
-                    return record.get('DATE');
-                })
+                    return record.get(sortParameter);
+                }) //.reverse() for descending ordering
                 // Convert to list items like this:
                 // <li id="{record ID}"><button>X</button>{text}</li>
                 .map(function (record) {
@@ -209,7 +244,7 @@ function updateAuthenticationStatus(err, client) {
                     console.log("Picture URL outside2= " + picture_url);*/
                     
                     numItems++;
-                    var html = _.template('<tr id="${id}"><td id="num">${number}</td><td id="thumb"><a href="${picture_url}" target="_blank"><img src="${thumbnail}" alt="Thumbnail"></a></td><td id="date">${date}</td><td id="location">${location}</td><td id="artifact">${artifact}</td><td id="description">${description}</td><td id="gps">${GPS}</td><td id="edit"><a href="#" id="record_edit"><span class="glyphicon glyphicon-pencil"></span></a><a href="#" id="record_delete"><span class="glyphicon glyphicon-trash"></span></a></td></tr>', {
+                    var html = _.template('<tr id="${id}"><td id="num">${number}.</td><td id="thumb"><a href="${picture_url}" target="_blank"><img src="${thumbnail}" alt="Thumbnail"></a></td><td id="date">${date}</td><td id="location">${location}</td><td id="artifact">${artifact}</td><td id="description">${description}</td><td id="gps">${GPS}</td><td id="edit"><a href="#" id="record_edit"><span class="glyphicon glyphicon-pencil"></span></a><a href="#" id="record_delete"><span class="glyphicon glyphicon-trash"></span></a></td></tr>', {
                         id: record.getId(),
                         number: numItems,
                         pictureUrl: record.get('INTERNET_URL'),
@@ -226,7 +261,6 @@ function updateAuthenticationStatus(err, client) {
                 }).value()
             );
             
-
             $("#dvLoading").hide();
 
             //updateUIBasedOnRole();
@@ -402,7 +436,6 @@ function updateAuthenticationStatus(err, client) {
         e.preventDefault();
         alert("Coming soon!");
     });
-
 
 /*
     // Add a new list (datastore)
