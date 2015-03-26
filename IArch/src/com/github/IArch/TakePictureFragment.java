@@ -51,6 +51,7 @@ import android.widget.Toast;
 	static File newFileLocation;
 	static private String date;
 	static private String projectName;
+	static private String projectTitle; // same as projectName but it won't be modified
 	static private String location;
 	static private String artifact;
 	static private String description;
@@ -217,6 +218,7 @@ import android.widget.Toast;
 	{
 		EditText projectEditText = (EditText) view.findViewById(R.id.project_name);
 	    projectName = projectEditText.getText().toString();
+	    projectTitle = projectName; // So we can add unedited name to datastore
 	    //convert projectName to something dropbox will accept as a datastore name
 	    projectName = projectName.toLowerCase(Locale.US);
 	    projectName = projectName.replace(" ", "_");
@@ -314,6 +316,12 @@ import android.widget.Toast;
 			    //set up dropbox datastores
 			    //DbxDatastore datastore = MainActivity.mDatastoreManager.openDefaultDatastore();		    
 			    DbxDatastore datastore = MainActivity.mDatastoreManager.openOrCreateDatastore(projectName);
+			    
+			    if (datastore.getTitle() == null) // check if a title already exists (aka datastore already exists)
+			    {
+			    	datastore.setTitle(projectTitle); // set the datastore title
+			    }
+			    
 			    DbxTable dataTbl = datastore.getTable("Picture_Data");
 			    
 				@SuppressWarnings("unused")
@@ -324,7 +332,7 @@ import android.widget.Toast;
 						set("LOCATION", location).
 						set("ARTIFACT_TYPE", artifact).
 						set("DESCRIPTION", description);
-					
+				
 				//sync datastore
 				datastore.sync();
 				
