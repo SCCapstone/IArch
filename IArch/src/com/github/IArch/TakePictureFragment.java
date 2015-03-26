@@ -369,8 +369,8 @@ import android.widget.Toast;
 		ImageView myImage = (ImageView) view.findViewById(R.id.imageView1);
 		
 		//this works for now... hard coded scale factor
-		int targetW = 400;//myImage.getWidth();
-		int targetH = 400;//myImage.getHeight();
+		int targetW = 900;//myImage.getWidth();
+		int targetH = 600;//myImage.getHeight();
 				
 		System.out.println("targetW: " + targetW + " targetH: " + targetH);
 		
