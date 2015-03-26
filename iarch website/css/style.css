@@ -274,6 +274,11 @@ p.sharing {
 	display: inline;
 }
 
+/* This stops the edit icons from bunching up on top of each other */
+#edit {
+	min-width: 65px;
+}
+
 
 
 /*td { padding-right: 14px; }
