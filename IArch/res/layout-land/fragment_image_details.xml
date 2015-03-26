@@ -9,7 +9,7 @@
     tools:context="com.github.IArch.ImageDetails" >
 
     <ImageView
-    	android:id="@+id/imageView1"
+    	android:id="@+id/imageViewID"
     	android:contentDescription="@string/image"
         android:layout_width="300dp"
     	android:layout_height="wrap_content"
@@ -19,15 +19,15 @@
         android:id="@+id/date"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignTop="@+id/imageView1"
-        android:layout_toRightOf="@+id/imageView1"
+        android:layout_alignTop="@+id/imageViewID"
+        android:layout_toRightOf="@+id/imageViewID"
         android:text="@string/date" />
 
     <TextView
         android:id="@+id/textView1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignTop="@+id/imageView1"
+        android:layout_alignTop="@+id/imageViewID"
         android:layout_toRightOf="@+id/date"
         android:layout_marginLeft="25dp"
         android:text="@string/gps"

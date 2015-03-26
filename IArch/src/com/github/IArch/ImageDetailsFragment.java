@@ -31,7 +31,7 @@ public class ImageDetailsFragment extends Fragment implements OnClickListener {
 		
 		galleryView = inflater.inflate(R.layout.fragment_image_details, container, false);
 		getActionBar().setTitle(R.string.title_fragment_image_details);
-		image = (ImageView) galleryView.findViewById(R.id.imageView1);	
+		image = (ImageView) galleryView.findViewById(R.id.imageViewID);	
 		image.setOnClickListener(this);
 		
 		fileLocation = GalleryFragment.fileName.toString();
@@ -49,11 +49,11 @@ public class ImageDetailsFragment extends Fragment implements OnClickListener {
 	
 	private void setPic(String file) {
 		//get dimensions of view
-		ImageView myImage = (ImageView) galleryView.findViewById(R.id.imageView1);
+		ImageView myImage = (ImageView) galleryView.findViewById(R.id.imageViewID);
 		
 		//this works for now... hard coded scale factor
-		int targetW = 400;//myImage.getWidth();
-		int targetH = 400;//myImage.getHeight();
+		int targetW = 900;//myImage.getWidth();
+		int targetH = 600;//myImage.getHeight();
 				
 		System.out.println("targetW: " + targetW + " targetH: " + targetH);
 		

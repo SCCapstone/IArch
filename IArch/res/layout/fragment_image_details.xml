@@ -5,7 +5,7 @@
     tools:context="com.github.IArch.MainActivity$ImageDetailsFragment" >
 
     <ImageView
-    	android:id="@+id/imageView1"
+    	android:id="@+id/imageViewID"
     	android:contentDescription="@string/image"
         android:layout_width="wrap_content"
     	android:layout_height="300dp" />
@@ -14,15 +14,15 @@
         android:id="@+id/date"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/imageView1"
-        android:layout_alignLeft="@+id/imageView1"
+        android:layout_below="@+id/imageViewID"
+        android:layout_alignLeft="@+id/imageViewID"
         android:text="@string/date" />
 
     <TextView
         android:id="@+id/textView1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/imageView1"
+        android:layout_alignLeft="@+id/imageViewID"
         android:layout_below="@+id/date"
         android:text="@string/gps"
         android:textAppearance="?android:attr/textAppearanceSmall" />
@@ -31,7 +31,7 @@
         android:id="@+id/project_name"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/imageView1"
+        android:layout_alignLeft="@+id/imageViewID"
         android:layout_below="@+id/textView1"
         android:hint="@string/project_hint"
          />
@@ -40,7 +40,7 @@
         android:id="@+id/location_name"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/imageView1"
+        android:layout_alignLeft="@+id/imageViewID"
         android:layout_below="@+id/project_name"
         android:hint="@string/location_hint"
         
@@ -50,7 +50,7 @@
         android:id="@+id/artifact_name"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/imageView1"
+        android:layout_alignLeft="@+id/imageViewID"
         android:layout_below="@+id/location_name"
         android:hint="@string/artifact_hint"
          />
@@ -59,7 +59,7 @@
         android:id="@+id/description"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/imageView1"
+        android:layout_alignLeft="@+id/imageViewID"
         android:layout_below="@+id/artifact_name"
         android:hint="@string/description_hint"
          />

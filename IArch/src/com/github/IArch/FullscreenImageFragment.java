@@ -31,11 +31,11 @@ public class FullscreenImageFragment extends Fragment {
 
 	private void setPic(String file) {
 		//get dimensions of view
-		ImageView myImage = (ImageView) galleryView.findViewById(R.id.imageView2);
+		ImageView myImage = (ImageView) galleryView.findViewById(R.id.imageViewFS);
 		
 		//this works for now... hard coded scale factor
-		int targetW = 400;//myImage.getWidth();
-		int targetH = 400;//myImage.getHeight();
+		int targetW = 900;//myImage.getWidth();
+		int targetH = 600;//myImage.getHeight();
 				
 		System.out.println("targetW: " + targetW + " targetH: " + targetH);
 		
