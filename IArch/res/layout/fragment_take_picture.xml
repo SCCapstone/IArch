@@ -51,8 +51,7 @@
         android:layout_alignLeft="@+id/imageView1"
         android:layout_below="@+id/project_name"
         android:hint="@string/location_hint"
-        android:inputType="text" >
-    </EditText>
+        android:inputType="text" />
     
     <!--<EditText
         android:id="@+id/artifact_name"
@@ -70,7 +69,7 @@
         android:layout_alignLeft="@+id/imageView1"
         android:layout_below="@+id/location_name"
         android:drawSelectorOnTop="true"
-        android:prompt="@string/artifact_hint"/>
+        android:prompt="@string/artifact_hint" />
 
     <EditText
         android:id="@+id/description"

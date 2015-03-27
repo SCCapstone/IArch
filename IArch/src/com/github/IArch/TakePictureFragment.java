@@ -69,6 +69,7 @@ import android.widget.Toast;
 	Button dropboxButton;
 	int RESULT_OK = -1;
 	int RESULT_CANCELED = 0;
+	Spinner afct;
 	
 	
 	
@@ -78,6 +79,14 @@ import android.widget.Toast;
 		
 		view = inflater.inflate(R.layout.fragment_take_picture, container, false);
 		getActionBar().setTitle(R.string.title_fragment_take_picture);
+		
+		//Set up spinner
+		afct = (Spinner) view.findViewById(R.id.artifact_name);
+		afct.setOnItemSelectedListener(this);
+		ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(getActivity(),
+	    		R.array.artifacts, android.R.layout.simple_spinner_item);
+	    adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+	    afct.setAdapter(adapter);
 		
 		dropboxButton = (Button) view.findViewById(R.id.sync);	
 		dropboxButton.setOnClickListener(this);
@@ -100,11 +109,8 @@ import android.widget.Toast;
 					startActivityForResult(takePictureIntent,CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE);
 				}
 			}
-		
-			//store file path to variable
-			//fileLocation = fileUri.getPath(); 
-			
 		}
+		
 		return view;
 	}
 
@@ -126,7 +132,6 @@ import android.widget.Toast;
       			
       	TextView myText = (TextView) view.findViewById(R.id.textView1);
       	myText.setText("Latitude: " + latitude + " " + "Longitude: " + longitude);
-    	
     }
 	
 	@Override
@@ -245,12 +250,7 @@ import android.widget.Toast;
 	    //artifact = artifactEditText.getText().toString();
 	    
 	    Spinner afct = (Spinner) view.findViewById(R.id.artifact_name);
-	    afct.setOnItemSelectedListener(this);
-	    ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this.getActivity(),
-	    		R.array.artifacts, android.R.layout.simple_spinner_item);
-	    adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-	    afct.setAdapter(adapter);
-	    //artifact = afct.getSelectedItem().toString();
+	    artifact = afct.getSelectedItem().toString();
 	    
 	    EditText descriptionEditText = (EditText) view.findViewById(R.id.description);
 	    description = descriptionEditText.getText().toString();	    
