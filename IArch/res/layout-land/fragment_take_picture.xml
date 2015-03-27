@@ -50,16 +50,7 @@
         android:layout_below="@+id/project_name"
         android:hint="@string/location_hint"
         android:inputType="text" />
-    <!--  
-    <EditText
-        android:id="@+id/artifact_name"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/date"
-        android:layout_below="@+id/location_name"
-        android:hint="@string/artifact_hint"
-        android:inputType="text" />
-	-->
+    
 	<Spinner
         android:id="@+id/artifact_name"
         android:layout_width="fill_parent"
