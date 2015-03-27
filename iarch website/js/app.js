@@ -47,6 +47,13 @@ function updateAuthenticationStatus(err, client) {
     var datastoreManager = client.getDatastoreManager();
     var datastore = null;
     var selectedDsid = null;
+    var selectedRecId = null;
+    var sortParameter = 'DATE';
+    var date_ascending = true;
+    var location_ascending = true;
+    var artifact_ascending = true;
+    var description_ascending = true;
+    var gps_ascending = true;
     var tableName = "Picture_Data"
     var previousList = [];
     datastoreManager.datastoreListChanged.addListener(function (e) {
@@ -63,7 +70,7 @@ function updateAuthenticationStatus(err, client) {
             // Generate list items like this:
             // <li id="{datastore ID}">{title of datastore} <button class="enabled">X</button></li>
             .map(function (info) {
-                var html = _.template('<li id="${dsid}"><div id="wrap">${dsid}</div></li>', {
+                var html = _.template('<li id="${dsid}"><div id="wrap">${title}</div></li>', {
                     dsid: info.getId(),
                     title: info.getTitle()
                 });
@@ -158,12 +165,121 @@ function updateAuthenticationStatus(err, client) {
         }
     }
 
-    // Populate the right-hand side of the screen (list items)
+
+    // Sort on different criteria (default is DATE)
+
+    $('#sort_date').click(function (e) {
+        e.preventDefault();
+        sortParameter = 'DATE';
+        if (date_ascending == true) // Prevoius click made date_ascending true, so now user wants to sort descending 
+        {
+            resetAscending(null);
+            populateItemsDescending();
+        }
+        else // Sort on date ascending
+        {
+            resetAscending('date');
+            populateItems();
+        }      
+    });
+
+    $('#sort_location').click(function (e) {
+        e.preventDefault();
+        sortParameter = 'LOCATION';
+        if (location_ascending == true) // Prevoius click made ascending true, so now user wants to sort descending 
+        {
+            resetAscending(null);
+            populateItemsDescending();
+        }
+        else // Sort on date ascending
+        {
+            resetAscending('location');
+            populateItems();
+        }
+    });
+
+    $('#sort_artifact').click(function (e) {
+        e.preventDefault();
+        sortParameter = 'ARTIFACT_TYPE';
+        if (artifact_ascending == true) // Prevoius click made ascending true, so now user wants to sort descending 
+        {
+            resetAscending(null);
+            populateItemsDescending();
+        }
+        else // Sort on ascending
+        {
+            resetAscending('artifact');
+            populateItems();
+        }
+    });
+
+    $('#sort_description').click(function (e) {
+        e.preventDefault();
+        sortParameter = 'DESCRIPTION'
+        if (description_ascending == true) // Prevoius click made ascending true, so now user wants to sort descending 
+        {
+            resetAscending(null);
+            populateItemsDescending();
+        }
+        else // Sort on ascending
+        {
+            resetAscending('description');
+            populateItems();
+        }
+    });
+
+    $('#sort_gps').click(function (e) {
+        e.preventDefault();
+        sortParameter = 'GPS';
+        if (gps_ascending == true) // Prevoius click made ascending true, so now user wants to sort descending 
+        {
+            resetAscending(null);
+            populateItemsDescending();
+        }
+        else // Sort on ascending
+        {
+            resetAscending('gps');
+            populateItems();
+        }
+    });
+
+    // Helper function. Resets all ascending variables to false except for the appropriate variable clicked (if necessary)
+    function resetAscending(field)
+    {
+        date_ascending = false;
+        location_ascending = false;
+        artifact_ascending = false;
+        description_ascending = false;
+        gps_ascending = false;
+        if (field == 'date')
+        {
+            date_ascending = true;
+        }
+        if (field == 'location')
+        {
+            location_ascending = true;
+        }
+        if (field == 'artifact')
+        {
+            artifact_ascending = true;
+        }
+        if (field == 'description')
+        {
+            description_ascending = true;
+        }
+        if (field == 'gps')
+        {
+            gps_ascending = true;
+        }
+    }
+
+    // Populate the right-hand side of the screen in ascending order (default)
     function populateItems() {
         $("#dvLoading").show();
         //$('#items h1').text(datastore.getTitle());
         var projectName = datastore.getId();
-        $('#project-data h2').text(projectName);
+        var projectTitle = datastore.getTitle();
+        $('#project-data h2').text(projectTitle);
 
         // Update the list, once on inital open and subsequently on
         // changes to the datastore.
@@ -177,8 +293,8 @@ function updateAuthenticationStatus(err, client) {
                 _.chain(items)
                 // Sort by created date
                 .sortBy(function (record) {
-                    return record.get('DATE');
-                })
+                    return record.get(sortParameter);
+                }) //.reverse() for descending ordering
                 // Convert to list items like this:
                 // <li id="{record ID}"><button>X</button>{text}</li>
                 .map(function (record) {
@@ -207,12 +323,13 @@ function updateAuthenticationStatus(err, client) {
                     console.log("Picture URL outside2= " + picture_url);*/
                     
                     numItems++;
-                    var html = _.template('<tr id="${id}"><td id="num">${number}</td><td id="thumb"><a href="${picture_url}" target="_blank"><img src="${thumbnail}" alt="Thumbnail"></a></td><td id="date">${date}</td><td id="artifact">${artifact}</td><td id="description">${description}</td><td id="gps">${GPS}</td><td id="edit"><a href="#" id="record_edit"><span class="glyphicon glyphicon-pencil"></span></a><a href="#" id="record_delete"><span class="glyphicon glyphicon-trash"></span></a></td></tr>', {
+                    var html = _.template('<tr id="${id}"><td id="num">${number}.</td><td id="thumb"><a href="${picture_url}" target="_blank"><img src="${thumbnail}" alt="Thumbnail"></a></td><td id="date">${date}</td><td id="location">${location}</td><td id="artifact">${artifact}</td><td id="description">${description}</td><td id="gps">${GPS}</td><td id="edit"><a href="#" id="record_edit"><span class="glyphicon glyphicon-pencil"></span></a><a href="#" id="record_delete"><span class="glyphicon glyphicon-trash"></span></a></td></tr>', {
                         id: record.getId(),
                         number: numItems,
                         pictureUrl: record.get('INTERNET_URL'),
                         thumbnail: thumbnail_url,
                         date: record.get('DATE'),
+                        location: record.get('LOCATION'),
                         artifact: record.get('ARTIFACT_TYPE'),
                         description: record.get('DESCRIPTION'),
                         GPS: record.get('LATITUDE').toString() + " " + record.get('LONGITUDE').toString()
@@ -223,7 +340,6 @@ function updateAuthenticationStatus(err, client) {
                 }).value()
             );
             
-
             $("#dvLoading").hide();
 
             //updateUIBasedOnRole();
@@ -264,7 +380,21 @@ function updateAuthenticationStatus(err, client) {
             // Handle editing a record
             $("#project-data tr a#record_edit").click(function (e) {
                 e.preventDefault();
-                alert("Coming soon!");
+                // Get the proper record details
+                var recordId = $(this).parents('tr').attr('id');
+                selectedRecId = recordId;
+                var record = datastore.getTable(tableName).get(recordId);
+                var location = record.get('LOCATION');
+                var artifact = record.get('ARTIFACT_TYPE');
+                var description = record.get('DESCRIPTION');
+
+                // Show the form
+                $('#form-modal').addClass('md-show');
+
+                // Display current values in form
+                $('#form_location').val(location);
+                $('#form_artifact').val(artifact);
+                $('#form_description').val(description);
             });
         }
 
@@ -275,6 +405,166 @@ function updateAuthenticationStatus(err, client) {
         updateList();
 
     }
+
+    // Populate the right-hand side of the screen in descending order
+    function populateItemsDescending() {
+        $("#dvLoading").show();
+        //$('#items h1').text(datastore.getTitle());
+        var projectName = datastore.getId();
+        var projectTitle = datastore.getTitle();
+        $('#project-data h2').text(projectTitle);
+
+        // Update the list, once on inital open and subsequently on
+        // changes to the datastore.
+        function updateList() {
+            //var items = datastore.getTable('items').query();
+            var items = datastore.getTable(tableName).query();
+            var numItems = 0;
+            
+            // Rebuild the list of items
+            $('#project-data tbody').empty().append(
+                _.chain(items)
+                // Sort by created date
+                .sortBy(function (record) {
+                    return record.get(sortParameter);
+                }).reverse() // for descending ordering
+                // Convert to list items like this:
+                // <li id="{record ID}"><button>X</button>{text}</li>
+                .map(function (record) {
+                    var fileName = record.get('LOCAL_FILENAME').split('/');
+                    var filePath = projectName + '/' + fileName[fileName.length-1];
+                    var thumbnail_url = client.thumbnailUrl(filePath, {size: "large"});
+                    picture_url = "";
+                    
+                    /*finished = false;
+                    console.log("finished before= " + finished);
+                    
+                    client.makeUrl(filePath, {
+                        downloadHack: false,
+                        long: true
+                    }, function (error, data) {
+                        if (error) {
+                            return console.log("ERROR: " + error); // Something went wrong.
+                        }
+                        console.log("data.url= " + data.url);
+                        picture_url = data.url.replace("www.dropbox.com","dl.dropboxusercontent.com");
+                        console.log("picture_url inside= " + picture_url);
+                        finished = true;                    
+                    });
+                                
+                    console.log("finished after= " + finished);
+                    console.log("Picture URL outside2= " + picture_url);*/
+                    
+                    numItems++;
+                    var html = _.template('<tr id="${id}"><td id="num">${number}.</td><td id="thumb"><a href="${picture_url}" target="_blank"><img src="${thumbnail}" alt="Thumbnail"></a></td><td id="date">${date}</td><td id="location">${location}</td><td id="artifact">${artifact}</td><td id="description">${description}</td><td id="gps">${GPS}</td><td id="edit"><a href="#" id="record_edit"><span class="glyphicon glyphicon-pencil"></span></a><a href="#" id="record_delete"><span class="glyphicon glyphicon-trash"></span></a></td></tr>', {
+                        id: record.getId(),
+                        number: numItems,
+                        pictureUrl: record.get('INTERNET_URL'),
+                        thumbnail: thumbnail_url,
+                        date: record.get('DATE'),
+                        location: record.get('LOCATION'),
+                        artifact: record.get('ARTIFACT_TYPE'),
+                        description: record.get('DESCRIPTION'),
+                        GPS: record.get('LATITUDE').toString() + " " + record.get('LONGITUDE').toString()
+                    });
+
+                    return $(html);
+
+                }).value()
+            );
+            
+            $("#dvLoading").hide();
+
+            //updateUIBasedOnRole();
+
+            // Reflect the latest ACLs in the sharing dialog
+            //$('#public').val(datastore.getRole('public'));
+            //$('#team').val(datastore.getRole('team'));
+            //$('.role').prop('disabled', datastore.getEffectiveRole() === 'viewer');
+
+            // Handle deleting a record
+            $("#project-data tr a#record_delete").confirm({
+                title:"Delete record",
+                text: "Are you sure you want to delete this record?",
+                confirm: function(button) {
+                    var recordId = $(button).parents('tr').attr('id');
+                    var filePath = getImageFilePath(recordId);
+
+                    // Delete the datastore record
+                    datastore.getTable(tableName).get(recordId).deleteRecord();
+
+                    // Delete the image associated with that record
+                    client.remove(filePath,
+                        function (error, data) {
+                            if (error) {
+                                return console.log("ERROR: " + error); // Something went wrong.
+                            }
+                            
+                            // otherwise file is deleted                  
+                    });                    
+                },
+                cancel: function(button) {
+                    // do nothing
+                },
+                confirmButton: "Yes I am",
+                cancelButton: "No"
+            });
+
+            // Handle editing a record
+            $("#project-data tr a#record_edit").click(function (e) {
+                e.preventDefault();
+                // Get the proper record details
+                var recordId = $(this).parents('tr').attr('id');
+                selectedRecId = recordId;
+                var record = datastore.getTable(tableName).get(recordId);
+                var location = record.get('LOCATION');
+                var artifact = record.get('ARTIFACT_TYPE');
+                var description = record.get('DESCRIPTION');
+
+                // Show the form
+                $('#form-modal').addClass('md-show');
+
+                // Display current values in form
+                $('#form_location').val(location);
+                $('#form_artifact').val(artifact);
+                $('#form_description').val(description);
+            });
+        }
+
+        // Update on changes.
+        datastore.recordsChanged.addListener(updateList);
+        
+        // Update UI with initial data.
+        updateList();
+
+    }
+
+    // Update record when user has confirmed edits
+    $( "#record_form_edit" ).submit(function (event) {
+        event.preventDefault();
+        // Grab the form values
+        var location = $('#form_location').val();
+        var artifact = $('#form_artifact').val();
+        var description = $('#form_description').val();
+
+        // Get the proper record
+        var record = datastore.getTable(tableName).get(selectedRecId);
+
+        // Update the record values
+        record.set('LOCATION', location);
+        record.set('ARTIFACT_TYPE', artifact);
+        record.set('DESCRIPTION', description);
+
+        // Hide edit form
+        $('#form-modal').removeClass('md-show');
+    });
+
+    // Cancel submitting a record edit
+    $("#form_cancel").click(function (e) {
+        e.preventDefault();
+        // Hide edit form
+        $('#form-modal').removeClass('md-show');
+    });
 
     // Get the file path of image relative to user's dropbox account
     function getImageFilePath(recordId) {
@@ -358,7 +648,6 @@ function updateAuthenticationStatus(err, client) {
         e.preventDefault();
         alert("Coming soon!");
     });
-
 
 /*
     // Add a new list (datastore)
