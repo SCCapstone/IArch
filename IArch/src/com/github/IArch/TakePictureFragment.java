@@ -15,6 +15,7 @@ import com.dropbox.sync.android.DbxPath;
 import com.dropbox.sync.android.DbxPath.InvalidPathException;
 import com.dropbox.sync.android.DbxRecord;
 import com.dropbox.sync.android.DbxTable;
+
 import android.annotation.SuppressLint;
 import android.app.ActionBar;
 import android.app.Fragment;
@@ -35,14 +36,18 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.View.OnClickListener;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemSelectedListener;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
 @SuppressLint("SimpleDateFormat") public class TakePictureFragment extends Fragment 
-		implements OnClickListener {
+		implements OnClickListener, OnItemSelectedListener {
 
 	public static final int MEDIA_TYPE_IMAGE = 1;
 	private static final int CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE = 100;
@@ -178,6 +183,16 @@ import android.widget.Toast;
 		}
 	}
 	
+	public void onItemSelected(AdapterView<?> parent, View view, int pos, long id)
+	{
+		
+	}
+	
+	public void onNothingSelected(AdapterView<?> parent)
+	{
+		
+	}
+	
 	private static Uri getOutputMediaFileUri(int type)
 	{
 		return Uri.fromFile(getOutputMediaFile(type));
@@ -226,8 +241,16 @@ import android.widget.Toast;
 	    EditText locationEditText = (EditText) view.findViewById(R.id.location_name);
 	    location = locationEditText.getText().toString();
 	    
-	    EditText artifactEditText = (EditText) view.findViewById(R.id.artifact_name);
-	    artifact = artifactEditText.getText().toString();
+	    //EditText artifactEditText = (EditText) view.findViewById(R.id.artifact_name);
+	    //artifact = artifactEditText.getText().toString();
+	    
+	    Spinner afct = (Spinner) view.findViewById(R.id.artifact_name);
+	    afct.setOnItemSelectedListener(this);
+	    ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this.getActivity(),
+	    		R.array.artifacts, android.R.layout.simple_spinner_item);
+	    adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+	    afct.setAdapter(adapter);
+	    //artifact = afct.getSelectedItem().toString();
 	    
 	    EditText descriptionEditText = (EditText) view.findViewById(R.id.description);
 	    description = descriptionEditText.getText().toString();	    

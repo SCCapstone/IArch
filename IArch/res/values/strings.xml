@@ -51,5 +51,25 @@
     <string name="title_fragment_image_details">Image Details</string>
     <string name="title_fragment_chooser">Projects</string>
     <string name="title_fragment_main">iArch</string>
+    
+    <!-- Artifacts -->
+    <string-array name="artifacts">
+        <item>Bead</item>
+        <item>Brick</item>
+        <item>Coin</item>
+        <item>Pottery</item>
+        <item>Lithic</item>
+        <item>Glass</item>
+        <item>Metal</item>
+        <item>Inscription</item>
+        <item>Other Artifact</item>
+        <item>Clay</item>
+        <item>Shell</item>
+        <item>Charcoal</item>
+        <item>Bone</item>
+        <item>Wood</item>
+        <item>Stone</item>
+        <item>Other Ecofact</item>
+    </string-array>
 
 </resources>

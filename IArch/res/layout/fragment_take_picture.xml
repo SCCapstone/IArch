@@ -54,14 +54,23 @@
         android:inputType="text" >
     </EditText>
     
-    <EditText
+    <!--<EditText
         android:id="@+id/artifact_name"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_alignLeft="@+id/imageView1"
         android:layout_below="@+id/location_name"
         android:hint="@string/artifact_hint"
-        android:inputType="text" />
+        android:inputType="text" />-->
+        
+    <Spinner
+        android:id="@+id/artifact_name"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/imageView1"
+        android:layout_below="@+id/location_name"
+        android:drawSelectorOnTop="true"
+        android:prompt="@string/artifact_hint"/>
 
     <EditText
         android:id="@+id/description"
@@ -71,6 +80,7 @@
         android:layout_below="@+id/artifact_name"
         android:hint="@string/description_hint"
         android:inputType="textMultiLine" />
+    
     
      <Button
         android:id="@+id/sync"
