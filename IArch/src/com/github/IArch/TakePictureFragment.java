@@ -69,7 +69,6 @@ import android.widget.Toast;
 	Button dropboxButton;
 	int RESULT_OK = -1;
 	int RESULT_CANCELED = 0;
-	Spinner afct;
 	
 	
 	
@@ -81,7 +80,7 @@ import android.widget.Toast;
 		getActionBar().setTitle(R.string.title_fragment_take_picture);
 		
 		//Set up spinner
-		afct = (Spinner) view.findViewById(R.id.artifact_name);
+		Spinner afct = (Spinner) view.findViewById(R.id.artifact_name);
 		afct.setOnItemSelectedListener(this);
 		ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(getActivity(),
 	    		R.array.artifacts, android.R.layout.simple_spinner_item);
@@ -105,12 +104,16 @@ import android.widget.Toast;
 			
 				//continue only if file was successfully created
 				if (fileUri != null) {
+					//store file path to variable
+					fileLocation = fileUri.getPath();
+					
 					takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, fileUri);
 					startActivityForResult(takePictureIntent,CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE);
 				}
 			}
 		}
 		
+				
 		return view;
 	}
 
@@ -163,13 +166,12 @@ import android.widget.Toast;
 	public void onActivityResult(int requestCode, int resultCode, Intent data) {
 		//stop getting location updates; saves battery
 		stopLocation();
-		
-		//store file path to variable
-		fileLocation = fileUri.getPath();
-		
+				
 		System.out.println("RESULT CODE: " + resultCode);
 		
 		if (requestCode == CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE && resultCode == RESULT_OK) {
+			
+			
 			//show picture that was taken
 			setPic(fileLocation);
 				
