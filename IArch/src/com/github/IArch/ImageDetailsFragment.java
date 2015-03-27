@@ -6,39 +6,54 @@ import com.dropbox.sync.android.DbxFields;
 import com.dropbox.sync.android.DbxRecord;
 import com.dropbox.sync.android.DbxTable;
 
+import android.app.ActionBar;
 import android.app.Fragment;
+import android.app.FragmentTransaction;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-public class ImageDetailsFragment extends Fragment {
+public class ImageDetailsFragment extends Fragment implements OnClickListener {
 
-	String fileLocation = GalleryFragment.fileName.toString();
+	static String fileLocation;
 	View galleryView;
+	ImageView image;
 	
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState) {
 		
 		galleryView = inflater.inflate(R.layout.fragment_image_details, container, false);
-				
+		getActionBar().setTitle(R.string.title_fragment_image_details);
+		image = (ImageView) galleryView.findViewById(R.id.imageViewID);	
+		image.setOnClickListener(this);
+		
+		fileLocation = GalleryFragment.fileName.toString();
 		dropboxStuff();
+		
+		//show actionbar in case it was hidden when displaying full screen image
+		getActivity().getActionBar().show();
 		
 		return galleryView;
 	}
 
+	private ActionBar getActionBar() {
+	    return getActivity().getActionBar();
+	}
+	
 	private void setPic(String file) {
 		//get dimensions of view
-		ImageView myImage = (ImageView) galleryView.findViewById(R.id.imageView1);
+		ImageView myImage = (ImageView) galleryView.findViewById(R.id.imageViewID);
 		
 		//this works for now... hard coded scale factor
-		int targetW = 400;//myImage.getWidth();
-		int targetH = 400;//myImage.getHeight();
+		int targetW = 900;//myImage.getWidth();
+		int targetH = 600;//myImage.getHeight();
 				
 		System.out.println("targetW: " + targetW + " targetH: " + targetH);
 		
@@ -109,18 +124,18 @@ public class ImageDetailsFragment extends Fragment {
 					String description = firstResult.getString("DESCRIPTION");
 					Double longitude = firstResult.getDouble("LONGITUDE");
 					Double latitude = firstResult.getDouble("LATITUDE");
-					String latLong = "Latitude: " + latitude + "\nLongitude: " + longitude;
+					String latLong = "Latitude: " + latitude + " Longitude: " + longitude;
 					String artifactType = firstResult.getString("ARTIFACT_TYPE");
 					String location = firstResult.getString("LOCATION");
 				
 					//set text for textViews
 					if (date != null) {
 						TextView dateField = (TextView) galleryView.findViewById(R.id.date);
-						dateField.setText("Date: " + date);
+						dateField.setText(date);
 					}
 					if (projectName != null) {
 						TextView nameField = (TextView) galleryView.findViewById(R.id.project_name);
-						nameField.setText("Project: " + projectName);
+						nameField.setText("Project Name : " + projectName);
 					}
 					if (description != null) {
 						TextView descriptionField = (TextView) galleryView.findViewById(R.id.description);
@@ -154,5 +169,21 @@ public class ImageDetailsFragment extends Fragment {
 			//show picture that was taken
 			setPic(fileLocation);
 		}		
+	}
+
+	@Override
+	public void onClick(View v) {
+		// Create new fragment and transaction
+				Fragment newFragment = new FullscreenImageFragment();
+				FragmentTransaction transaction = getFragmentManager().beginTransaction();
+
+				// Replace whatever is in the fragment_container view with this fragment,
+				// and add the transaction to the back stack
+				transaction.replace(R.id.container, newFragment);
+				transaction.addToBackStack(null);
+
+				// Commit the transaction
+				transaction.commit();
+		
 	}
 }

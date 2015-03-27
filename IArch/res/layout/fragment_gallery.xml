@@ -3,20 +3,20 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="com.github.IArch.MainActivity$GalleryFragment" 
-    android:background="@drawable/background_tile">
- 
+    android:background="@drawable/background_tile"
+    >
+
     <GridView
         android:id="@+id/gridView"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_margin="5dp"
         android:columnWidth="100dp"
-        android:drawSelectorOnTop="true"
         android:gravity="center"
         android:numColumns="auto_fit"
-        android:stretchMode="columnWidth"
-        android:verticalSpacing="5dp" >
-
+        android:verticalSpacing="5dp"
+        android:drawSelectorOnTop="true"
+        android:stretchMode="columnWidth" >
     </GridView>
 
 </RelativeLayout>

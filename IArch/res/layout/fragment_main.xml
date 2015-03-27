@@ -39,7 +39,7 @@
         android:shadowDy="1"
         android:shadowRadius="2"
         android:onClick="takePicture" />
- 
+
     <Button
         android:id="@+id/map_button"
         android:layout_width="fill_parent"

@@ -3,6 +3,10 @@ package com.github.IArch;
 import java.io.File;
 import java.util.ArrayList;
 
+import com.dropbox.sync.android.DbxDatastore;
+import com.dropbox.sync.android.DbxException;
+
+import android.app.ActionBar;
 import android.app.Fragment;
 import android.app.FragmentTransaction;
 import android.graphics.Bitmap;
@@ -33,6 +37,7 @@ public class GalleryFragment extends Fragment {
 		
 		setHasOptionsMenu(true);
 		View galleryView = inflater.inflate(R.layout.fragment_gallery, container, false);
+		getActionBar().setTitle(R.string.title_fragment_gallery);
 		
 		gridView = (GridView) galleryView.findViewById(R.id.gridView);
 		customGridAdapter = new GridViewAdapter(getActivity(), R.layout.row_grid, getData());
@@ -48,7 +53,7 @@ public class GalleryFragment extends Fragment {
 				//		Toast.LENGTH_SHORT).show();
 				
 				//get files in images directory
-				String longFileName = ChooserFragment.fileName.toString();
+				String longFileName = ChooserFragment.folderName.toString();
 				String[] shortFileName = longFileName.split("/");
 				File path = new File(Environment.getExternalStoragePublicDirectory(
 						Environment.DIRECTORY_PICTURES) + "/iArch/" + shortFileName[6]);
@@ -76,19 +81,39 @@ public class GalleryFragment extends Fragment {
 			}
 
 		});
+		
+		//sync datastores so that no fields will be empty when picture clicked the first 
+		//time or after user disconnects and reconnects dropbox
+		DbxDatastore datastore;
+		try {
+			String[] splitFile = ChooserFragment.folderName.toString().split("/");
+			if (MainActivity.mAccountManager.hasLinkedAccount()) {	
+				datastore = MainActivity.mDatastoreManager.openDatastore(splitFile[6]);
+				datastore.sync();
+				datastore.close();
+			}
+		} catch (DbxException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
 		return galleryView;
 	}
 
+	private ActionBar getActionBar() {
+	    return getActivity().getActionBar();
+	}
+	
 	private ArrayList<ImageItem> getData() {
 		final ArrayList<ImageItem> imageItems = new ArrayList<ImageItem>();
 		
-		File path = new File(ChooserFragment.fileName.toString());
+		File path = new File(ChooserFragment.folderName.toString());
 	    File[] imageFiles = path.listFiles();
 	    
 	    for (int i = 0; i < imageFiles.length; i++) {
 	    	String folderName = imageFiles[i].toString();
 	    	String[] shortFolderName = folderName.split("/");
-	    	imageItems.add(new ImageItem(decodeSampledBitmapFromFile(imageFiles[i].getAbsolutePath(), 200, 200), shortFolderName[7]));
+	    	imageItems.add(new ImageItem(decodeSampledBitmapFromFile(imageFiles[i].getAbsolutePath(), 200, 200), shortFolderName[7], folderName));
 	    }
 	    
 		return imageItems;
@@ -135,7 +160,6 @@ public class GalleryFragment extends Fragment {
 	@Override
 	public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
 		// Inflate the menu; this adds items to the action bar if it is present.
-		
 		inflater.inflate(R.menu.gallery_fragment, menu);
 		
 	}

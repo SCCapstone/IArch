@@ -15,6 +15,7 @@
     <string name="date">Date</string>
     <string name="gps">GPS</string>
     <string name="sync">Sync to Dropbox</string>
+    <string name="image">Image</string>
 
     <!-- Main Screen Buttons -->
     <string name="camera">Camera</string>
@@ -39,15 +40,36 @@
     <string name="action_camera">Camera</string>
     <string name="action_projects">Projects</string>
     <string name="action_gallery">Gallery</string>
-    <string name="action_upload">Sync</string>
+    <string name="action_sync">Sync Project</string>
     <string name="action_export">Export</string>
     <string name="action_export_project">Export Project</string>
     <string name="action_search">Search</string>
     <string name="action_settings">Settings</string>
-    <string name="title_activity_take_picture">TakePicture</string>
-    <string name="title_activity_display_map">DisplayMapActivity</string>
-    <string name="title_activity_gallery">Gallery</string>
-    <string name="title_activity_image_details">ImageDetails</string>
-    <string name="title_activity_chooser">Chooser</string>
+    <string name="title_fragment_take_picture">Camera</string>
+    <string name="title_fragment_display_map">Map</string>
+    <string name="title_fragment_gallery">Gallery</string>
+    <string name="title_fragment_image_details">Image Details</string>
+    <string name="title_fragment_chooser">Projects</string>
+    <string name="title_fragment_main">iArch</string>
+    
+    <!-- Artifacts -->
+    <string-array name="artifacts">
+        <item>Bead</item>
+        <item>Brick</item>
+        <item>Coin</item>
+        <item>Pottery</item>
+        <item>Lithic</item>
+        <item>Glass</item>
+        <item>Metal</item>
+        <item>Inscription</item>
+        <item>Other Artifact</item>
+        <item>Clay</item>
+        <item>Shell</item>
+        <item>Charcoal</item>
+        <item>Bone</item>
+        <item>Wood</item>
+        <item>Stone</item>
+        <item>Other Ecofact</item>
+    </string-array>
 
 </resources>
