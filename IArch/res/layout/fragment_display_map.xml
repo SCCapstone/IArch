@@ -37,7 +37,7 @@
         android:popupBackground="#88000000"
         android:prompt="@string/map_pins" 
         />
-      
+
     </LinearLayout>
 
 </RelativeLayout>

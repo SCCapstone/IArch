@@ -199,7 +199,7 @@ ul li button:hover {
 	color: #3d3d3d;
 	background: #eee;
 	position: relative;
-	border-radius: 3px;
+	//border-radius: 3px;
 	margin: 0 auto;
 	-webkit-transform: scale(0.7);
 	-moz-transform: scale(0.7);
@@ -256,6 +256,31 @@ p.sharing {
 	cursor: pointer;
 }
 
+#form-content {
+	padding: 10px;
+}
+
+#form-content h3 {
+	background: #eee;
+}
+
+#form_buttons {
+	text-align: center;
+}
+
+#form_submit, #form_cancel {
+	margin-left: 10px;
+	margin-right: 10px;
+	display: inline;
+}
+
+/* This stops the edit icons from bunching up on top of each other */
+#edit {
+	min-width: 65px;
+}
+
+
+
 /*td { padding-right: 14px; }
 table { border-collapse: collapse; }*/
 
@@ -293,17 +318,19 @@ table.database {
 	color: #000;
 }
 
-#record_edit:hover {
+#record_edit:hover, #record_delete:hover, #sort_date:hover, #sort_location:hover, #sort_artifact:hover, #sort_description:hover, #sort_gps:hover {
 	color: #0000FF;
 }
 
-#record_delete {
+#record_delete, #sort_date, #sort_location, #sort_artifact, #sort_description, #sort_gps {
 	color: #000;
 }
 
-#record_delete:hover {
-	color: #0000FF;
-}
+
+
+
+
+
 
 /*#project_delete {
 	color: #000;
