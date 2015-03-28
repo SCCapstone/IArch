@@ -6,7 +6,9 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context="com.github.IArch.TakePicture" >
+    tools:context="com.github.IArch.TakePicture" 
+    android:background="@drawable/background_tile"
+    >
 
     <ImageView
     	android:id="@+id/imageView1"
@@ -21,7 +23,9 @@
         android:layout_height="wrap_content"
         android:layout_alignTop="@+id/imageView1"
         android:layout_toRightOf="@+id/imageView1"
-        android:text="@string/date" />
+        android:text="@string/date" 
+        android:textColor="#FFFFFF"
+        />
 
     <TextView
         android:id="@+id/textView1"
@@ -31,7 +35,8 @@
         android:layout_toRightOf="@+id/date"
         android:layout_marginLeft="25dp"
         android:text="@string/gps"
-        android:textAppearance="?android:attr/textAppearanceSmall" />
+        android:textColor="#FFFFFF"
+        />
     
     <EditText
         android:id="@+id/project_name"
@@ -40,7 +45,9 @@
         android:layout_alignLeft="@+id/date"
         android:layout_below="@+id/textView1"
         android:hint="@string/project_hint"
-        android:inputType="text" />
+        android:inputType="text" 
+        android:textColor="#FFFFFF"
+        />
     
     <EditText
         android:id="@+id/location_name"
@@ -49,8 +56,19 @@
         android:layout_alignLeft="@+id/date"
         android:layout_below="@+id/project_name"
         android:hint="@string/location_hint"
+        android:inputType="text" 
+        android:textColor="#FFFFFF"
+        />
+    <!--  
+    <EditText
+        android:id="@+id/artifact_name"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/date"
+        android:layout_below="@+id/location_name"
+        android:hint="@string/artifact_hint"
         android:inputType="text" />
-    
+	-->
 	<Spinner
         android:id="@+id/artifact_name"
         android:layout_width="fill_parent"
@@ -58,7 +76,10 @@
         android:layout_toRightOf="@+id/imageView1"
         android:layout_below="@+id/location_name"
         android:drawSelectorOnTop="true"
-        android:prompt="@string/artifact_hint" />
+        android:prompt="@string/artifact_hint" 
+        style="@style/spinner_style"
+        android:popupBackground="#000000"
+        />
 	
 	<EditText
         android:id="@+id/description"
@@ -67,7 +88,9 @@
         android:layout_alignLeft="@+id/date"
         android:layout_below="@+id/artifact_name"
         android:hint="@string/description_hint"
-        android:inputType="textMultiLine" />
+        android:inputType="textMultiLine" 
+        android:textColor="#FFFFFF"
+        />
     
     <Button
         android:id="@+id/sync"
@@ -75,7 +98,13 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_alignLeft="@+id/date"
-        android:text="@string/sync" />
+        android:text="@string/sync" 
+        android:textColor="#FFFFFF"
+        android:background="@drawable/button_sub"
+        android:shadowColor="#000000"
+        android:shadowDx="1"
+        android:shadowDy="1"
+        android:shadowRadius="2"
+        />
 
 </RelativeLayout>
-

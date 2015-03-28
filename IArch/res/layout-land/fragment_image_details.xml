@@ -6,7 +6,9 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context="com.github.IArch.ImageDetails" >
+    tools:context="com.github.IArch.ImageDetails" 
+    android:background="@drawable/background_tile"
+    >
 
     <ImageView
     	android:id="@+id/imageViewID"
@@ -21,7 +23,9 @@
         android:layout_height="wrap_content"
         android:layout_alignTop="@+id/imageViewID"
         android:layout_toRightOf="@+id/imageViewID"
-        android:text="@string/date" />
+        android:text="@string/date" 
+        android:textColor="#FFFFFF"
+        />
 
     <TextView
         android:id="@+id/textView1"
@@ -31,7 +35,8 @@
         android:layout_toRightOf="@+id/date"
         android:layout_marginLeft="25dp"
         android:text="@string/gps"
-        android:textAppearance="?android:attr/textAppearanceSmall" />
+        android:textColor="#FFFFFF"
+        />
     
     <TextView
         android:id="@+id/project_name"
@@ -39,7 +44,7 @@
         android:layout_height="wrap_content"
         android:layout_alignLeft="@+id/date"
         android:layout_below="@+id/textView1"
-        android:hint="@string/project_hint"
+        android:textColor="#FFFFFF"
     />
     
     <TextView
@@ -49,6 +54,7 @@
         android:layout_alignLeft="@+id/date"
         android:layout_below="@+id/project_name"
         android:hint="@string/location_hint"
+        android:textColor="#FFFFFF"
     />
     
     
@@ -59,6 +65,7 @@
         android:layout_alignLeft="@+id/date"
         android:layout_below="@+id/location_name"
         android:hint="@string/artifact_hint"
+        android:textColor="#FFFFFF"
          />
 
     <TextView
@@ -68,6 +75,7 @@
         android:layout_alignLeft="@+id/date"
         android:layout_below="@+id/artifact_name"
         android:hint="@string/description_hint"
+        android:textColor="#FFFFFF"
          />
     <!-- 
     <Button
