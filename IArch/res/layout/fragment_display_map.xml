@@ -19,7 +19,7 @@
       android:background="#000000"
       android:orientation="horizontal"
       android:padding="5dp"
-      android:bottomRightRadius="3dp"
+      android:bottomRightRadius="8dp"
       >
        <!--  
         <TextView
@@ -36,6 +36,7 @@
         android:background="#000000"
         android:popupBackground="#88000000"
         android:prompt="@string/map_pins" 
+        style="@style/spinner_style"
         />
 
     </LinearLayout>
