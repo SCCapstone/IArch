@@ -100,7 +100,7 @@
         android:layout_alignLeft="@+id/date"
         android:text="@string/sync" 
         android:textColor="#FFFFFF"
-        android:background="@drawable/button_texture"
+        android:background="@drawable/button_sub"
         android:shadowColor="#000000"
         android:shadowDx="1"
         android:shadowDy="1"

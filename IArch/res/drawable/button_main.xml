@@ -1,10 +1,11 @@
+<!-- Button for the main screen with drop shadows -->
 <selector xmlns:android="http://schemas.android.com/apk/res/android">
 <item>
     <layer-list>
         <item android:top="2dp" android:left="2dp">
             <shape>
                 <corners android:radius="10dp" />
-                <solid android:color="#AA000000" />
+                <solid android:color="#CC000000" />
             </shape>
         </item>
         <item android:bottom="2dp" android:right="2dp">
