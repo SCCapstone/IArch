@@ -2,7 +2,9 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/main"
     android:layout_width="fill_parent" 
-    android:layout_height="fill_parent" >
+    android:layout_height="fill_parent" 
+    android:background="@drawable/background_tile"
+    >
 
 	<com.google.android.gms.maps.MapView
 	xmlns:android="http://schemas.android.com/apk/res/android"
@@ -14,9 +16,11 @@
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
       android:layout_gravity="bottom|right"
-      android:background="@android:color/white"
+      android:background="#000000"
       android:orientation="horizontal"
-      android:padding="5dp">
+      android:padding="5dp"
+      android:bottomRightRadius="8dp"
+      >
        <!--  
         <TextView
     	android:id="@+id/pins"
@@ -29,9 +33,12 @@
         android:id="@+id/spinner"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:popupBackground="@android:color/white"
-        android:prompt="@string/map_pins" />
-      
+        android:background="#000000"
+        android:popupBackground="#88000000"
+        android:prompt="@string/map_pins" 
+        style="@style/spinner_style"
+        />
+
     </LinearLayout>
 
 </RelativeLayout>
