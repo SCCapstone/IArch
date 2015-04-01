@@ -7,8 +7,11 @@ import java.util.List;
 import android.app.ActionBar;
 import android.app.Fragment;
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.location.Location;
 import android.location.LocationManager;
+import android.media.ThumbnailUtils;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -33,6 +36,7 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.GoogleMap.OnMyLocationButtonClickListener;
 import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.MapsInitializer;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
@@ -229,9 +233,14 @@ public class DisplayMapFragment extends Fragment implements
 					//shorten path
 					String[] splitFile = myFilename.split("/");
 					LatLng myLoc = new LatLng(myLatitude,myLongitude);
+					Bitmap ThumbImage = ThumbnailUtils.extractThumbnail(BitmapFactory.decodeFile(myFilename), 100, 100);
+					System.out.println("ThumbImage: " + ThumbImage);
+					
 					googleMap.addMarker(new MarkerOptions()
 						.position(myLoc)
-						.title(splitFile[7]));
+						.title(splitFile[7])
+						.icon(BitmapDescriptorFactory.fromBitmap(ThumbImage)));
+					ThumbImage.recycle();
 				}
 				
 				datastore.close();
