@@ -239,7 +239,8 @@ public class DisplayMapFragment extends Fragment implements
 					googleMap.addMarker(new MarkerOptions()
 						.position(myLoc)
 						.title(splitFile[7])
-						.icon(BitmapDescriptorFactory.fromBitmap(ThumbImage)));
+						.icon(BitmapDescriptorFactory.fromBitmap(ThumbImage))
+						.anchor(0,1));
 					
 					//free memory used when creating thumbnail 
 					ThumbImage.recycle();
