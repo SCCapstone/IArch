@@ -94,6 +94,8 @@ public class MainActivity extends Activity {
 			e.printStackTrace();
 		}
 
+		//set up dropbox listeners
+		setUpListeners();
 	}
     
 	@Override
@@ -104,6 +106,7 @@ public class MainActivity extends Activity {
 		} else {
 			showUnlinkedView();
 		}
+		setUpListeners();
 	}
 	
 	@Override
@@ -161,27 +164,31 @@ public class MainActivity extends Activity {
 		}
 	}
 	
+	public void setUpListeners() {
+		listener = new DbxFileSystem.SyncStatusListener() {
+			@Override
+			public void onSyncStatusChange(DbxFileSystem fs) {
+				DbxSyncStatus fsStatus;
+				try {
+					fsStatus = fs.getSyncStatus();
+					
+					if (fsStatus.anyInProgress()) {
+						//Show syncing indicator
+						
+					}
+				} catch (DbxException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+				//Set syncing indicator based on current sync status
+		}; 
+	}
+	
 	public void sync() {
 		if (mAccountManager.hasLinkedAccount()) {
-			listener = new DbxFileSystem.SyncStatusListener() {
-				@Override
-				public void onSyncStatusChange(DbxFileSystem fs) {
-					DbxSyncStatus fsStatus;
-					try {
-						fsStatus = fs.getSyncStatus();
-						
-						if (fsStatus.anyInProgress()) {
-							//Show syncing indicator
-						}
-					} catch (DbxException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
-				}
-					//Set syncing indicator based on current sync status
-			}; 
-				
 			dbxFs.addSyncStatusListener(listener);
+			System.out.println("Dropbox listener started");
 						
 			String longFileName = ChooserFragment.folderName.toString();
 			String[] shortFileName = longFileName.split("/");
@@ -346,8 +353,7 @@ public class MainActivity extends Activity {
 	        		mDatastoreManager.migrateToAccount(account);
 	        		//Now use dropbox datastores
 	        		mDatastoreManager = DbxDatastoreManager.forAccount(account);
-	        		//Hide dropbox link button
-	        		
+	        		setUpListeners();
 	        	} catch (DbxException e) {
 	        		e.printStackTrace();
 	        	}
