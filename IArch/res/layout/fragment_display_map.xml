@@ -16,10 +16,9 @@
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
       android:layout_gravity="bottom|right"
-      android:background="#000000"
+      android:background="@android:color/transparent"
       android:orientation="horizontal"
-      android:padding="5dp"
-      android:bottomRightRadius="8dp"
+      android:padding="10dp"
       >
        <!--  
         <TextView
@@ -33,7 +32,7 @@
         android:id="@+id/spinner"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:background="#000000"
+        android:background="@drawable/map_spinner"
         android:popupBackground="#88000000"
         android:prompt="@string/map_pins" 
         style="@style/spinner_style"
