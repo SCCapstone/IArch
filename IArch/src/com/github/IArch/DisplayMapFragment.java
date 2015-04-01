@@ -240,6 +240,8 @@ public class DisplayMapFragment extends Fragment implements
 						.position(myLoc)
 						.title(splitFile[7])
 						.icon(BitmapDescriptorFactory.fromBitmap(ThumbImage)));
+					
+					//free memory used when creating thumbnail 
 					ThumbImage.recycle();
 				}
 				
