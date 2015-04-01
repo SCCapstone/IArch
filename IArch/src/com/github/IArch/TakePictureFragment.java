@@ -69,6 +69,7 @@ import android.widget.Toast;
 	Button dropboxButton;
 	int RESULT_OK = -1;
 	int RESULT_CANCELED = 0;
+	Boolean fileSynced = false;
 	
 	
 	
@@ -112,8 +113,7 @@ import android.widget.Toast;
 				}
 			}
 		}
-		
-				
+						
 		return view;
 	}
 
@@ -141,7 +141,7 @@ import android.widget.Toast;
 	public void onPause() {
 	    super.onPause();  // Always call the superclass method first
 	    //delete photo if back button was pressed on TakePicture after taking photo
-	    if (isRemoving()) {
+	    if (isRemoving() && fileSynced == false) {
 	    	if (fileLocation != null) {
 	    		Toast.makeText(getActivity(), "Back button pressed, deleting image", Toast.LENGTH_SHORT).show();
 	    		File myFile = new File(fileLocation);
@@ -183,6 +183,7 @@ import android.widget.Toast;
 			
 		} else if (resultCode == RESULT_CANCELED){
 			//user cancelled the image capture
+			fileSynced = false;
 			getActivity().getFragmentManager().popBackStack();
 		} else {
 			// image capture failed, advise user
@@ -290,22 +291,8 @@ import android.widget.Toast;
 				Boolean syncCorrectly = dropboxStuff(fileLocation);
 				if (syncCorrectly)
 				{
-					Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-					
-					getLocation();
-					getDate();
-					
-					//Ensure there is a camera activity to handle intent
-					if (takePictureIntent.resolveActivity(getActivity().getPackageManager()) != null) {
-						//create file where photo should go
-						fileUri = getOutputMediaFileUri(MEDIA_TYPE_IMAGE);
-					
-						//continue only if file was successfully created
-						if (fileUri != null) {
-							takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, fileUri);
-							startActivityForResult(takePictureIntent,CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE);
-						}
-					}
+					fileSynced = true;
+					getActivity().getFragmentManager().popBackStack();
 				}
 				// Need to add failure message
 			}

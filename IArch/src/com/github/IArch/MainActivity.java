@@ -28,8 +28,10 @@ import com.dropbox.sync.android.DbxException;
 import com.dropbox.sync.android.DbxFields;
 import com.dropbox.sync.android.DbxFile;
 import com.dropbox.sync.android.DbxFileSystem;
+import com.dropbox.sync.android.DbxFileSystem.SyncStatusListener;
 import com.dropbox.sync.android.DbxPath;
 import com.dropbox.sync.android.DbxRecord;
+import com.dropbox.sync.android.DbxSyncStatus;
 import com.dropbox.sync.android.DbxTable;
 import com.dropbox.sync.android.DbxException.Unauthorized;
 import com.dropbox.sync.android.DbxPath.InvalidPathException;
@@ -45,6 +47,7 @@ public class MainActivity extends Activity {
 	
 	static DbxAccountManager mAccountManager;
 	static DbxDatastoreManager mDatastoreManager;
+	DbxFileSystem dbxFs;
 	
 	private String[] navDrawerItems;
     private DrawerLayout mDrawerLayout;
@@ -53,6 +56,7 @@ public class MainActivity extends Activity {
     private CharSequence mDrawerTitle;
     private CharSequence mTitle;
     String projectName;
+    SyncStatusListener listener;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -83,8 +87,37 @@ public class MainActivity extends Activity {
 	        mDatastoreManager = DbxDatastoreManager.localManager(mAccountManager);
 	    }
 
+		try {
+			dbxFs = DbxFileSystem.forAccount(mAccountManager.getLinkedAccount());
+		} catch (Unauthorized e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		//set up dropbox listeners
+		setUpListeners();
 	}
     
+	@Override
+	protected void onResume() {
+		super.onResume();
+		if (mAccountManager.hasLinkedAccount()) {
+		    showLinkedView();
+		} else {
+			showUnlinkedView();
+		}
+		setUpListeners();
+	}
+	
+	@Override
+	protected void onPause() {
+		super.onPause();
+		if (listener != null) {
+			dbxFs.removeSyncStatusListener(listener);
+			System.out.println("Dropbox listener removed");
+		}
+	}
+	
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.
@@ -131,8 +164,32 @@ public class MainActivity extends Activity {
 		}
 	}
 	
+	public void setUpListeners() {
+		listener = new DbxFileSystem.SyncStatusListener() {
+			@Override
+			public void onSyncStatusChange(DbxFileSystem fs) {
+				DbxSyncStatus fsStatus;
+				try {
+					fsStatus = fs.getSyncStatus();
+					
+					if (fsStatus.anyInProgress()) {
+						//Show syncing indicator
+						
+					}
+				} catch (DbxException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+				//Set syncing indicator based on current sync status
+		}; 
+	}
+	
 	public void sync() {
 		if (mAccountManager.hasLinkedAccount()) {
+			dbxFs.addSyncStatusListener(listener);
+			System.out.println("Dropbox listener started");
+						
 			String longFileName = ChooserFragment.folderName.toString();
 			String[] shortFileName = longFileName.split("/");
 			projectName = shortFileName[6];
@@ -164,8 +221,7 @@ public class MainActivity extends Activity {
 		    File[] imageFiles = path.listFiles();
 		    String finalString = "";
 		    
-			try{
-				DbxFileSystem dbxFs = DbxFileSystem.forAccount(MainActivity.mAccountManager.getLinkedAccount());
+			try {
 				//if remote file already exists, delete it before exporting new file
 				if (dbxFs.exists(remotePath)) {
 					dbxFs.delete(remotePath);
@@ -243,16 +299,6 @@ public class MainActivity extends Activity {
 		
 	}
 	
-	@Override
-	protected void onResume() {
-		super.onResume();
-		if (mAccountManager.hasLinkedAccount()) {
-		    showLinkedView();
-		} else {
-			showUnlinkedView();
-		}
-	}
-	
 	private void setUpNavDrawer()
 	{
 		mTitle = "Home";
@@ -307,8 +353,7 @@ public class MainActivity extends Activity {
 	        		mDatastoreManager.migrateToAccount(account);
 	        		//Now use dropbox datastores
 	        		mDatastoreManager = DbxDatastoreManager.forAccount(account);
-	        		//Hide dropbox link button
-	        		
+	        		setUpListeners();
 	        	} catch (DbxException e) {
 	        		e.printStackTrace();
 	        	}
