@@ -38,6 +38,7 @@
         android:shadowDx="1"
         android:shadowDy="1"
         android:shadowRadius="2"
+        android:textSize="25sp"
         android:onClick="takePicture" />
 
     <Button
@@ -53,6 +54,7 @@
         android:shadowDx="1"
         android:shadowDy="1"
         android:shadowRadius="2"
+        android:textSize="25sp"
         android:onClick="displayMap"
          />
       
@@ -70,6 +72,7 @@
         android:shadowDx="1"
         android:shadowDy="1"
         android:shadowRadius="2"
+        android:textSize="25sp"
         android:onClick="gallery"
          />
 
@@ -86,6 +89,7 @@
         android:shadowDx="1"
         android:shadowDy="1"
         android:shadowRadius="2"
+        android:textSize="25sp"
         android:text="@string/button_send" />
 
 </RelativeLayout>
