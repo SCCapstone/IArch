@@ -18,7 +18,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.AdapterView.OnItemSelectedListener;
 
@@ -36,7 +38,6 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.GoogleMap.OnMyLocationButtonClickListener;
 import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.MapsInitializer;
-import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
@@ -57,6 +58,9 @@ public class DisplayMapFragment extends Fragment implements
 	float zoom = 16;
 	int zoomCounter = 0;
 	DbxDatastore datastore;
+	LayoutInflater mInflater;
+	String myFilename;
+	ViewGroup parent;
 
 	//These settings are the same as the settings for the map. They will in fact give you updates
 	// at the maximal rates currently possible.
@@ -69,6 +73,8 @@ public class DisplayMapFragment extends Fragment implements
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
 		zoomCounter = 0;
+		mInflater = inflater;
+		parent = (ViewGroup) getActivity().findViewById(R.id.container);
 		// inflate and return the layout
 		view = inflater.inflate(R.layout.fragment_display_map, container, false);
 		getActionBar().setTitle(R.string.title_fragment_display_map);
@@ -143,7 +149,19 @@ public class DisplayMapFragment extends Fragment implements
 				public View getInfoContents(Marker marker) {
 					//here you can customize the contents of the window but still 
 					//keep the default info window frame and background
-					return null;
+					String title = marker.getTitle();
+					View v = getActivity().getLayoutInflater().inflate(R.layout.custom_info_window, parent, false);
+					ImageView image = (ImageView) v.findViewById(R.id.mapImageView);
+					TextView text = (TextView) v.findViewById(R.id.mapTextView);
+					String[] splitFile = myFilename.split("/");
+					String filePath = splitFile[0] + "/" + splitFile[1] + "/" + splitFile[2] + "/" + 
+							splitFile[3] + "/" + splitFile[4] + "/" + splitFile[5] + "/" + splitFile[6] + "/";
+					System.out.println("File Path: " + filePath);
+					Bitmap ThumbImage = ThumbnailUtils.extractThumbnail(BitmapFactory.decodeFile(filePath + title), 200, 200);
+					image.setImageBitmap(ThumbImage);
+					text.setText(title);
+					
+					return v;
 				}
 			});
 			googleMap.setOnInfoWindowClickListener(new GoogleMap.OnInfoWindowClickListener() {
@@ -253,7 +271,7 @@ public class DisplayMapFragment extends Fragment implements
 					DbxRecord firstResult = it.next(); 
 					Double myLongitude = firstResult.getDouble("LONGITUDE");
 					Double myLatitude = firstResult.getDouble("LATITUDE");
-					String myFilename = firstResult.getString("LOCAL_FILENAME");
+					myFilename = firstResult.getString("LOCAL_FILENAME");
 					//shorten path
 					String[] splitFile = myFilename.split("/");
 					LatLng myLoc = new LatLng(myLatitude,myLongitude);
