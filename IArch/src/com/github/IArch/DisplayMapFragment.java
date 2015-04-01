@@ -38,6 +38,7 @@ import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.MapsInitializer;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 
@@ -130,6 +131,29 @@ public class DisplayMapFragment extends Fragment implements
 			googleMap.setMyLocationEnabled(true);
 			googleMap.setOnMyLocationButtonClickListener(this);
 			googleMap.setMapType(GoogleMap.MAP_TYPE_HYBRID);
+			googleMap.setInfoWindowAdapter(new GoogleMap.InfoWindowAdapter() {
+				
+				@Override
+				public View getInfoWindow(Marker marker) {
+					//provides a view for entire info window
+					return null;
+				}
+				
+				@Override
+				public View getInfoContents(Marker marker) {
+					//here you can customize the contents of the window but still 
+					//keep the default info window frame and background
+					return null;
+				}
+			});
+			googleMap.setOnInfoWindowClickListener(new GoogleMap.OnInfoWindowClickListener() {
+				
+				@Override
+				public void onInfoWindowClick(Marker marker) {
+					//user clicked on an info window
+					System.out.println("CLICKED");
+				}
+			});
 			setupLastKnown();
 			
 			if (MainActivity.mAccountManager.hasLinkedAccount()) {
@@ -233,17 +257,17 @@ public class DisplayMapFragment extends Fragment implements
 					//shorten path
 					String[] splitFile = myFilename.split("/");
 					LatLng myLoc = new LatLng(myLatitude,myLongitude);
-					Bitmap ThumbImage = ThumbnailUtils.extractThumbnail(BitmapFactory.decodeFile(myFilename), 100, 100);
-					System.out.println("ThumbImage: " + ThumbImage);
+					//Bitmap ThumbImage = ThumbnailUtils.extractThumbnail(BitmapFactory.decodeFile(myFilename), 100, 100);
+					//System.out.println("ThumbImage: " + ThumbImage);
 					
 					googleMap.addMarker(new MarkerOptions()
 						.position(myLoc)
-						.title(splitFile[7])
-						.icon(BitmapDescriptorFactory.fromBitmap(ThumbImage))
-						.anchor(0,1));
+						.title(splitFile[7]));
+						//.icon(BitmapDescriptorFactory.fromBitmap(ThumbImage))
+						//.anchor(0,1));
 					
 					//free memory used when creating thumbnail 
-					ThumbImage.recycle();
+					//ThumbImage.recycle();
 				}
 				
 				datastore.close();
