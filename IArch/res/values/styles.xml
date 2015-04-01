@@ -39,5 +39,8 @@
     	<style name="dropdownList" parent="android:Widget.ListView.DropDown">
     		<item name="android:divider">#FFFFFF</item>
     		<item name="android:dividerHeight">1dp</item>
+    		<item name="android:padding">10dp</item>
+        	<item name="android:textSize">25sp</item>
+        	<item name="android:textColor">#FFFFFF</item>
 		</style>
 </resources>
