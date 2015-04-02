@@ -310,8 +310,8 @@ public class DisplayMapFragment extends Fragment implements
 				DbxDatastoreInfo data = infos.get(i);
 				String id = data.id;
 				list.add(id);
-				ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_item, list);
-				dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+				ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(getActivity(), R.layout.spinner_layout_map, list);
+				dataAdapter.setDropDownViewResource(R.layout.spinner_dropdown_layout);
 				spinner.setAdapter(dataAdapter);
 				spinner.setOnItemSelectedListener(new OnItemSelectedListener() {
 

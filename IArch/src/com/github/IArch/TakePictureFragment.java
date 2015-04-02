@@ -84,8 +84,8 @@ import android.widget.Toast;
 		Spinner afct = (Spinner) view.findViewById(R.id.artifact_name);
 		afct.setOnItemSelectedListener(this);
 		ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(getActivity(),
-	    		R.array.artifacts, android.R.layout.simple_spinner_item);
-	    adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+	    		R.array.artifacts, R.layout.spinner_layout); 
+	    adapter.setDropDownViewResource(R.layout.spinner_dropdown_layout);
 	    afct.setAdapter(adapter);
 		
 		dropboxButton = (Button) view.findViewById(R.id.sync);	
