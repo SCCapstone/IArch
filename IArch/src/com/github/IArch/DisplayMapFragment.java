@@ -157,7 +157,7 @@ public class DisplayMapFragment extends Fragment implements
 					String filePath = splitFile[0] + "/" + splitFile[1] + "/" + splitFile[2] + "/" + 
 							splitFile[3] + "/" + splitFile[4] + "/" + splitFile[5] + "/" + splitFile[6] + "/";
 					System.out.println("File Path: " + filePath);
-					Bitmap ThumbImage = ThumbnailUtils.extractThumbnail(BitmapFactory.decodeFile(filePath + title), 200, 200);
+					Bitmap ThumbImage = ThumbnailUtils.extractThumbnail(BitmapFactory.decodeFile(filePath + title), 325, 200);
 					image.setImageBitmap(ThumbImage);
 					text.setText(title);
 					
