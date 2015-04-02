@@ -28,6 +28,7 @@ import com.dropbox.sync.android.DbxException;
 import com.dropbox.sync.android.DbxFields;
 import com.dropbox.sync.android.DbxFile;
 import com.dropbox.sync.android.DbxFileSystem;
+import com.dropbox.sync.android.DbxFileSystem.PathListener;
 import com.dropbox.sync.android.DbxFileSystem.SyncStatusListener;
 import com.dropbox.sync.android.DbxPath;
 import com.dropbox.sync.android.DbxRecord;
@@ -56,7 +57,8 @@ public class MainActivity extends Activity {
     private CharSequence mDrawerTitle;
     private CharSequence mTitle;
     String projectName;
-    SyncStatusListener listener;
+    SyncStatusListener syncListener;
+    PathListener pathListener;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -112,9 +114,13 @@ public class MainActivity extends Activity {
 	@Override
 	protected void onPause() {
 		super.onPause();
-		if (listener != null) {
-			dbxFs.removeSyncStatusListener(listener);
-			System.out.println("Dropbox listener removed");
+		if (syncListener != null) {
+			dbxFs.removeSyncStatusListener(syncListener);
+			System.out.println("Dropbox sync listener removed");
+		}
+		if (pathListener != null) {
+			dbxFs.removePathListenerForAll(pathListener);
+			System.out.println("Dropbox path listener removed");
 		}
 	}
 	
@@ -165,7 +171,7 @@ public class MainActivity extends Activity {
 	}
 	
 	public void setUpListeners() {
-		listener = new DbxFileSystem.SyncStatusListener() {
+		syncListener = new DbxFileSystem.SyncStatusListener() {
 			@Override
 			public void onSyncStatusChange(DbxFileSystem fs) {
 				DbxSyncStatus fsStatus;
@@ -182,18 +188,29 @@ public class MainActivity extends Activity {
 				}
 			}
 				//Set syncing indicator based on current sync status
+			
 		}; 
+		pathListener = new DbxFileSystem.PathListener() {
+			
+			@Override
+			public void onPathChange(DbxFileSystem fs, DbxPath registeredPath, Mode registeredMode) {
+				System.out.println("Dropbox path listener was called");
+				
+			}
+		};
 	}
 	
 	public void sync() {
 		if (mAccountManager.hasLinkedAccount()) {
-			dbxFs.addSyncStatusListener(listener);
-			System.out.println("Dropbox listener started");
-						
 			String longFileName = ChooserFragment.folderName.toString();
 			String[] shortFileName = longFileName.split("/");
 			projectName = shortFileName[6];
-		
+			
+			dbxFs.addSyncStatusListener(syncListener);
+			DbxPath remotePath = new DbxPath(shortFileName[6]);
+			dbxFs.addPathListener(pathListener, remotePath, DbxFileSystem.PathListener.Mode.PATH_OR_CHILD);
+			System.out.println("Dropbox listeners started");
+						
 			//open datastore and get fresh data
 			DbxDatastore datastore = null;
 			try {
