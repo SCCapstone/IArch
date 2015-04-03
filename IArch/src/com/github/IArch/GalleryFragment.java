@@ -9,8 +9,6 @@ import com.dropbox.sync.android.DbxException;
 import android.app.ActionBar;
 import android.app.Fragment;
 import android.app.FragmentTransaction;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Environment;
@@ -48,10 +46,7 @@ public class GalleryFragment extends Fragment {
 		//handle item click
 		gridView.setOnItemClickListener(new OnItemClickListener() {
 			public void onItemClick(AdapterView<?> parent, View v,
-				int position, long id) {
-				//Toast.makeText(Gallery.this, position + "#Selected",
-				//		Toast.LENGTH_SHORT).show();
-				
+					int position, long id) {
 				//get files in images directory
 				String longFileName = ChooserFragment.folderName.toString();
 				String[] shortFileName = longFileName.split("/");
@@ -62,11 +57,7 @@ public class GalleryFragment extends Fragment {
 			    fileName = imageFiles[position];
 			    System.out.println("image selected : " + imageFiles[position]);
 				
-			    //Intent intent = new Intent(GalleryFragment.this, ImageDetails.class);
-			    //startActivity(intent);
-			    //Intent intent = new Intent(Chooser.this, Gallery.class);
-			    //startActivity(intent);
-				// Create new fragment and transaction
+			    // Create new fragment and transaction
 				Fragment newFragment = new ImageDetailsFragment();
 				FragmentTransaction transaction = getFragmentManager().beginTransaction();
 
@@ -113,56 +104,16 @@ public class GalleryFragment extends Fragment {
 	    for (int i = 0; i < imageFiles.length; i++) {
 	    	String folderName = imageFiles[i].toString();
 	    	String[] shortFolderName = folderName.split("/");
-	    	
-	    	imageItems.add(new ImageItem(decodeSampledBitmapFromFile(imageFiles[i].getAbsolutePath(), 200, 200), shortFolderName[7], folderName));
+	    	imageItems.add(new ImageItem(imageFiles[i], shortFolderName[7], folderName));
 	    }
 	    
 		return imageItems;
 	}
 	
-	public static Bitmap decodeSampledBitmapFromFile(String file, int reqWidth, int reqHeight) {
-
-	    // First decode with inJustDecodeBounds=true to check dimensions
-	    final BitmapFactory.Options options = new BitmapFactory.Options();
-	    options.inJustDecodeBounds = true;
-	    BitmapFactory.decodeFile(file, options);
-
-	    // Calculate inSampleSize
-	    options.inSampleSize = calculateInSampleSize(options, reqWidth, reqHeight);
-
-	    // Decode bitmap with inSampleSize set
-	    options.inJustDecodeBounds = false;
-	    return BitmapFactory.decodeFile(file, options);
-	}
-	
-	public static int calculateInSampleSize(
-            BitmapFactory.Options options, int reqWidth, int reqHeight) {
-    // Raw height and width of image
-    final int height = options.outHeight;
-    final int width = options.outWidth;
-    int inSampleSize = 1;
-
-    if (height > reqHeight || width > reqWidth) {
-
-        final int halfHeight = height / 2;
-        final int halfWidth = width / 2;
-
-        // Calculate the largest inSampleSize value that is a power of 2 and keeps both
-        // height and width larger than the requested height and width.
-        while ((halfHeight / inSampleSize) > reqHeight
-                && (halfWidth / inSampleSize) > reqWidth) {
-            inSampleSize *= 2;
-        }
-    }
-    //System.out.println(inSampleSize);
-    return inSampleSize;
-}
-
 	@Override
 	public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
 		// Inflate the menu; this adds items to the action bar if it is present.
-		inflater.inflate(R.menu.gallery_fragment, menu);
-		
+		inflater.inflate(R.menu.gallery_fragment, menu);	
 	}
 		
 	public class MultiChoiceModeListener implements GridView.MultiChoiceModeListener {

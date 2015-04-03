@@ -9,13 +9,13 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
-public class ListViewAdapter extends ArrayAdapter<ImageItem> {
+public class ListViewAdapter extends ArrayAdapter<LineItem> {
 	private Context context;
 	private int layoutResourceId;
-	private ArrayList<ImageItem> data = new ArrayList<ImageItem>();
+	private ArrayList<LineItem> data = new ArrayList<LineItem>();
 
 	public ListViewAdapter(Context context, int layoutResourceId,
-			ArrayList<ImageItem> data) {
+			ArrayList<LineItem> data) {
 		super(context, layoutResourceId, data);
 		this.layoutResourceId = layoutResourceId;
 		this.context = context;
@@ -38,7 +38,7 @@ public class ListViewAdapter extends ArrayAdapter<ImageItem> {
 			holder = (ViewHolder) row.getTag();
 		}
 
-		ImageItem item = data.get(position);
+		LineItem item = data.get(position);
 		holder.imageTitle.setText(item.getTitle());
 		holder.lastModified.setText(item.getLastModified());
 		return row;

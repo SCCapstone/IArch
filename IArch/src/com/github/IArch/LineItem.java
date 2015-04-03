@@ -1,24 +1,24 @@
 package com.github.IArch;
 
-import java.io.File;
+import android.graphics.Bitmap;
 
-public class ImageItem {
-	private File image;
+public class LineItem {
+	private Bitmap image;
 	private String title;
 	private String lastModified;
 
-	public ImageItem(File image, String title, String lastModified) {
+	public LineItem(Bitmap image, String title, String lastModified) {
 		super();
 		this.image = image;
 		this.title = title;
 		this.lastModified = lastModified;
 	}
 
-	public File getImage() {
+	public Bitmap getImage() {
 		return image;
 	}
 
-	public void setImage(File image) {
+	public void setImage(Bitmap image) {
 		this.image = image;
 	}
 
