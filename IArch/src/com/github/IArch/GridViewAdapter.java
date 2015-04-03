@@ -43,7 +43,7 @@ public class GridViewAdapter extends ArrayAdapter<ImageItem> {
 		holder.imageTitle.setText(item.getTitle());
 		//holder.image.setImageBitmap(item.getImage());
 		GalleryWorkerTask task = new GalleryWorkerTask(holder.image);
-		task.image_path = item.getImage();
+		task.myImage = item.getImage();
 		task.execute(1);
 		
 		return row;
