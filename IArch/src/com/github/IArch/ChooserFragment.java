@@ -83,8 +83,8 @@ public class ChooserFragment extends Fragment {
 	    return getActivity().getActionBar();
 	}
 	
-	private ArrayList<ImageItem> getData() {
-		final ArrayList<ImageItem> projectItems = new ArrayList<ImageItem>();
+	private ArrayList<LineItem> getData() {
+		final ArrayList<LineItem> projectItems = new ArrayList<LineItem>();
 		
 		File path = new File(Environment.getExternalStoragePublicDirectory(
 				Environment.DIRECTORY_PICTURES) + "/iArch/");
@@ -96,7 +96,7 @@ public class ChooserFragment extends Fragment {
 	    		String folderName = projectNames[i].toString();
 	    		String[] shortFolderName = folderName.split("/");
 	    		Date lastMod = new Date(projectNames[i].lastModified());
-	    		projectItems.add(new ImageItem(icon, shortFolderName[6], "Last Modified: " + lastMod.toString()));
+	    		projectItems.add(new LineItem(icon, shortFolderName[6], "Last Modified: " + lastMod.toString()));
 	    	}
 	    }
 	    
