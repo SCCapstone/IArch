@@ -9,7 +9,8 @@ import android.widget.ImageView;
 
 public class GalleryWorkerTask extends AsyncTask<Integer, Void, Bitmap> {
 	private final WeakReference<ImageView> imageViewReference;
-    Bitmap myImage;
+    //private int data = 0;
+	Bitmap myImage;
     int reqWidth;
     int reqHeight;
 
@@ -19,14 +20,15 @@ public class GalleryWorkerTask extends AsyncTask<Integer, Void, Bitmap> {
 
 	@Override
 	protected Bitmap doInBackground(Integer... params) {
-		//int data = params[0];
+		//data = params[0];
 		//Bitmap picture = BitmapFactory.decodeFile(image_path);
         //int width = myImage.getWidth();
         //int height = myImage.getHeight();
         //float aspectRatio = (float) width / (float) height;
         //int newWidth = 200;
         //int newHeight = (int) (200 / aspectRatio);
-        return myImage = Bitmap.createScaledBitmap(myImage, myImage.getWidth(),
+        //return decodeSampledBitmapFromResource(getResources(), data, 100, 100);
+		return myImage = Bitmap.createScaledBitmap(myImage, myImage.getWidth(),
                 myImage.getHeight(), true);
 	}
 	
