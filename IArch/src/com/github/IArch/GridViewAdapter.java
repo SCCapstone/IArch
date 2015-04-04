@@ -14,7 +14,9 @@ public class GridViewAdapter extends ArrayAdapter<ImageItem> {
 	private Context context;
 	private int layoutResourceId;
 	private ArrayList<ImageItem> data = new ArrayList<ImageItem>();
-
+	ViewHolder holder;
+	ImageItem item;
+	
 	public GridViewAdapter(Context context, int layoutResourceId,
 			ArrayList<ImageItem> data) {
 		super(context, layoutResourceId, data);
@@ -26,7 +28,7 @@ public class GridViewAdapter extends ArrayAdapter<ImageItem> {
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
 		View row = convertView;
-		ViewHolder holder = null;
+		holder = null;
 
 		if (row == null) {
 			LayoutInflater inflater = ((Activity) context).getLayoutInflater();
@@ -39,12 +41,10 @@ public class GridViewAdapter extends ArrayAdapter<ImageItem> {
 			holder = (ViewHolder) row.getTag();
 		}
 
-		ImageItem item = data.get(position);
+		item = data.get(position);
 		holder.imageTitle.setText(item.getTitle());
 		//holder.image.setImageBitmap(item.getImage());
-		GalleryWorkerTask task = new GalleryWorkerTask(holder.image);
-		task.myImage = item.getImage();
-		task.execute(1);
+		loadBitmap(position, holder.image);
 		
 		return row;
 	}
@@ -52,5 +52,11 @@ public class GridViewAdapter extends ArrayAdapter<ImageItem> {
 	static class ViewHolder {
 		TextView imageTitle;
 		ImageView image;
+	}
+	
+	public void loadBitmap(int resId, ImageView imageView) {
+		GalleryWorkerTask task = new GalleryWorkerTask(imageView);
+		task.myImage = item.getImage();
+		task.execute(resId);
 	}
 }

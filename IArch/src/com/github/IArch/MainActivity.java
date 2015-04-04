@@ -115,13 +115,15 @@ public class MainActivity extends Activity {
 	@Override
 	protected void onPause() {
 		super.onPause();
-		if (syncListener != null) {
-			dbxFs.removeSyncStatusListener(syncListener);
-			System.out.println("Dropbox sync listener removed");
-		}
-		if (pathListener != null) {
-			dbxFs.removePathListenerForAll(pathListener);
-			System.out.println("Dropbox path listener removed");
+		if (mAccountManager.hasLinkedAccount()) {
+			if (syncListener != null) {
+				dbxFs.removeSyncStatusListener(syncListener);
+				System.out.println("Dropbox sync listener removed");
+			}
+			if (pathListener != null) {
+				dbxFs.removePathListenerForAll(pathListener);
+				System.out.println("Dropbox path listener removed");
+			}
 		}
 	}
 	
