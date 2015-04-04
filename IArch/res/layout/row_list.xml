@@ -2,9 +2,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="fill_parent"
     android:layout_height="wrap_content"
-    android:layout_marginTop="5dp"
     android:orientation="vertical"
-    android:padding="5dp" 
     android:clickable="false"
     android:focusable="false"
     android:background="@drawable/list_element"
@@ -14,10 +12,10 @@
         android:id="@+id/text"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="5dp"
         android:gravity="left"
-        android:textSize="20sp" 
+        android:textSize="22sp" 
         android:textColor="#FFFFFF"
+        android:paddingLeft="8dp"
         >
     </TextView>
 
@@ -25,10 +23,11 @@
         android:id="@+id/lastModText"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="5dp"
+        android:layout_marginBottom="4dp"
         android:gravity="left"
-        android:textSize="12sp" 
+        android:textSize="14sp" 
         android:textColor="#FFFFFF"
+        android:paddingLeft="16dp"
         >
 
     </TextView>
