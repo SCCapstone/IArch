@@ -5,6 +5,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.drawable.Drawable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -63,5 +64,36 @@ public class GridViewAdapter extends ArrayAdapter<ImageItem> {
 		AsyncDrawable asyncDrawable = new AsyncDrawable(context.getResources(), mPlaceHolderBitmap, task);
 		imageView.setImageDrawable(asyncDrawable);
 		task.execute(resId);
+		
 	}
+		
+	public static boolean cancelPotentialWork(int data, ImageView imageView) {
+	    final GalleryWorkerTask galleryWorkerTask = getGalleryWorkerTask(imageView);
+
+	    if (galleryWorkerTask != null) {
+	        final int galleryData = galleryWorkerTask.data;
+	        // If bitmapData is not yet set or it differs from the new data
+	        if (galleryData == 0 || galleryData != data) {
+	            // Cancel previous task
+	            galleryWorkerTask.cancel(true);
+	        } else {
+	            // The same work is already in progress
+	            return false;
+	        }
+	    }
+	    // No task associated with the ImageView, or an existing task was cancelled
+	    return true;
+	}
+	
+	private static GalleryWorkerTask getGalleryWorkerTask(ImageView imageView) {
+		   if (imageView != null) {
+		       final Drawable drawable = imageView.getDrawable();
+		       if (drawable instanceof AsyncDrawable) {
+		           final AsyncDrawable asyncDrawable = (AsyncDrawable) drawable;
+		           return asyncDrawable.getGalleryWorkerTask();
+		       }
+		    }
+		    return null;
+		}
+	
 }

@@ -6,11 +6,13 @@ import java.lang.ref.WeakReference;
 import android.content.DialogInterface;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
 import android.widget.ImageView;
 
 public class GalleryWorkerTask extends AsyncTask<Integer, Void, Bitmap> {
 	private final WeakReference<ImageView> imageViewReference;
+	int data = 0;
 	File myImage;
     int reqWidth;
     int reqHeight;
@@ -21,6 +23,7 @@ public class GalleryWorkerTask extends AsyncTask<Integer, Void, Bitmap> {
 
 	@Override
 	protected Bitmap doInBackground(Integer... params) {
+		data = params[0];
 		String path = myImage.toString();
 		Bitmap image = decodeSampledBitmapFromFile(path, 256, 256);
 		
@@ -29,9 +32,15 @@ public class GalleryWorkerTask extends AsyncTask<Integer, Void, Bitmap> {
 	
 	@Override
     protected void onPostExecute(Bitmap bitmap) {
+		if (isCancelled()) {
+			bitmap = null;
+	    }
+		
         if (imageViewReference != null && bitmap != null) {
-            final ImageView imageView = imageViewReference.get();
-            if (imageView != null) {
+        	final ImageView imageView = imageViewReference.get();
+            final GalleryWorkerTask galleryWorkerTask =
+                    getGalleryWorkerTask(imageView);
+            if (this == galleryWorkerTask && imageView != null) {
                 imageView.setImageBitmap(bitmap);
             }
         }
@@ -41,6 +50,17 @@ public class GalleryWorkerTask extends AsyncTask<Integer, Void, Bitmap> {
         this.cancel(true);
     }
 
+    private static GalleryWorkerTask getGalleryWorkerTask(ImageView imageView) {
+    	   if (imageView != null) {
+    	       final Drawable drawable = imageView.getDrawable();
+    	       if (drawable instanceof AsyncDrawable) {
+    	           final AsyncDrawable asyncDrawable = (AsyncDrawable) drawable;
+    	           return asyncDrawable.getGalleryWorkerTask();
+    	       }
+    	    }
+    	    return null;
+    	}
+    
     public static Bitmap decodeSampledBitmapFromFile(String file, int reqWidth, int reqHeight) {
 
 	    // First decode with inJustDecodeBounds=true to check dimensions
