@@ -78,26 +78,27 @@ public class MainActivity extends Activity {
 		// Set up the datastore manager
 	    if (mAccountManager.hasLinkedAccount()) {
 	        try {
-	            // Use Dropbox datastores
-	            mDatastoreManager = DbxDatastoreManager.forAccount(mAccountManager.getLinkedAccount());
-	        } catch (DbxException.Unauthorized e) {
-	            System.out.println("Account was unlinked remotely");
-	        }
-	    }
-	    if (mDatastoreManager == null) {
-	        // Account isn't linked yet, use local datastores
-	        mDatastoreManager = DbxDatastoreManager.localManager(mAccountManager);
-	    }
+	           	// Use Dropbox datastores
+	           	mDatastoreManager = DbxDatastoreManager.forAccount(mAccountManager.getLinkedAccount());
+	       	} catch (DbxException.Unauthorized e) {
+	           	System.out.println("Account was unlinked remotely");
+	       	}
+	    
+	        if (mDatastoreManager == null) {
+	        	// Account isn't linked yet, use local datastores
+	        	mDatastoreManager = DbxDatastoreManager.localManager(mAccountManager);
+	    	}
 
-		try {
-			dbxFs = DbxFileSystem.forAccount(mAccountManager.getLinkedAccount());
-		} catch (Unauthorized e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+			try {
+				dbxFs = DbxFileSystem.forAccount(mAccountManager.getLinkedAccount());
+			} catch (Unauthorized e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 
-		//set up dropbox listeners
-		setUpListeners();
+			//set up dropbox listeners
+			setUpListeners();
+	    }
 	}
     
 	@Override
