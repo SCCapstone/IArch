@@ -5,7 +5,7 @@
     android:orientation="vertical"
     android:clickable="false"
     android:focusable="false"
-    android:background="@drawable/list_element"
+    android:background="@drawable/gallery_object"
     >
 
     <TextView
