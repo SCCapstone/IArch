@@ -20,6 +20,10 @@
         android:layout_alignLeft="@+id/imageViewID"
         android:text="@string/date" 
         android:textColor="#FFFFFF"
+        android:textSize="18sp"
+        android:layout_marginTop="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
         />
 
 
@@ -28,9 +32,13 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignLeft="@+id/imageViewID"
-        android:layout_below="@+id/date"
+        android:layout_below="@+id/location_name"
         android:text="@string/gps"
         android:textColor="#FFFFFF"
+        android:textSize="18sp"
+        android:layout_marginTop="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
          />
 
     <TextView
@@ -38,9 +46,13 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_alignLeft="@+id/imageViewID"
-        android:layout_below="@+id/textView1"
+        android:layout_below="@+id/date"
         android:hint="@string/project_hint"
         android:textColor="#FFFFFF"
+        android:textSize="18sp"
+        android:layout_marginTop="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
          />
     
      <TextView
@@ -51,6 +63,10 @@
         android:layout_below="@+id/project_name"
         android:hint="@string/location_hint"
         android:textColor="#FFFFFF"
+        android:textSize="18sp"
+        android:layout_marginTop="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
      />
     
     <TextView
@@ -58,9 +74,13 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_alignLeft="@+id/imageViewID"
-        android:layout_below="@+id/location_name"
+        android:layout_below="@+id/textView1"
         android:hint="@string/artifact_hint"
         android:textColor="#FFFFFF"
+        android:textSize="18sp"
+        android:layout_marginTop="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
          />
 
     <TextView
@@ -71,6 +91,10 @@
         android:layout_below="@+id/artifact_name"
         android:hint="@string/description_hint"
         android:textColor="#FFFFFF"
+        android:textSize="18sp"
+        android:layout_marginTop="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
          />
 
 </RelativeLayout>
