@@ -9,9 +9,11 @@ import com.dropbox.sync.android.DbxException;
 import android.app.ActionBar;
 import android.app.Fragment;
 import android.app.FragmentTransaction;
+import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Environment;
+import android.util.LruCache;
 import android.view.ActionMode;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -28,6 +30,7 @@ public class GalleryFragment extends Fragment {
 	private GridView gridView;
 	private GridViewAdapter customGridAdapter;
 	public static File fileName = null;
+	static LruCache<String, Bitmap> mMemoryCache;
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -87,6 +90,23 @@ public class GalleryFragment extends Fragment {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		
+		// Get max available VM memory, exceeding this amount will throw an
+	    // OutOfMemory exception. Stored in kilobytes as LruCache takes an
+	    // int in its constructor.
+	    final int maxMemory = (int) (Runtime.getRuntime().maxMemory() / 1024);
+
+	    // Use 1/8th of the available memory for this memory cache.
+	    final int cacheSize = maxMemory / 8;
+
+	    mMemoryCache = new LruCache<String, Bitmap>(cacheSize) {
+	        @Override
+	        protected int sizeOf(String key, Bitmap bitmap) {
+	            // The cache size will be measured in kilobytes rather than
+	            // number of items.
+	            return bitmap.getByteCount() / 1024;
+	        }
+	    };
 		
 		return galleryView;
 	}
@@ -164,4 +184,5 @@ public class GalleryFragment extends Fragment {
 		}
 
 	}
+			
 }
