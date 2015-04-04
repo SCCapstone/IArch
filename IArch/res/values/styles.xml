@@ -27,20 +27,20 @@
 	    <style name="SpinnerItem" parent="@android:style/Theme.Holo">
 	        	<item name="android:textColor">#FFFFFF</item>
 	            <item name="android:background">@android:color/black</item>
-        		<item name="android:padding">10dp</item>
-       			<item name="android:textSize">18sp</item>
+        		<!--item name="android:padding">10dp</item>-->
+       			<item name="android:textSize">22sp</item>
 	    </style>
 	    <style name="SpinnerDropDownItem" parent="@android:style/Theme.Holo">
 	        	<item name="android:textColor">#FFFFFF</item>
 	            <item name="android:background">@android:color/black</item>
 	            <item name="android:padding">10dp</item>
-        		<item name="android:textSize">18sp</item>
+        		<item name="android:textSize">22sp</item>
 	    </style>
     	<style name="dropdownList" parent="android:Widget.ListView.DropDown">
     		<item name="android:divider">#FFFFFF</item>
     		<item name="android:dividerHeight">1dp</item>
-    		<item name="android:padding">10dp</item>
-        	<item name="android:textSize">18sp</item>
+    		<!--item name="android:padding">10dp</item>-->
+        	<item name="android:textSize">22sp</item>
         	<item name="android:textColor">#FFFFFF</item>
 		</style>
 </resources>

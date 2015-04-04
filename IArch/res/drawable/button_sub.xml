@@ -1,10 +1,10 @@
 <!-- Button for other screens, more visible against black background -->
 <selector xmlns:android="http://schemas.android.com/apk/res/android">
 
-        <item android:bottom="2dp" android:right="2dp">
+  <item android:bottom="2dp" android:right="2dp">
             <shape>
 				<corners android:radius="10dp"/>
-    			<stroke android:width="3px" android:color="#CCCCCC" />
+    			<stroke android:width="4px" android:color="#CCCCCC" />
 		   		<gradient
         		android:startColor="#333333"
        			android:endColor="#555555"
@@ -13,5 +13,5 @@
 		        >
     			</gradient>
             </shape>
-        </item>
+	</item>
 </selector>

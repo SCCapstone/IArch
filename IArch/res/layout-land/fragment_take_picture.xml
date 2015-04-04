@@ -15,34 +15,36 @@
     	android:contentDescription="@string/image"
         android:layout_width="300dp"
     	android:layout_height="wrap_content"
+    	android:layout_marginTop="8dp"
+    	android:layout_below="@+id/date"
          />
     
     <TextView
         android:id="@+id/date"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignTop="@+id/imageView1"
-        android:layout_toRightOf="@+id/imageView1"
         android:text="@string/date" 
         android:textColor="#FFFFFF"
+        android:textSize="14sp"
+        android:layout_marginLeft="8dp"
         />
 
     <TextView
         android:id="@+id/textView1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignTop="@+id/imageView1"
-        android:layout_toRightOf="@+id/date"
-        android:layout_marginLeft="25dp"
+		android:layout_alignParentRight="true"
         android:text="@string/gps"
         android:textColor="#FFFFFF"
+        android:textSize="14sp"
         />
+    
     
     <EditText
         android:id="@+id/project_name"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/date"
+        android:layout_toRightOf="@+id/imageView1"
         android:layout_below="@+id/textView1"
         android:hint="@string/project_hint"
         android:textColorHint="#FFFFFF"
@@ -50,15 +52,16 @@
         android:textColor="#FFFFFF"
         android:background="@drawable/text_border"
         android:paddingLeft="10dp"
-        android:textSize="25sp"
+        android:textSize="22sp"
         android:textCursorDrawable="@drawable/cursor_style"
+        android:layout_marginTop="8dp"
         />
     
     <EditText
         android:id="@+id/location_name"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/date"
+        android:layout_toRightOf="@+id/imageView1"
         android:layout_below="@+id/project_name"
         android:hint="@string/location_hint"
         android:textColorHint="#FFFFFF"
@@ -66,8 +69,9 @@
         android:textColor="#FFFFFF"
         android:background="@drawable/text_border"
         android:paddingLeft="10dp"
-        android:textSize="25sp"
+        android:textSize="22sp"
         android:textCursorDrawable="@drawable/cursor_style"
+        android:layout_marginTop="8dp"
         />
     <!--  
     <EditText
@@ -90,13 +94,14 @@
         style="@style/spinner_style"
         android:popupBackground="#000000"
         android:background="@drawable/text_border"
+        android:layout_marginTop="8dp"
         />
 	
 	<EditText
         android:id="@+id/description"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/date"
+        android:layout_toRightOf="@+id/imageView1"
         android:layout_below="@+id/artifact_name"
         android:hint="@string/description_hint"
         android:textColorHint="#FFFFFF"
@@ -104,8 +109,9 @@
         android:textColor="#FFFFFF"
         android:background="@drawable/text_border"
         android:paddingLeft="10dp"
-        android:textSize="25sp"
+        android:textSize="22sp"
         android:textCursorDrawable="@drawable/cursor_style"
+        android:layout_marginTop="8dp"
         />
     
     <Button
@@ -113,7 +119,8 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:layout_alignLeft="@+id/date"
+        android:layout_toRightOf="@+id/imageView1"
+        android:layout_below="@+id/description"
         android:text="@string/sync" 
         android:textColor="#FFFFFF"
         android:background="@drawable/button_sub"
@@ -121,7 +128,8 @@
         android:shadowDx="1"
         android:shadowDy="1"
         android:shadowRadius="2"
-        android:textSize="25sp"
+        android:textSize="22sp"
+        android:layout_marginTop="8dp"
         />
 
 </RelativeLayout>
