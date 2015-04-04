@@ -29,16 +29,28 @@
         />
 
     <TextView
-        android:id="@+id/textView1"
+        android:id="@+id/latitude"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/location_name"
         android:layout_toRightOf="@+id/imageViewID"
+        android:layout_below="@+id/location_name"
         android:text="@string/gps"
         android:textColor="#FFFFFF"
         android:textSize="18sp"
         android:layout_marginTop="8dp"
-        />
+         />
+    
+    <TextView
+        android:id="@+id/longitude"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@+id/imageViewID"
+        android:layout_below="@+id/latitude"
+        android:text="@string/gps"
+        android:textColor="#FFFFFF"
+        android:textSize="18sp"
+        android:layout_marginTop="8dp"
+         />
     
     <TextView
         android:id="@+id/project_name"
@@ -69,7 +81,7 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_toRightOf="@+id/imageViewID"
-        android:layout_below="@+id/textView1"
+        android:layout_below="@+id/longitude"
         android:hint="@string/artifact_hint"
         android:textColor="#FFFFFF"
         android:textSize="18sp"
