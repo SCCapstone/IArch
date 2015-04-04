@@ -10,13 +10,14 @@
         android:id="@+id/gridView"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="5dp"
+        android:layout_margin="8dp"
         android:columnWidth="100dp"
         android:gravity="center"
         android:numColumns="auto_fit"
-        android:verticalSpacing="5dp"
+        android:verticalSpacing="8dp"
         android:drawSelectorOnTop="true"
-        android:stretchMode="columnWidth" >
+        android:stretchMode="columnWidth" 
+        >
     </GridView>
 
 </RelativeLayout>
