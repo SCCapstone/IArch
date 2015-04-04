@@ -58,13 +58,14 @@ public class GridViewAdapter extends ArrayAdapter<ImageItem> {
 	}
 	
 	public void loadBitmap(int resId, ImageView imageView) {
-		GalleryWorkerTask task = new GalleryWorkerTask(imageView);
-		task.myImage = item.getImage();
-		Bitmap mPlaceHolderBitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.m_placeholder_icon);
-		AsyncDrawable asyncDrawable = new AsyncDrawable(context.getResources(), mPlaceHolderBitmap, task);
-		imageView.setImageDrawable(asyncDrawable);
-		task.execute(resId);
-		
+		if (cancelPotentialWork(resId, imageView)) {
+			GalleryWorkerTask task = new GalleryWorkerTask(imageView);
+			task.myImage = item.getImage();
+			Bitmap mPlaceHolderBitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.m_placeholder_icon);
+			AsyncDrawable asyncDrawable = new AsyncDrawable(context.getResources(), mPlaceHolderBitmap, task);
+			imageView.setImageDrawable(asyncDrawable);
+			task.execute(resId);
+		}
 	}
 		
 	public static boolean cancelPotentialWork(int data, ImageView imageView) {
