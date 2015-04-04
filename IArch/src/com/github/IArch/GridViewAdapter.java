@@ -59,6 +59,19 @@ public class GridViewAdapter extends ArrayAdapter<ImageItem> {
 	
 	public void loadBitmap(int resId, ImageView imageView) {
 		if (cancelPotentialWork(resId, imageView)) {
+			/*
+			final String imageKey = String.valueOf(resId);
+			
+			final Bitmap bitmap = getBitmapFromMemCache(imageKey);
+			if (bitmap != null) {
+				imageView.setImageBitmap(bitmap);
+			} else {
+				imageView.setImageResource(R.drawable.m_placeholder_icon);
+		        GalleryWorkerTask task = new GalleryWorkerTask(imageView);
+		        task.myImage = item.getImage();
+		        task.execute(resId);
+			}
+			*/
 			GalleryWorkerTask task = new GalleryWorkerTask(imageView);
 			task.myImage = item.getImage();
 			Bitmap mPlaceHolderBitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.m_placeholder_icon);
@@ -96,5 +109,15 @@ public class GridViewAdapter extends ArrayAdapter<ImageItem> {
 		    }
 		    return null;
 		}
+	
+	public void addBitmapToMemoryCache(String key, Bitmap bitmap) {
+	    if (getBitmapFromMemCache(key) == null) {
+	        GalleryFragment.mMemoryCache.put(key, bitmap);
+	    }
+	}
+
+	public Bitmap getBitmapFromMemCache(String key) {
+	    return GalleryFragment.mMemoryCache.get(key);
+	}
 	
 }

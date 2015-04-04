@@ -26,6 +26,7 @@ public class GalleryWorkerTask extends AsyncTask<Integer, Void, Bitmap> {
 		data = params[0];
 		String path = myImage.toString();
 		Bitmap image = decodeSampledBitmapFromFile(path, 256, 256);
+		addBitmapToMemoryCache(String.valueOf(params[0]), image);
 		
 		return image;
 	}
@@ -97,6 +98,16 @@ public class GalleryWorkerTask extends AsyncTask<Integer, Void, Bitmap> {
 		}
 		
 		return inSampleSize;
+	}
+	
+	public void addBitmapToMemoryCache(String key, Bitmap bitmap) {
+	    if (getBitmapFromMemCache(key) == null) {
+	        GalleryFragment.mMemoryCache.put(key, bitmap);
+	    }
+	}
+
+	public Bitmap getBitmapFromMemCache(String key) {
+	    return GalleryFragment.mMemoryCache.get(key);
 	}
 	
 }

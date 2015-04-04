@@ -30,7 +30,7 @@ public class GalleryFragment extends Fragment {
 	private GridView gridView;
 	private GridViewAdapter customGridAdapter;
 	public static File fileName = null;
-	private LruCache<String, Bitmap> mMemoryCache;
+	static LruCache<String, Bitmap> mMemoryCache;
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -184,15 +184,5 @@ public class GalleryFragment extends Fragment {
 		}
 
 	}
-	
-	public void addBitmapToMemoryCache(String key, Bitmap bitmap) {
-	    if (getBitmapFromMemCache(key) == null) {
-	        mMemoryCache.put(key, bitmap);
-	    }
-	}
-
-	public Bitmap getBitmapFromMemCache(String key) {
-	    return mMemoryCache.get(key);
-	}
-	
+			
 }
