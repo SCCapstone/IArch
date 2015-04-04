@@ -3,6 +3,8 @@ package com.github.IArch;
 import java.util.ArrayList;
 import android.app.Activity;
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -57,6 +59,9 @@ public class GridViewAdapter extends ArrayAdapter<ImageItem> {
 	public void loadBitmap(int resId, ImageView imageView) {
 		GalleryWorkerTask task = new GalleryWorkerTask(imageView);
 		task.myImage = item.getImage();
+		Bitmap mPlaceHolderBitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.m_placeholder_icon);
+		AsyncDrawable asyncDrawable = new AsyncDrawable(context.getResources(), mPlaceHolderBitmap, task);
+		imageView.setImageDrawable(asyncDrawable);
 		task.execute(resId);
 	}
 }
