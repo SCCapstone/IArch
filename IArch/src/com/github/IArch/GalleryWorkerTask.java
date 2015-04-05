@@ -8,6 +8,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
+import android.util.LruCache;
 import android.widget.ImageView;
 
 public class GalleryWorkerTask extends AsyncTask<Integer, Void, Bitmap> {
@@ -16,6 +17,11 @@ public class GalleryWorkerTask extends AsyncTask<Integer, Void, Bitmap> {
 	File myImage;
     int reqWidth;
     int reqHeight;
+    LruCache<String, Bitmap> mMemoryCache = GalleryFragment.mMemoryCache;
+    Object mDiskCacheLock = GalleryFragment.mDiskCacheLock;
+    DiskLruCache mDiskLruCache = GalleryFragment.mDiskLruCache;
+    boolean mDiskCacheStarting = GalleryFragment.mDiskCacheStarting;
+    
 
     public GalleryWorkerTask(ImageView imageView) {
         imageViewReference = new WeakReference<ImageView>(imageView);
@@ -23,11 +29,22 @@ public class GalleryWorkerTask extends AsyncTask<Integer, Void, Bitmap> {
 
 	@Override
 	protected Bitmap doInBackground(Integer... params) {
-		data = params[0];
-		String path = myImage.toString();
-		Bitmap image = decodeSampledBitmapFromFile(path, 256, 256);
-		addBitmapToMemoryCache(String.valueOf(params[0]), image);
+		final String imageKey = String.valueOf(params[0]);
 		
+		// Check disk cache in background thread
+        Bitmap image = getBitmapFromDiskCache(imageKey);
+        
+        if (image == null) { // Not found in disk cache
+
+        	data = params[0];
+        	String path = myImage.toString();
+        	image = decodeSampledBitmapFromFile(path, 256, 256);
+        	addBitmapToMemoryCache(String.valueOf(params[0]), image);
+        }
+        
+        // Add final bitmap to caches
+        addBitmapToCache(imageKey, image);
+
 		return image;
 	}
 	
@@ -102,12 +119,41 @@ public class GalleryWorkerTask extends AsyncTask<Integer, Void, Bitmap> {
 	
 	public void addBitmapToMemoryCache(String key, Bitmap bitmap) {
 	    if (getBitmapFromMemCache(key) == null) {
-	        GalleryFragment.mMemoryCache.put(key, bitmap);
+	        mMemoryCache.put(key, bitmap);
 	    }
 	}
 
 	public Bitmap getBitmapFromMemCache(String key) {
-	    return GalleryFragment.mMemoryCache.get(key);
+	    return mMemoryCache.get(key);
 	}
 	
+	public void addBitmapToCache(String key, Bitmap bitmap) {
+	    // Add to memory cache as before
+	    if (getBitmapFromMemCache(key) == null) {
+	        mMemoryCache.put(key, bitmap);
+	    }
+
+	    // Also add to disk cache
+	    synchronized (mDiskCacheLock) {
+	        if (mDiskLruCache != null && mDiskLruCache.get(key) == null) {
+	            mDiskLruCache.put(key, bitmap);
+	        }
+	    }
+	}
+
+	public Bitmap getBitmapFromDiskCache(String key) {
+	    synchronized (mDiskCacheLock) {
+	        // Wait while disk cache is started from background thread
+	        while (mDiskCacheStarting) {
+	            try {
+	                mDiskCacheLock.wait();
+	            } catch (InterruptedException e) {}
+	        }
+	        if (mDiskLruCache != null) {
+	            return mDiskLruCache.get(key);
+	        }
+	    }
+	    return null;
+	}
+
 }
