@@ -108,9 +108,9 @@ public class GalleryFragment extends Fragment {
 	    // Use 1/8th of the available memory for this memory cache.
 	    final int cacheSize = maxMemory / 8;
 
-	    RetainFragment retainFragment = RetainFragment.findOrCreateRetainFragment(getFragmentManager());
-	    mMemoryCache = retainFragment.mRetainedCache;
-	    if (mMemoryCache == null) {
+	    //RetainFragment retainFragment = RetainFragment.findOrCreateRetainFragment(getFragmentManager());
+	    //mMemoryCache = retainFragment.mRetainedCache;
+	    //if (mMemoryCache == null) {
 	    	mMemoryCache = new LruCache<String, Bitmap>(cacheSize) {
 	    		@Override
 	    		protected int sizeOf(String key, Bitmap bitmap) {
@@ -119,8 +119,8 @@ public class GalleryFragment extends Fragment {
 	    			return bitmap.getByteCount() / 1024;
 	    		}
 	    	};
-	    	retainFragment.mRetainedCache = mMemoryCache;
-	    }
+	    	//retainFragment.mRetainedCache = mMemoryCache;
+	    //}
 	    
 	    
 	    // Initialize disk cache on background thread

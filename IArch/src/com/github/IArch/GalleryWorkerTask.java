@@ -29,21 +29,21 @@ public class GalleryWorkerTask extends AsyncTask<Integer, Void, Bitmap> {
 
 	@Override
 	protected Bitmap doInBackground(Integer... params) {
-		final String imageKey = String.valueOf(params[0]);
+		//final String imageKey = String.valueOf(params[0]);
 		
 		// Check disk cache in background thread
-        Bitmap image = getBitmapFromDiskCache(imageKey);
+        //Bitmap image = getBitmapFromDiskCache(imageKey);
         
-        if (image == null) { // Not found in disk cache
+        //if (image == null) { // Not found in disk cache
 
         	data = params[0];
         	String path = myImage.toString();
-        	image = decodeSampledBitmapFromFile(path, 256, 256);
+        	Bitmap image = decodeSampledBitmapFromFile(path, 256, 256);
         	addBitmapToMemoryCache(String.valueOf(params[0]), image);
-        }
+        //}
         
         // Add final bitmap to caches
-        addBitmapToCache(imageKey, image);
+        //addBitmapToCache(imageKey, image);
 
 		return image;
 	}
