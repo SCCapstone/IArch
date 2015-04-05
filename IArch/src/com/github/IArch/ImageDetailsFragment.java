@@ -124,6 +124,8 @@ public class ImageDetailsFragment extends Fragment implements OnClickListener {
 					String description = firstResult.getString("DESCRIPTION");
 					Double longitude = firstResult.getDouble("LONGITUDE");
 					Double latitude = firstResult.getDouble("LATITUDE");
+					String latStr = "Latitude: " + latitude;
+					String longStr = "Longitude: " + longitude;
 					String latLong = "Latitude: " + latitude + " Longitude: " + longitude;
 					String artifactType = firstResult.getString("ARTIFACT_TYPE");
 					String location = firstResult.getString("LOCATION");
@@ -135,15 +137,19 @@ public class ImageDetailsFragment extends Fragment implements OnClickListener {
 					}
 					if (projectName != null) {
 						TextView nameField = (TextView) galleryView.findViewById(R.id.project_name);
-						nameField.setText("Project Name : " + projectName);
+						nameField.setText("Project: " + projectName);
 					}
 					if (description != null) {
 						TextView descriptionField = (TextView) galleryView.findViewById(R.id.description);
 						descriptionField.setText("Description: " + description);
 					}
-					if (latLong != null) {
-						TextView latLongField = (TextView) galleryView.findViewById(R.id.textView1);
-						latLongField.setText(latLong);
+					if (latitude != null) {
+						TextView latField = (TextView) galleryView.findViewById(R.id.latitude);
+						latField.setText(latStr);
+					}
+					if (longitude != null) {
+						TextView longField = (TextView) galleryView.findViewById(R.id.longitude);
+						longField.setText(longStr);
 					}
 					if (artifactType != null) {
 						TextView artifactField = (TextView) galleryView.findViewById(R.id.artifact_name);

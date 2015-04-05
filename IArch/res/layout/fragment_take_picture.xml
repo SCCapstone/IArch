@@ -31,17 +31,38 @@
         android:layout_alignLeft="@+id/imageView1"
         android:text="@string/date" 
         android:textColor="#FFFFFF"
+        android:textSize="18sp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginTop="4dp"
         />
 
     <TextView
-        android:id="@+id/textView1"
+        android:id="@+id/latitude"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/imageView1"
-        android:layout_toRightOf="@+id/date"
-        android:layout_marginLeft="25dp"
+        android:layout_below="@+id/date"
+        android:layout_alignLeft="@+id/imageView1"
         android:text="@string/gps"
         android:textColor="#FFFFFF"
+        android:textSize="18sp"
+        android:layout_marginTop="4dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+         />
+    
+    <TextView
+        android:id="@+id/longitude"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/latitude"
+        android:layout_alignLeft="@+id/imageView1"
+        android:text="@string/gps"
+        android:textColor="#FFFFFF"
+        android:textSize="18sp"
+        android:layout_marginTop="4dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
          />
 
     <EditText
@@ -49,7 +70,7 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_alignLeft="@+id/imageView1"
-        android:layout_below="@+id/textView1"
+        android:layout_below="@+id/longitude"
         android:hint="@string/project_hint"
         android:textColorHint="#FFFFFF"
         android:inputType="text"
@@ -58,8 +79,11 @@
         android:digits="0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ
         	abcdefghijklmnopqrstvwxyz-_. "
         android:paddingLeft="10dp"	
-        android:textSize="25sp"
+        android:textSize="22sp"
         android:textCursorDrawable="@drawable/cursor_style"
+        android:layout_marginTop="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
         	 />
     
      <EditText
@@ -74,8 +98,11 @@
         android:textColor="#FFFFFF"
         android:background="@drawable/text_border"
         android:paddingLeft="10dp"
-        android:textSize="25sp"
+        android:textSize="22sp"
         android:textCursorDrawable="@drawable/cursor_style"
+        android:layout_marginTop="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
          />
     
     <!--<EditText
@@ -95,10 +122,12 @@
         android:layout_below="@+id/location_name"
         android:drawSelectorOnTop="true"
         android:prompt="@string/artifact_hint" 
-        android:textColor="#FFFFFF"
         style="@style/spinner_style"
         android:popupBackground="#000000"
         android:background="@drawable/text_border"
+        android:layout_marginTop="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
         />
 
     <EditText
@@ -113,8 +142,11 @@
         android:textColor="#FFFFFF"
         android:background="@drawable/text_border"
         android:paddingLeft="10dp"
-        android:textSize="25sp"
+        android:textSize="22sp"
         android:textCursorDrawable="@drawable/cursor_style"
+        android:layout_marginTop="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
         />
     
     
@@ -132,7 +164,10 @@
         android:shadowDx="1"
         android:shadowDy="1"
         android:shadowRadius="2"
-        android:textSize="25sp"
+        android:textSize="22sp"
+        android:layout_marginTop="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
         />
 
 </RelativeLayout>
