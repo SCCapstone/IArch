@@ -11,7 +11,6 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.location.Location;
 import android.location.LocationManager;
-import android.media.ThumbnailUtils;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -157,8 +156,8 @@ public class DisplayMapFragment extends Fragment implements
 					String filePath = splitFile[0] + "/" + splitFile[1] + "/" + splitFile[2] + "/" + 
 							splitFile[3] + "/" + splitFile[4] + "/" + splitFile[5] + "/" + splitFile[6] + "/";
 					System.out.println("File Path: " + filePath);
-					Bitmap ThumbImage = ThumbnailUtils.extractThumbnail(BitmapFactory.decodeFile(filePath + title), 325, 200);
-					image.setImageBitmap(ThumbImage);
+					Bitmap thumbImage = decodeSampledBitmapFromFile(filePath + title, 325, 200);
+					image.setImageBitmap(thumbImage);
 					text.setText(title);
 					
 					return v;
@@ -347,4 +346,40 @@ public class DisplayMapFragment extends Fragment implements
         spinner.setVisibility(View.GONE);
 	}
     
+	public static Bitmap decodeSampledBitmapFromFile(String file, int reqWidth, int reqHeight) {
+
+	    // First decode with inJustDecodeBounds=true to check dimensions
+	    final BitmapFactory.Options options = new BitmapFactory.Options();
+	    options.inJustDecodeBounds = true;
+	    BitmapFactory.decodeFile(file, options);
+
+	    // Calculate inSampleSize
+	    options.inSampleSize = calculateInSampleSize(options, reqWidth, reqHeight);
+
+	    // Decode bitmap with inSampleSize set
+	    options.inJustDecodeBounds = false;
+	    return BitmapFactory.decodeFile(file, options);
+	}
+		
+	public static int calculateInSampleSize(BitmapFactory.Options options, int reqWidth, int reqHeight) {
+	    // Raw height and width of image
+	    final int height = options.outHeight;
+	    final int width = options.outWidth;
+	    int inSampleSize = 1;
+
+	    if (height > reqHeight || width > reqWidth) {
+
+	        final int halfHeight = height / 2;
+	        final int halfWidth = width / 2;
+
+	        // Calculate the largest inSampleSize value that is a power of 2 and keeps both
+	        // height and width larger than the requested height and width.
+	        while ((halfHeight / inSampleSize) > reqHeight
+	                && (halfWidth / inSampleSize) > reqWidth) {
+	            inSampleSize *= 2;
+	        }
+	    }
+	    System.out.println("INSAMPLE SIZE: " + inSampleSize);
+	    return inSampleSize;
+	}
 }
