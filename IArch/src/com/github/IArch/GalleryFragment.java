@@ -8,6 +8,7 @@ import com.dropbox.sync.android.DbxException;
 
 import android.app.ActionBar;
 import android.app.Fragment;
+import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.content.Context;
 import android.graphics.Bitmap;
@@ -107,16 +108,22 @@ public class GalleryFragment extends Fragment {
 	    // Use 1/8th of the available memory for this memory cache.
 	    final int cacheSize = maxMemory / 8;
 
-	    mMemoryCache = new LruCache<String, Bitmap>(cacheSize) {
-	        @Override
-	        protected int sizeOf(String key, Bitmap bitmap) {
-	            // The cache size will be measured in kilobytes rather than
-	            // number of items.
-	            return bitmap.getByteCount() / 1024;
-	        }
-	    };
-		
-	 // Initialize disk cache on background thread
+	    RetainFragment retainFragment = RetainFragment.findOrCreateRetainFragment(getFragmentManager());
+	    mMemoryCache = retainFragment.mRetainedCache;
+	    if (mMemoryCache == null) {
+	    	mMemoryCache = new LruCache<String, Bitmap>(cacheSize) {
+	    		@Override
+	    		protected int sizeOf(String key, Bitmap bitmap) {
+	    			// The cache size will be measured in kilobytes rather than
+	    			// number of items.
+	    			return bitmap.getByteCount() / 1024;
+	    		}
+	    	};
+	    	retainFragment.mRetainedCache = mMemoryCache;
+	    }
+	    
+	    
+	    // Initialize disk cache on background thread
 	    File cacheDir = getDiskCacheDir(getActivity(), DISK_CACHE_SUBDIR);
 	    new InitDiskCacheTask().execute(cacheDir);
 
@@ -220,4 +227,25 @@ public class GalleryFragment extends Fragment {
 	    return new File(cachePath + File.separator + uniqueName);
 	}
 			
+	static class RetainFragment extends Fragment {
+	    private static final String TAG = "RetainFragment";
+	    public LruCache<String, Bitmap> mRetainedCache;
+
+	    public RetainFragment() {}
+
+	    public static RetainFragment findOrCreateRetainFragment(FragmentManager fm) {
+	        RetainFragment fragment = (RetainFragment) fm.findFragmentByTag(TAG);
+	        if (fragment == null) {
+	            fragment = new RetainFragment();
+	            fm.beginTransaction().add(fragment, TAG).commit();
+	        }
+	        return fragment;
+	    }
+
+	    @Override
+	    public void onCreate(Bundle savedInstanceState) {
+	        super.onCreate(savedInstanceState);
+	        setRetainInstance(true);
+	    }
+	}
 }
