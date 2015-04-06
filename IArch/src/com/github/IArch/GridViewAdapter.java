@@ -68,7 +68,7 @@ public class GridViewAdapter extends ArrayAdapter<ImageItem> {
 			} else {
 				GalleryWorkerTask task = new GalleryWorkerTask(imageView);
 				task.myImage = item.getImage();
-				Bitmap mPlaceHolderBitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.m_placeholder_icon);
+				Bitmap mPlaceHolderBitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.m_placeholder_transparent);
 				AsyncDrawable asyncDrawable = new AsyncDrawable(context.getResources(), mPlaceHolderBitmap, task);
 				imageView.setImageDrawable(asyncDrawable);
 				task.execute(resId);
