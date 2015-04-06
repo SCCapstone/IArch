@@ -1,6 +1,7 @@
 package com.github.IArch;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 
 import com.dropbox.sync.android.DbxDatastore;
@@ -25,6 +26,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.Toast;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.GridView;
 
@@ -34,12 +36,12 @@ public class GalleryFragment extends Fragment {
 	private GridViewAdapter customGridAdapter;
 	public static File fileName = null;
 	static LruCache<String, Bitmap> mMemoryCache;
-	static DiskLruCache mDiskLruCache;
+	static DiskLruImageCache mDiskLruCache;
 	final static Object mDiskCacheLock = new Object();
 	static boolean mDiskCacheStarting = true;
 	private static final int DISK_CACHE_SIZE = 1024 * 1024 * 10; // 10MB
 	private static final String DISK_CACHE_SUBDIR = "thumbnails";
-
+	
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -129,7 +131,7 @@ public class GalleryFragment extends Fragment {
 
 		return galleryView;
 	}
-
+	
 	private ActionBar getActionBar() {
 	    return getActivity().getActionBar();
 	}
@@ -208,8 +210,8 @@ public class GalleryFragment extends Fragment {
 	    @Override
 	    protected Void doInBackground(File... params) {
 	        synchronized (mDiskCacheLock) {
-	            File cacheDir = params[0];
-	            mDiskLruCache = DiskLruCache.openCache(getActivity(), cacheDir, DISK_CACHE_SIZE);
+	            //File cacheDir = params[0];
+	            mDiskLruCache = new DiskLruImageCache(getActivity(), ChooserFragment.folderName.toString(), DISK_CACHE_SIZE, Bitmap.CompressFormat.PNG, 100);
 	            mDiskCacheStarting = false; // Finished initialization
 	            mDiskCacheLock.notifyAll(); // Wake any waiting threads
 	        }
@@ -217,11 +219,8 @@ public class GalleryFragment extends Fragment {
 	    }
 	}
 
-	// Creates a unique subdirectory of the designated app cache directory. Tries to use external
-	// but if not mounted, falls back on internal storage.
+	// Creates a unique subdirectory of the designated app cache directory.
 	public static File getDiskCacheDir(Context context, String uniqueName) {
-	    // Check if media is mounted or storage is built-in, if so, try and use external cache dir
-	    // otherwise use internal cache dir
 	    final String cachePath = context.getCacheDir().getPath();
 
 	    return new File(cachePath + File.separator + uniqueName);

@@ -27,15 +27,15 @@ public class GalleryWorkerTask extends AsyncTask<Integer, Void, Bitmap> {
 		final String imageKey = String.valueOf(params[0]);
 		
 		// Check disk cache in background thread
-        //Bitmap image = getBitmapFromDiskCache(imageKey);
+        Bitmap image = getBitmapFromDiskCache(imageKey);
         
-        //if (image == null) { // Not found in disk cache
+        if (image == null) { // Not found in disk cache
 
         	data = params[0];
         	String path = myImage.toString();
-        	Bitmap image = decodeSampledBitmapFromFile(path, 256, 256);
+        	image = decodeSampledBitmapFromFile(path, 256, 256);
         	addBitmapToCache(String.valueOf(params[0]), image);
-        //}
+        }
         
         // Add final bitmap to caches
         addBitmapToCache(imageKey, image);
@@ -124,7 +124,7 @@ public class GalleryWorkerTask extends AsyncTask<Integer, Void, Bitmap> {
 
 	    // Also add to disk cache
 	    synchronized (GalleryFragment.mDiskCacheLock) {
-	        if (GalleryFragment.mDiskLruCache != null && GalleryFragment.mDiskLruCache.get(key) == null) {
+	        if (GalleryFragment.mDiskLruCache != null && GalleryFragment.mDiskLruCache.getBitmap(key) == null) {
 	        	GalleryFragment.mDiskLruCache.put(key, bitmap);
 	        }
 	    }
@@ -139,7 +139,7 @@ public class GalleryWorkerTask extends AsyncTask<Integer, Void, Bitmap> {
 	            } catch (InterruptedException e) {}
 	        }
 	        if (GalleryFragment.mDiskLruCache != null) {
-	            return GalleryFragment.mDiskLruCache.get(key);
+	            return GalleryFragment.mDiskLruCache.getBitmap(key);
 	        }
 	    }
 	    return null;
