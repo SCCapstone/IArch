@@ -18,7 +18,7 @@
       android:layout_gravity="bottom|right"
       android:background="@android:color/transparent"
       android:orientation="horizontal"
-      android:padding="10dp"
+      android:padding="8dp"
       >
        <!--  
         <TextView
@@ -32,12 +32,11 @@
         android:id="@+id/spinner"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:background="@drawable/map_spinner"
         android:popupBackground="#88000000"
         android:prompt="@string/map_pins" 
         style="@style/spinner_style"
         />
-
+        <!-- android:background="@drawable/map_spinner" -->
     </LinearLayout>
 
 </RelativeLayout>

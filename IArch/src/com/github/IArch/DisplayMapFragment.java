@@ -143,13 +143,6 @@ public class DisplayMapFragment extends Fragment implements
 				@Override
 				public View getInfoWindow(Marker marker) {
 					//provides a view for entire info window
-					return null;
-				}
-				
-				@Override
-				public View getInfoContents(Marker marker) {
-					//here you can customize the contents of the window but still 
-					//keep the default info window frame and background
 					String title = marker.getTitle();
 					View v = getActivity().getLayoutInflater().inflate(R.layout.custom_info_window, parent, false);
 					ImageView image = (ImageView) v.findViewById(R.id.mapImageView);
@@ -163,6 +156,13 @@ public class DisplayMapFragment extends Fragment implements
 					text.setText(title);
 					
 					return v;
+				}
+				
+				@Override
+				public View getInfoContents(Marker marker) {
+					//here you can customize the contents of the window but still 
+					//keep the default info window frame and background
+					return null;
 				}
 			});
 			googleMap.setOnInfoWindowClickListener(new GoogleMap.OnInfoWindowClickListener() {

@@ -132,9 +132,12 @@ import android.widget.Toast;
       			
       	TextView textDate = (TextView) view.findViewById(R.id.date);
       	textDate.setText(date);
-      			
-      	TextView myText = (TextView) view.findViewById(R.id.textView1);
-      	myText.setText("Latitude: " + latitude + " " + "Longitude: " + longitude);
+      	
+      	TextView latText = (TextView) view.findViewById(R.id.latitude);
+      	latText.setText("Latitude: " + latitude);
+      	
+      	TextView longText = (TextView) view.findViewById(R.id.longitude);
+      	longText.setText("Longitude: " + longitude);
     }
 	
 	@Override
@@ -178,8 +181,11 @@ import android.widget.Toast;
 			TextView textDate = (TextView) view.findViewById(R.id.date);
 			textDate.setText(date);
 				
-			TextView myText = (TextView) view.findViewById(R.id.textView1);
-			myText.setText("Latitude: " + latitude + " " + "Longitude: " + longitude);
+	      	TextView latText = (TextView) view.findViewById(R.id.latitude);
+	      	latText.setText("Latitude: " + latitude);
+	      	
+	      	TextView longText = (TextView) view.findViewById(R.id.longitude);
+	      	longText.setText("Longitude: " + longitude);
 			
 		} else if (resultCode == RESULT_CANCELED){
 			//user cancelled the image capture
