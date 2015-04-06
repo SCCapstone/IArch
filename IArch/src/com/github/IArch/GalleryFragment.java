@@ -8,9 +8,12 @@ import com.dropbox.sync.android.DbxException;
 
 import android.app.ActionBar;
 import android.app.Fragment;
+import android.app.FragmentManager;
 import android.app.FragmentTransaction;
+import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Color;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Environment;
 import android.util.LruCache;
@@ -31,6 +34,12 @@ public class GalleryFragment extends Fragment {
 	private GridViewAdapter customGridAdapter;
 	public static File fileName = null;
 	static LruCache<String, Bitmap> mMemoryCache;
+	static DiskLruImageCache mDiskLruCache;
+	final static Object mDiskCacheLock = new Object();
+	static boolean mDiskCacheStarting = true;
+	private static final int DISK_CACHE_SIZE = 1024 * 1024 * 10; // 10MB
+	private static final String DISK_CACHE_SUBDIR = "thumbnails";
+	
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -99,18 +108,28 @@ public class GalleryFragment extends Fragment {
 	    // Use 1/8th of the available memory for this memory cache.
 	    final int cacheSize = maxMemory / 8;
 
-	    mMemoryCache = new LruCache<String, Bitmap>(cacheSize) {
-	        @Override
-	        protected int sizeOf(String key, Bitmap bitmap) {
-	            // The cache size will be measured in kilobytes rather than
-	            // number of items.
-	            return bitmap.getByteCount() / 1024;
-	        }
-	    };
-		
+	    //RetainFragment retainFragment = RetainFragment.findOrCreateRetainFragment(getFragmentManager());
+	    //mMemoryCache = retainFragment.mRetainedCache;
+	    //if (mMemoryCache == null) {
+	    	mMemoryCache = new LruCache<String, Bitmap>(cacheSize) {
+	    		@Override
+	    		protected int sizeOf(String key, Bitmap bitmap) {
+	    			// The cache size will be measured in kilobytes rather than
+	    			// number of items.
+	    			return bitmap.getByteCount() / 1024;
+	    		}
+	    	};
+	    	//retainFragment.mRetainedCache = mMemoryCache;
+	    //}
+	    
+	    
+	    // Initialize disk cache on background thread
+	    File cacheDir = getDiskCacheDir(getActivity(), DISK_CACHE_SUBDIR);
+	    new InitDiskCacheTask().execute(cacheDir);
+
 		return galleryView;
 	}
-
+	
 	private ActionBar getActionBar() {
 	    return getActivity().getActionBar();
 	}
@@ -184,5 +203,46 @@ public class GalleryFragment extends Fragment {
 		}
 
 	}
+	
+	class InitDiskCacheTask extends AsyncTask<File, Void, Void> {
+	    @Override
+	    protected Void doInBackground(File... params) {
+	        synchronized (mDiskCacheLock) {
+	            //File cacheDir = params[0];
+	            mDiskLruCache = new DiskLruImageCache(getActivity(), ChooserFragment.folderName.toString(), DISK_CACHE_SIZE, Bitmap.CompressFormat.PNG, 100);
+	            mDiskCacheStarting = false; // Finished initialization
+	            mDiskCacheLock.notifyAll(); // Wake any waiting threads
+	        }
+	        return null;
+	    }
+	}
+
+	// Creates a unique subdirectory of the designated app cache directory.
+	public static File getDiskCacheDir(Context context, String uniqueName) {
+	    final String cachePath = context.getCacheDir().getPath();
+
+	    return new File(cachePath + File.separator + uniqueName);
+	}
 			
+	static class RetainFragment extends Fragment {
+	    private static final String TAG = "RetainFragment";
+	    public LruCache<String, Bitmap> mRetainedCache;
+
+	    public RetainFragment() {}
+
+	    public static RetainFragment findOrCreateRetainFragment(FragmentManager fm) {
+	        RetainFragment fragment = (RetainFragment) fm.findFragmentByTag(TAG);
+	        if (fragment == null) {
+	            fragment = new RetainFragment();
+	            fm.beginTransaction().add(fragment, TAG).commit();
+	        }
+	        return fragment;
+	    }
+
+	    @Override
+	    public void onCreate(Bundle savedInstanceState) {
+	        super.onCreate(savedInstanceState);
+	        setRetainInstance(true);
+	    }
+	}
 }

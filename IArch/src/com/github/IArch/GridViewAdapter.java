@@ -19,7 +19,7 @@ public class GridViewAdapter extends ArrayAdapter<ImageItem> {
 	private ArrayList<ImageItem> data = new ArrayList<ImageItem>();
 	ViewHolder holder;
 	ImageItem item;
-	
+		
 	public GridViewAdapter(Context context, int layoutResourceId,
 			ArrayList<ImageItem> data) {
 		super(context, layoutResourceId, data);
@@ -105,14 +105,8 @@ public class GridViewAdapter extends ArrayAdapter<ImageItem> {
 		    return null;
 		}
 	
-	public void addBitmapToMemoryCache(String key, Bitmap bitmap) {
-	    if (getBitmapFromMemCache(key) == null) {
-	        GalleryFragment.mMemoryCache.put(key, bitmap);
-	    }
-	}
-
 	public Bitmap getBitmapFromMemCache(String key) {
 	    return GalleryFragment.mMemoryCache.get(key);
 	}
-	
+
 }
