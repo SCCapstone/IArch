@@ -61,7 +61,7 @@ public class ChooserFragment extends Fragment {
 							transaction.commit();
 						} else {
 							// Create new fragment and transaction
-							Fragment newFragment = new ImageDetailsFragment();
+							Fragment newFragment = new ImageDetailsFragment(projectNames[position].toString());
 							FragmentTransaction transaction = getFragmentManager().beginTransaction();
 
 							// Replace whatever is in the fragment_container view with this fragment,

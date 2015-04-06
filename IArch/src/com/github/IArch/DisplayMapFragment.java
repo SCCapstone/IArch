@@ -6,6 +6,7 @@ import java.util.List;
 
 import android.app.ActionBar;
 import android.app.Fragment;
+import android.app.FragmentTransaction;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -60,6 +61,7 @@ public class DisplayMapFragment extends Fragment implements
 	LayoutInflater mInflater;
 	String myFilename;
 	ViewGroup parent;
+	String filePath;
 
 	//These settings are the same as the settings for the map. They will in fact give you updates
 	// at the maximal rates currently possible.
@@ -153,7 +155,7 @@ public class DisplayMapFragment extends Fragment implements
 					ImageView image = (ImageView) v.findViewById(R.id.mapImageView);
 					TextView text = (TextView) v.findViewById(R.id.mapTextView);
 					String[] splitFile = myFilename.split("/");
-					String filePath = splitFile[0] + "/" + splitFile[1] + "/" + splitFile[2] + "/" + 
+					filePath = splitFile[0] + "/" + splitFile[1] + "/" + splitFile[2] + "/" + 
 							splitFile[3] + "/" + splitFile[4] + "/" + splitFile[5] + "/" + splitFile[6] + "/";
 					System.out.println("File Path: " + filePath);
 					Bitmap thumbImage = decodeSampledBitmapFromFile(filePath + title, 325, 200);
@@ -167,8 +169,18 @@ public class DisplayMapFragment extends Fragment implements
 				
 				@Override
 				public void onInfoWindowClick(Marker marker) {
-					//user clicked on an info window
-					System.out.println("CLICKED");
+					String title = marker.getTitle();
+					// Create new fragment and transaction
+					Fragment newFragment = new ImageDetailsFragment(filePath + title);
+					FragmentTransaction transaction = getFragmentManager().beginTransaction();
+
+					// Replace whatever is in the fragment_container view with this fragment,
+					// and add the transaction to the back stack
+					transaction.replace(R.id.container, newFragment);
+					transaction.addToBackStack(null);
+
+					// Commit the transaction
+					transaction.commit();
 				}
 			});
 			setupLastKnown();
