@@ -12,7 +12,6 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Bitmap.CompressFormat;
 import android.graphics.BitmapFactory;
-import android.os.Environment;
 import android.util.Log;
 
 public class DiskLruImageCache {
@@ -22,7 +21,7 @@ public class DiskLruImageCache {
     private int mCompressQuality = 70;
     private static final int APP_VERSION = 1;
     private static final int VALUE_COUNT = 1;
-    private static final String TAG = "DiskLruImageCache";
+    //private static final String TAG = "DiskLruImageCache";
 
     public DiskLruImageCache( Context context,String uniqueName, int diskCacheSize,
         CompressFormat compressFormat, int quality ) {

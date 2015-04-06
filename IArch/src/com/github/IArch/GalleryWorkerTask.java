@@ -8,7 +8,6 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
-import android.util.LruCache;
 import android.widget.ImageView;
 
 public class GalleryWorkerTask extends AsyncTask<Integer, Void, Bitmap> {

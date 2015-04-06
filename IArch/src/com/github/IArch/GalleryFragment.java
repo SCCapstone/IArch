@@ -1,7 +1,6 @@
 package com.github.IArch;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 
 import com.dropbox.sync.android.DbxDatastore;
@@ -26,7 +25,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.Toast;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.GridView;
 
