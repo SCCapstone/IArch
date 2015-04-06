@@ -131,7 +131,7 @@ public class ImageDetailsFragment extends Fragment implements OnClickListener {
 					Double latitude = firstResult.getDouble("LATITUDE");
 					String latStr = "Latitude: " + latitude;
 					String longStr = "Longitude: " + longitude;
-					String latLong = "Latitude: " + latitude + " Longitude: " + longitude;
+					//String latLong = "Latitude: " + latitude + " Longitude: " + longitude;
 					String artifactType = firstResult.getString("ARTIFACT_TYPE");
 					String location = firstResult.getString("LOCATION");
 				
