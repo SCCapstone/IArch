@@ -2,8 +2,6 @@ package com.github.IArch;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 
 import android.app.Activity;
 import android.app.Fragment;
@@ -25,7 +23,6 @@ import android.widget.Toast;
 import com.dropbox.sync.android.DbxAccount;
 import com.dropbox.sync.android.DbxAccountManager;
 import com.dropbox.sync.android.DbxDatastore;
-import com.dropbox.sync.android.DbxDatastoreInfo;
 import com.dropbox.sync.android.DbxDatastoreManager;
 import com.dropbox.sync.android.DbxException;
 import com.dropbox.sync.android.DbxFields;
@@ -376,22 +373,6 @@ public class MainActivity extends Activity {
 	        		mDatastoreManager.migrateToAccount(account);
 	        		//Now use dropbox datastores
 	        		mDatastoreManager = DbxDatastoreManager.forAccount(account);
-	        		
-	        		//do something
-	        		List<String> list = new ArrayList<String>();
-	        		ArrayList<DbxDatastoreInfo> infos = new ArrayList<DbxDatastoreInfo>();
-	        		//query database for datastore names
-	    			infos.addAll(MainActivity.mDatastoreManager.listDatastores());
-	    			for (int i=0; i<infos.size(); i++) {
-	    				DbxDatastoreInfo datas = infos.get(i);
-	    				String id = datas.id;
-	    				list.add(id);
-	    				System.out.println("LIST: " + list);
-	    			}
-	        		
-	        		
-	        		
-	        		
 	        		setUpListeners();
 	        	} catch (DbxException e) {
 	        		e.printStackTrace();
