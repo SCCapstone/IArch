@@ -70,7 +70,7 @@ public class GalleryFragment extends Fragment {
 			    System.out.println("image selected : " + imageFiles[position]);
 				
 			    // Create new fragment and transaction
-				Fragment newFragment = new ImageDetailsFragment();
+				Fragment newFragment = new ImageDetailsFragment(fileName.toString());
 				FragmentTransaction transaction = getFragmentManager().beginTransaction();
 
 				// Replace whatever is in the fragment_container view with this fragment,

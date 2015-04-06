@@ -24,7 +24,12 @@ public class ImageDetailsFragment extends Fragment implements OnClickListener {
 	static String fileLocation;
 	View galleryView;
 	ImageView image;
+	String fileName;
 	
+	public ImageDetailsFragment(String fileName) {
+		this.fileName = fileName;
+	}
+
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState) {
@@ -34,7 +39,7 @@ public class ImageDetailsFragment extends Fragment implements OnClickListener {
 		image = (ImageView) galleryView.findViewById(R.id.imageViewID);	
 		image.setOnClickListener(this);
 		
-		fileLocation = GalleryFragment.fileName.toString();
+		fileLocation = fileName;
 		dropboxStuff();
 		
 		//show actionbar in case it was hidden when displaying full screen image
