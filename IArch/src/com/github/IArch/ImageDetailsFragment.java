@@ -26,14 +26,16 @@ public class ImageDetailsFragment extends Fragment implements OnClickListener {
 	ImageView image;
 	String fileName;
 	
-	public ImageDetailsFragment(String fileName) {
-		this.fileName = fileName;
+	public ImageDetailsFragment() {
 	}
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState) {
-		
+		Bundle bundle = this.getArguments();
+		if (bundle != null) {
+			fileName = bundle.getString("EXTRAS_FILENAME");
+		}
 		galleryView = inflater.inflate(R.layout.fragment_image_details, container, false);
 		getActionBar().setTitle(R.string.title_fragment_image_details);
 		image = (ImageView) galleryView.findViewById(R.id.imageViewID);	
