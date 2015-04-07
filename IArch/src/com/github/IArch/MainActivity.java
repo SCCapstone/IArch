@@ -112,6 +112,7 @@ public class MainActivity extends Activity {
 		setUpListeners();
 	}
 	
+	
 	@Override
 	protected void onPause() {
 		super.onPause();

@@ -484,9 +484,10 @@ import android.widget.Toast;
 	
 	void stopLocation() {
 		locationManager = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
-		
-		//stop looking for location updates; saves battery
-		locationManager.removeUpdates(locationListener);
+		if (locationManager != null) {
+			//stop looking for location updates; saves battery
+			locationManager.removeUpdates(locationListener);
+		}
 	}
 
 	@Override
