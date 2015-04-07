@@ -61,7 +61,10 @@ public class ChooserFragment extends Fragment {
 							transaction.commit();
 						} else {
 							// Create new fragment and transaction
-							Fragment newFragment = new ImageDetailsFragment(projectNames[position].toString());
+							Fragment newFragment = new ImageDetailsFragment();
+							Bundle bundle = new Bundle();
+							bundle.putString("EXTRAS_FILENAME", projectNames[position].toString());
+							newFragment.setArguments(bundle);
 							FragmentTransaction transaction = getFragmentManager().beginTransaction();
 
 							// Replace whatever is in the fragment_container view with this fragment,

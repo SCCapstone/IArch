@@ -171,7 +171,10 @@ public class DisplayMapFragment extends Fragment implements
 				public void onInfoWindowClick(Marker marker) {
 					String title = marker.getTitle();
 					// Create new fragment and transaction
-					Fragment newFragment = new ImageDetailsFragment(filePath + title);
+					Fragment newFragment = new ImageDetailsFragment();
+					Bundle bundle = new Bundle();
+					bundle.putString("EXTRAS_FILENAME", filePath + title);
+					newFragment.setArguments(bundle);
 					FragmentTransaction transaction = getFragmentManager().beginTransaction();
 
 					// Replace whatever is in the fragment_container view with this fragment,
