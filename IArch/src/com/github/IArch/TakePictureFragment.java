@@ -304,10 +304,6 @@ import android.widget.Toast;
 			}
 		
 		}
-		
-		
-		
-		
 	}
 	
 	private Boolean dropboxStuff(String file) {
