@@ -123,7 +123,7 @@ public class DisplayMapFragment extends Fragment implements
 	@Override
 	public void onDestroy() {
 		super.onDestroy();
-		mMapView.onDestroy();
+		//mMapView.onDestroy();
 	}
 
 	@Override

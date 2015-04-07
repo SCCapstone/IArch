@@ -115,6 +115,7 @@ public class MainActivity extends Activity {
 	@Override
 	protected void onPause() {
 		super.onPause();
+		if (isFinishing()) {
 		if (mAccountManager.hasLinkedAccount()) {
 			if (syncListener != null) {
 				dbxFs.removeSyncStatusListener(syncListener);
@@ -124,6 +125,7 @@ public class MainActivity extends Activity {
 				dbxFs.removePathListenerForAll(pathListener);
 				System.out.println("Dropbox path listener removed");
 			}
+		}
 		}
 	}
 	
