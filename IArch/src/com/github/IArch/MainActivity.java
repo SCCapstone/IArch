@@ -1,12 +1,16 @@
 package com.github.IArch;
 
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.OutputStream;
 
 import android.app.Activity;
 import android.app.Fragment;
 import android.app.FragmentTransaction;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.support.v4.widget.DrawerLayout;
@@ -20,6 +24,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
+
 import com.dropbox.sync.android.DbxAccount;
 import com.dropbox.sync.android.DbxAccountManager;
 import com.dropbox.sync.android.DbxDatastore;
@@ -171,6 +176,9 @@ public class MainActivity extends Activity {
 			Toast.makeText(this, "No settings yet", 
 					Toast.LENGTH_LONG).show();
 			return true;
+		case R.id.action_share:
+			share();
+			return true;
 		default:
 			return super.onOptionsItemSelected(item);
 		}
@@ -320,6 +328,23 @@ public class MainActivity extends Activity {
 		
 		return false;
 		
+	}
+	
+	public void share()
+	{
+		String longFileName = ChooserFragment.folderName.toString();
+		String[] shortFileName = longFileName.split("/");
+		projectName = shortFileName[6];
+		String fileName = Environment.getExternalStoragePublicDirectory(
+				Environment.DIRECTORY_PICTURES) + "/iArch/" + shortFileName[6];
+		
+		Intent emailIntent = new Intent(android.content.Intent.ACTION_SEND); 
+		emailIntent.setType("image/jpeg");
+		emailIntent.putExtra(android.content.Intent.EXTRA_EMAIL, new String[] {""}); 
+		emailIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, "subject"); 
+		emailIntent.putExtra(android.content.Intent.EXTRA_TEXT, "body");
+		emailIntent.putExtra(Intent.EXTRA_STREAM, Uri.parse("file://"+fileName));
+		startActivity(Intent.createChooser(emailIntent, "Sharing Options"));
 	}
 	
 	private void setUpNavDrawer()

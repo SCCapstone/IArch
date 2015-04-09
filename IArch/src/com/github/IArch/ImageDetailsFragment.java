@@ -13,6 +13,8 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
@@ -32,6 +34,7 @@ public class ImageDetailsFragment extends Fragment implements OnClickListener {
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState) {
+		setHasOptionsMenu(true);
 		Bundle bundle = this.getArguments();
 		if (bundle != null) {
 			fileName = bundle.getString("EXTRAS_FILENAME");
@@ -52,6 +55,13 @@ public class ImageDetailsFragment extends Fragment implements OnClickListener {
 
 	private ActionBar getActionBar() {
 	    return getActivity().getActionBar();
+	}
+	
+	@Override
+	public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+		// Inflate the menu; this adds items to the action bar if it is present.
+		inflater.inflate(R.menu.image_details_fragment, menu);	
+		System.out.println("hello");
 	}
 	
 	private void setPic(String file) {
