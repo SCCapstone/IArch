@@ -2,6 +2,7 @@ package com.github.IArch;
 
 import java.io.File;
 import java.io.IOException;
+
 import android.app.Activity;
 import android.app.Fragment;
 import android.app.FragmentTransaction;
@@ -19,6 +20,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.dropbox.sync.android.DbxAccount;
@@ -329,11 +331,57 @@ public class MainActivity extends Activity {
 	public void share()
 	{
 		String longFileName = ImageDetailsFragment.fileLocation;
+		String body = "";
+		String subject = "IArch";
+		
+		if (MainActivity.mAccountManager.hasLinkedAccount()) {	
+			//show picture that was taken
+			String[] splitFile = longFileName.split("/");
+			
+			try {
+				//open datastore and get fresh data
+				DbxDatastore datastore = MainActivity.mDatastoreManager.openDatastore(splitFile[6]);
+				datastore.sync();
+				
+				//open table
+				DbxTable tasksTbl = datastore.getTable("Picture_Data");
+				
+				//query table for results
+				DbxFields queryParams = new DbxFields().set("LOCAL_FILENAME", longFileName);
+				DbxTable.QueryResult results = tasksTbl.query(queryParams);
+				if (results.hasResults()) {
+					DbxRecord firstResult = results.iterator().next();
+				
+					body = "Date: " + firstResult.getString("DATE") + "\n"
+							+ "Project: " + firstResult.getString("PROJECT_NAME") + "\n"
+							+ "Description: " + firstResult.getString("DESCRIPTION") + "\n"
+							+ "Longitude: " + firstResult.getDouble("LONGITUDE") + "\n"
+							+ "Latitude: " + firstResult.getDouble("LATITUDE") + "\n"
+							+ "Artifact Type: " + firstResult.getString("ARTIFACT_TYPE") + "\n"
+							+ "Location: " + firstResult.getString("LOCATION");
+					
+					subject = firstResult.getString("PROJECT_NAME");
+				
+					//close datastores
+					datastore.close();
+				} else {
+					//picture clicked had no data attached to it, do something here
+					datastore.close();
+				}
+			} catch (DbxException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
+		} else {
+			
+		}
+		
 		Intent emailIntent = new Intent(android.content.Intent.ACTION_SEND); 
-		emailIntent.setType("image/jpeg");
+		emailIntent.setType("image/jpeg, text/plain");
 		emailIntent.putExtra(android.content.Intent.EXTRA_EMAIL, new String[] {""}); 
-		emailIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, "subject"); 
-		emailIntent.putExtra(android.content.Intent.EXTRA_TEXT, "body");
+		emailIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, subject); 
+		emailIntent.putExtra(android.content.Intent.EXTRA_TEXT, body);
 		emailIntent.putExtra(Intent.EXTRA_STREAM, Uri.parse("file://" + longFileName));
 		startActivity(Intent.createChooser(emailIntent, "Sharing Options"));
 	}
