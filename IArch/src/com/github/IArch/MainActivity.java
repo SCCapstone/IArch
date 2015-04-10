@@ -328,18 +328,13 @@ public class MainActivity extends Activity {
 	
 	public void share()
 	{
-		String longFileName = ChooserFragment.folderName.toString();
-		String[] shortFileName = longFileName.split("/");
-		projectName = shortFileName[6];
-		String fileName = Environment.getExternalStoragePublicDirectory(
-				Environment.DIRECTORY_PICTURES) + "/iArch/" + shortFileName[6];
-		
+		String longFileName = ImageDetailsFragment.fileLocation;
 		Intent emailIntent = new Intent(android.content.Intent.ACTION_SEND); 
 		emailIntent.setType("image/jpeg");
 		emailIntent.putExtra(android.content.Intent.EXTRA_EMAIL, new String[] {""}); 
 		emailIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, "subject"); 
 		emailIntent.putExtra(android.content.Intent.EXTRA_TEXT, "body");
-		emailIntent.putExtra(Intent.EXTRA_STREAM, Uri.parse("file://"+fileName));
+		emailIntent.putExtra(Intent.EXTRA_STREAM, Uri.parse("file://" + longFileName));
 		startActivity(Intent.createChooser(emailIntent, "Sharing Options"));
 	}
 	
