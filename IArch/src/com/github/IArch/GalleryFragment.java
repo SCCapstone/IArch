@@ -64,8 +64,7 @@ public class GalleryFragment extends Fragment {
 			public void onItemClick(AdapterView<?> parent, View v,
 					int position, long id) {
 				//get files in images directory
-				String longFileName = folderName;
-				String[] shortFileName = longFileName.split("/");
+				String[] shortFileName = folderName.split("/");
 				File path = new File(Environment.getExternalStoragePublicDirectory(
 						Environment.DIRECTORY_PICTURES) + "/iArch/" + shortFileName[6]);
 			    File[] imageFiles = path.listFiles();
