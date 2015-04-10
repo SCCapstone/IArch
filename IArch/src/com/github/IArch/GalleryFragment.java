@@ -33,6 +33,7 @@ public class GalleryFragment extends Fragment {
 	private GridView gridView;
 	private GridViewAdapter customGridAdapter;
 	public static File fileName = null;
+	String folderName;
 	static LruCache<String, Bitmap> mMemoryCache;
 	static DiskLruImageCache mDiskLruCache;
 	final static Object mDiskCacheLock = new Object();
@@ -44,7 +45,10 @@ public class GalleryFragment extends Fragment {
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState) {
-		
+		Bundle bundle = this.getArguments();
+		if (bundle != null) {
+			folderName = bundle.getString("EXTRAS_FOLDERNAME");
+		}
 		setHasOptionsMenu(true);
 		View galleryView = inflater.inflate(R.layout.fragment_gallery, container, false);
 		getActionBar().setTitle(R.string.title_fragment_gallery);
@@ -60,7 +64,7 @@ public class GalleryFragment extends Fragment {
 			public void onItemClick(AdapterView<?> parent, View v,
 					int position, long id) {
 				//get files in images directory
-				String longFileName = ChooserFragment.folderName.toString();
+				String longFileName = folderName;
 				String[] shortFileName = longFileName.split("/");
 				File path = new File(Environment.getExternalStoragePublicDirectory(
 						Environment.DIRECTORY_PICTURES) + "/iArch/" + shortFileName[6]);
@@ -92,7 +96,7 @@ public class GalleryFragment extends Fragment {
 		//time or after user disconnects and reconnects dropbox
 		DbxDatastore datastore;
 		try {
-			String[] splitFile = ChooserFragment.folderName.toString().split("/");
+			String[] splitFile = folderName.split("/");
 			if (MainActivity.mAccountManager.hasLinkedAccount()) {	
 				datastore = MainActivity.mDatastoreManager.openDatastore(splitFile[6]);
 				datastore.sync();
@@ -140,7 +144,7 @@ public class GalleryFragment extends Fragment {
 	private ArrayList<ImageItem> getData() {
 		final ArrayList<ImageItem> imageItems = new ArrayList<ImageItem>();
 		
-		File path = new File(ChooserFragment.folderName.toString());
+		File path = new File(folderName);
 	    File[] imageFiles = path.listFiles();
 	    
 	    for (int i = 0; i < imageFiles.length; i++) {
@@ -212,7 +216,7 @@ public class GalleryFragment extends Fragment {
 	    protected Void doInBackground(File... params) {
 	        synchronized (mDiskCacheLock) {
 	            //File cacheDir = params[0];
-	            mDiskLruCache = new DiskLruImageCache(getActivity(), ChooserFragment.folderName.toString(), DISK_CACHE_SIZE, Bitmap.CompressFormat.PNG, 100);
+	            mDiskLruCache = new DiskLruImageCache(getActivity(), folderName, DISK_CACHE_SIZE, Bitmap.CompressFormat.PNG, 100);
 	            mDiskCacheStarting = false; // Finished initialization
 	            mDiskCacheLock.notifyAll(); // Wake any waiting threads
 	        }
