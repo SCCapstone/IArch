@@ -61,7 +61,6 @@ public class ImageDetailsFragment extends Fragment implements OnClickListener {
 	public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
 		// Inflate the menu; this adds items to the action bar if it is present.
 		inflater.inflate(R.menu.image_details_fragment, menu);	
-		System.out.println("hello");
 	}
 	
 	private void setPic(String file) {
