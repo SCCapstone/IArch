@@ -45,11 +45,14 @@ public class ChooserFragment extends Fragment {
 					    File[] projectNames = path.listFiles();
 					    //use it like imageFiles[position]
 					    folderName = projectNames[position];
-					    System.out.println("image selected : " + projectNames[position]);
+					    System.out.println("image selected : " + folderName);
 						if (folderName.isDirectory()) {
 							System.out.println("THIS IS A DIRECTORY");
 							// Create new fragment and transaction
 							Fragment newFragment = new GalleryFragment();
+							Bundle bundle = new Bundle();
+							bundle.putString("EXTRAS_FOLDERNAME", folderName.toString());
+							newFragment.setArguments(bundle);
 							FragmentTransaction transaction = getFragmentManager().beginTransaction();
 
 							// Replace whatever is in the fragment_container view with this fragment,
@@ -59,11 +62,11 @@ public class ChooserFragment extends Fragment {
 
 							// Commit the transaction
 							transaction.commit();
-						} else {
+						} else { //image was clicked instead of a project folder; try to show image details
 							// Create new fragment and transaction
 							Fragment newFragment = new ImageDetailsFragment();
 							Bundle bundle = new Bundle();
-							bundle.putString("EXTRAS_FILENAME", projectNames[position].toString());
+							bundle.putString("EXTRAS_FILENAME", folderName.toString());
 							newFragment.setArguments(bundle);
 							FragmentTransaction transaction = getFragmentManager().beginTransaction();
 
