@@ -1,0 +1,13 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="com.github.IArch.GalleryFragment" >
+    
+    <item
+        android:id="@+id/action_delete_multiple"
+        android:title="@string/action_delete_multiple"
+        android:orderInCategory="1"
+        android:showAsAction="ifRoom|withText"
+        />
+
+</menu>

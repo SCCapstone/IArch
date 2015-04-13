@@ -47,6 +47,7 @@
     <string name="action_share">Share Image</string>
     <string name="action_delete_image">Delete Image</string>
     <string name="action_delete_project">Delete Project</string>
+    <string name="action_delete_multiple">Delete Selected</string>
     <string name="title_fragment_take_picture">Camera</string>
     <string name="title_fragment_display_map">Map</string>
     <string name="title_fragment_gallery">Gallery</string>
