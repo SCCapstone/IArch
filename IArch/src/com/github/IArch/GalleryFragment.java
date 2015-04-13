@@ -40,7 +40,7 @@ public class GalleryFragment extends Fragment {
 	final static Object mDiskCacheLock = new Object();
 	static boolean mDiskCacheStarting = true;
 	private static final int DISK_CACHE_SIZE = 1024 * 1024 * 10; // 10MB
-	private static final String DISK_CACHE_SUBDIR = "thumbnails";
+	private static final String DISK_CACHE_SUBDIR = "iarch_thumbs";
 	
 
 	@Override
