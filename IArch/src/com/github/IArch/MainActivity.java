@@ -176,6 +176,9 @@ public class MainActivity extends Activity {
 		case R.id.action_share:
 			shareImage();
 			return true;
+		case R.id.action_delete_image:
+			deleteImage();
+			return true;	
 		default:
 			return super.onOptionsItemSelected(item);
 		}
@@ -382,6 +385,12 @@ public class MainActivity extends Activity {
 		emailIntent.putExtra(android.content.Intent.EXTRA_TEXT, body);
 		emailIntent.putExtra(Intent.EXTRA_STREAM, Uri.parse("file://" + longFileName));
 		startActivity(Intent.createChooser(emailIntent, "Sharing Options"));
+	}
+	
+	public void deleteImage() {
+		File myFile = new File(ImageDetailsFragment.fileLocation);
+		myFile.delete();
+		this.getFragmentManager().popBackStack();
 	}
 	
 	private void setUpNavDrawer()

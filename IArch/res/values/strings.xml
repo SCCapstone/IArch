@@ -45,6 +45,7 @@
     <string name="action_search">Search</string>
     <string name="action_settings">Settings</string>
     <string name="action_share">Share Image</string>
+    <string name="action_delete_image">Delete Image</string>
     <string name="title_fragment_take_picture">Camera</string>
     <string name="title_fragment_display_map">Map</string>
     <string name="title_fragment_gallery">Gallery</string>
