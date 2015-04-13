@@ -178,7 +178,10 @@ public class MainActivity extends Activity {
 			return true;
 		case R.id.action_delete_image:
 			deleteImage();
-			return true;	
+			return true;
+		case R.id.action_delete_project:
+			deleteProject();
+			return true;
 		default:
 			return super.onOptionsItemSelected(item);
 		}
@@ -388,8 +391,14 @@ public class MainActivity extends Activity {
 	}
 	
 	public void deleteImage() {
-		DialogHandler dialogHandler = new DialogHandler();
+		File file = new File(ImageDetailsFragment.fileLocation);
+		DialogHandler dialogHandler = new DialogHandler(file);
 		dialogHandler.show(getFragmentManager(), "deleteImage");
+	}
+	
+	public void deleteProject() {
+		DialogHandler dialogHandler = new DialogHandler(ChooserFragment.folderName);
+		dialogHandler.show(getFragmentManager(), "deleteProject");
 	}
 	
 	private void setUpNavDrawer()
