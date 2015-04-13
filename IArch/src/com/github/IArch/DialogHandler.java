@@ -21,6 +21,7 @@ public class DialogHandler extends DialogFragment {
                 	   File myFile = new File(ImageDetailsFragment.fileLocation);
                 	   myFile.delete();
                 	   getActivity().getFragmentManager().popBackStack();
+                	   GalleryFragment.mDiskLruCache.clearCache();
                    }
                })
                .setNegativeButton(R.string.decline, new DialogInterface.OnClickListener() {
