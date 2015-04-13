@@ -51,7 +51,8 @@ public class GalleryFragment extends Fragment {
 		}
 		setHasOptionsMenu(true);
 		View galleryView = inflater.inflate(R.layout.fragment_gallery, container, false);
-		getActionBar().setTitle(R.string.title_fragment_gallery);
+		String[] shortFolderName = folderName.split("/"); 
+		getActionBar().setTitle(shortFolderName[6]);
 		
 		gridView = (GridView) galleryView.findViewById(R.id.gridView);
 		customGridAdapter = new GridViewAdapter(getActivity(), R.layout.row_grid, getData());
