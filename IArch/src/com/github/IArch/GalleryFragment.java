@@ -257,4 +257,6 @@ public class GalleryFragment extends Fragment {
 	        setRetainInstance(true);
 	    }
 	}
+	
+	
 }

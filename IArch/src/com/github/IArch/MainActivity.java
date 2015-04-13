@@ -388,9 +388,8 @@ public class MainActivity extends Activity {
 	}
 	
 	public void deleteImage() {
-		File myFile = new File(ImageDetailsFragment.fileLocation);
-		myFile.delete();
-		this.getFragmentManager().popBackStack();
+		DialogHandler dialogHandler = new DialogHandler();
+		dialogHandler.show(getFragmentManager(), "deleteImage");
 	}
 	
 	private void setUpNavDrawer()
