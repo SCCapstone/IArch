@@ -20,7 +20,6 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.dropbox.sync.android.DbxAccount;
@@ -155,7 +154,7 @@ public class MainActivity extends Activity {
        
        switch (item.getItemId()) {
 		case R.id.action_sync:
-			sync();
+			syncProject();
 			if (mAccountManager.hasLinkedAccount()) {
 				Toast.makeText(this, "Syncing Project: " + projectName, 
 					Toast.LENGTH_LONG).show();
@@ -163,9 +162,9 @@ public class MainActivity extends Activity {
 			return true;
 		case R.id.action_export:
 			System.out.println("START EXPORTING");
-			export();
+			exportCSV();
 			if (mAccountManager.hasLinkedAccount()) {
-				Toast.makeText(this, "Exporting Project: " + projectName, 
+				Toast.makeText(this, projectName + ".csv Exported to Dropbox", 
 					Toast.LENGTH_LONG).show();
 				System.out.println("FINISHED EXPORTING");
 			}
@@ -175,7 +174,13 @@ public class MainActivity extends Activity {
 					Toast.LENGTH_LONG).show();
 			return true;
 		case R.id.action_share:
-			share();
+			shareImage();
+			return true;
+		case R.id.action_delete_image:
+			deleteImage();
+			return true;
+		case R.id.action_delete_project:
+			deleteProject();
 			return true;
 		default:
 			return super.onOptionsItemSelected(item);
@@ -212,7 +217,7 @@ public class MainActivity extends Activity {
 		};
 	}
 	
-	public void sync() {
+	public void syncProject() {
 		if (mAccountManager.hasLinkedAccount()) {
 			String longFileName = ChooserFragment.folderName.toString();
 			String[] shortFileName = longFileName.split("/");
@@ -239,7 +244,7 @@ public class MainActivity extends Activity {
 		}
 	}
 	
-	public boolean export() {
+	public boolean exportCSV() {
 		if (mAccountManager.hasLinkedAccount()) {
 			String longFileName = ChooserFragment.folderName.toString();
 			String[] shortFileName = longFileName.split("/");
@@ -324,11 +329,10 @@ public class MainActivity extends Activity {
 					Toast.LENGTH_LONG).show();
 		}
 		
-		return false;
-		
+		return false;	
 	}
 	
-	public void share()
+	public void shareImage()
 	{
 		String longFileName = ImageDetailsFragment.fileLocation;
 		String body = "";
@@ -384,6 +388,17 @@ public class MainActivity extends Activity {
 		emailIntent.putExtra(android.content.Intent.EXTRA_TEXT, body);
 		emailIntent.putExtra(Intent.EXTRA_STREAM, Uri.parse("file://" + longFileName));
 		startActivity(Intent.createChooser(emailIntent, "Sharing Options"));
+	}
+	
+	public void deleteImage() {
+		File file = new File(ImageDetailsFragment.fileLocation);
+		DialogHandler dialogHandler = new DialogHandler(file);
+		dialogHandler.show(getFragmentManager(), "deleteImage");
+	}
+	
+	public void deleteProject() {
+		DialogHandler dialogHandler = new DialogHandler(ChooserFragment.folderName);
+		dialogHandler.show(getFragmentManager(), "deleteProject");
 	}
 	
 	private void setUpNavDrawer()

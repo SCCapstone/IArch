@@ -41,17 +41,21 @@
     <string name="action_projects">Projects</string>
     <string name="action_gallery">Gallery</string>
     <string name="action_sync">Sync Project</string>
-    <string name="action_export">Export</string>
-    <string name="action_export_project">Export Project</string>
+    <string name="action_export_project">Export CSV</string>
     <string name="action_search">Search</string>
     <string name="action_settings">Settings</string>
-    <string name="action_share">Share</string>
+    <string name="action_share">Share Image</string>
+    <string name="action_delete_image">Delete Image</string>
+    <string name="action_delete_project">Delete Project</string>
     <string name="title_fragment_take_picture">Camera</string>
     <string name="title_fragment_display_map">Map</string>
     <string name="title_fragment_gallery">Gallery</string>
     <string name="title_fragment_image_details">Image Details</string>
     <string name="title_fragment_chooser">Projects</string>
     <string name="title_fragment_main">iArch</string>
+    
+    <!-- Dialog Handler -->
+    <string name="title_delete">Really delete?</string>
     
     <!-- Artifacts -->
     <string-array name="artifacts">

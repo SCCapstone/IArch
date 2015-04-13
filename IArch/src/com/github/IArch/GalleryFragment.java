@@ -27,6 +27,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.GridView;
+import android.widget.TextView;
 
 public class GalleryFragment extends Fragment {
 
@@ -51,7 +52,8 @@ public class GalleryFragment extends Fragment {
 		}
 		setHasOptionsMenu(true);
 		View galleryView = inflater.inflate(R.layout.fragment_gallery, container, false);
-		getActionBar().setTitle(R.string.title_fragment_gallery);
+		String[] shortFolderName = folderName.split("/"); 
+		getActionBar().setTitle(shortFolderName[6]);
 		
 		gridView = (GridView) galleryView.findViewById(R.id.gridView);
 		customGridAdapter = new GridViewAdapter(getActivity(), R.layout.row_grid, getData());
@@ -188,12 +190,16 @@ public class GalleryFragment extends Fragment {
 		public void onItemCheckedStateChanged(ActionMode mode, int position,
 				long id, boolean checked) {
 			View singleView = gridView.getChildAt(position);
+			TextView text = (TextView) singleView.findViewById(R.id.text);
 			if (checked == true) {
 				//item checked
 				singleView.setBackgroundColor(getResources().getColor(android.R.color.background_light));
+				text.setTextColor(Color.parseColor("#ff000000"));
 			} else {
 				//item unchecked
-				singleView.setBackgroundColor(Color.parseColor("#fff3f3f3"));
+				singleView.setBackgroundColor(Color.parseColor("#ff000000"));
+				singleView.setBackgroundResource(R.drawable.gallery_object);
+				text.setTextColor(Color.parseColor("#ffffff"));
 			}
 			
 			//count number of items selected; display it at top of screen
@@ -251,4 +257,6 @@ public class GalleryFragment extends Fragment {
 	        setRetainInstance(true);
 	    }
 	}
+	
+	
 }
