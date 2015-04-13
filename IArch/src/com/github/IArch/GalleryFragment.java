@@ -2,6 +2,7 @@ package com.github.IArch;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.List;
 
 import com.dropbox.sync.android.DbxDatastore;
 import com.dropbox.sync.android.DbxException;
@@ -40,7 +41,8 @@ public class GalleryFragment extends Fragment {
 	final static Object mDiskCacheLock = new Object();
 	static boolean mDiskCacheStarting = true;
 	private static final int DISK_CACHE_SIZE = 1024 * 1024 * 10; // 10MB
-	private static final String DISK_CACHE_SUBDIR = "thumbnails";
+	private static final String DISK_CACHE_SUBDIR = "iarch_thumbs";
+	List<CharSequence> list = new ArrayList<CharSequence>();
 	
 
 	@Override
@@ -169,6 +171,8 @@ public class GalleryFragment extends Fragment {
 		public boolean onCreateActionMode(ActionMode mode, Menu menu) {
 			mode.setTitle("Select Items");
             mode.setSubtitle("One item selected");
+            MenuInflater inflater = getActivity().getMenuInflater();
+            inflater.inflate(R.menu.contextual_menu, menu);
 			return true;
 		}
 
@@ -179,6 +183,23 @@ public class GalleryFragment extends Fragment {
 
 		@Override
 		public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
+			switch (item.getItemId()) {
+			case R.id.action_delete_multiple:
+				System.out.println("LIST: " + list);
+				for (int i=0; i<list.size(); i++) {
+					String fileName = list.get(i).toString();
+					File file = new File(folderName + "/" + fileName);
+					file.delete();			
+				}
+				list.clear();
+				GalleryFragment.mDiskLruCache.clearCache();
+				mode.finish();
+			}
+			
+			//reload the adapter
+			customGridAdapter = new GridViewAdapter(getActivity(), R.layout.row_grid, getData());
+			gridView.invalidateViews();
+			gridView.setAdapter(customGridAdapter);
 			return true;
 		}
 
@@ -195,11 +216,14 @@ public class GalleryFragment extends Fragment {
 				//item checked
 				singleView.setBackgroundColor(getResources().getColor(android.R.color.background_light));
 				text.setTextColor(Color.parseColor("#ff000000"));
+				System.out.println("ID: " + text.getText());
+				list.add(text.getText());
 			} else {
 				//item unchecked
 				singleView.setBackgroundColor(Color.parseColor("#ff000000"));
 				singleView.setBackgroundResource(R.drawable.gallery_object);
 				text.setTextColor(Color.parseColor("#ffffff"));
+				list.remove(text.getText());
 			}
 			
 			//count number of items selected; display it at top of screen

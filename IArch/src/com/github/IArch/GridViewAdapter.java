@@ -108,5 +108,5 @@ public class GridViewAdapter extends ArrayAdapter<ImageItem> {
 	public Bitmap getBitmapFromMemCache(String key) {
 	    return GalleryFragment.mMemoryCache.get(key);
 	}
-
+		 
 }
