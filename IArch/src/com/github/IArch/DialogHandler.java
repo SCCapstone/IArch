@@ -22,16 +22,9 @@ public class DialogHandler extends DialogFragment {
         builder.setMessage(R.string.title_delete)
                .setPositiveButton(R.string.accept, new DialogInterface.OnClickListener() {
                    public void onClick(DialogInterface dialog, int id) {
-                       if (myLocation.isDirectory()) {
-                    	   DeleteRecursive(myLocation);
-                    	   getActivity().getFragmentManager().popBackStack();
-                    	   GalleryFragment.mDiskLruCache.clearCache();
-                       } else {
-                    	   //delete file
-                    	   myLocation.delete();
-                    	   getActivity().getFragmentManager().popBackStack();
-                    	   GalleryFragment.mDiskLruCache.clearCache();
-                       }
+                	   DeleteRecursive(myLocation);
+                	   getActivity().getFragmentManager().popBackStack();
+                	   GalleryFragment.mDiskLruCache.clearCache();
                    }
                })
                .setNegativeButton(R.string.decline, new DialogInterface.OnClickListener() {
