@@ -13,22 +13,18 @@ import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.content.Context;
 import android.graphics.Bitmap;
-import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Environment;
 import android.util.LruCache;
-import android.view.ActionMode;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.GridView;
-import android.widget.TextView;
 
 public class GalleryFragment extends Fragment {
 
@@ -60,8 +56,8 @@ public class GalleryFragment extends Fragment {
 		gridView = (GridView) galleryView.findViewById(R.id.gridView);
 		customGridAdapter = new GridViewAdapter(getActivity(), R.layout.row_grid, getData());
 		gridView.setAdapter(customGridAdapter);
-		gridView.setChoiceMode(GridView.CHOICE_MODE_MULTIPLE_MODAL);
-		gridView.setMultiChoiceModeListener(new MultiChoiceModeListener());
+		//gridView.setChoiceMode(GridView.CHOICE_MODE_MULTIPLE_MODAL);
+		//gridView.setMultiChoiceModeListener(new MultiChoiceModeListener());
 		
 		//handle item click
 		gridView.setOnItemClickListener(new OnItemClickListener() {
@@ -164,7 +160,7 @@ public class GalleryFragment extends Fragment {
 		// Inflate the menu; this adds items to the action bar if it is present.
 		inflater.inflate(R.menu.gallery_fragment, menu);	
 	}
-		
+	/*
 	public class MultiChoiceModeListener implements GridView.MultiChoiceModeListener {
 
 		@Override
@@ -192,14 +188,15 @@ public class GalleryFragment extends Fragment {
 					file.delete();			
 				}
 				list.clear();
-				GalleryFragment.mDiskLruCache.clearCache();
+				
 				mode.finish();
 			}
-			
+			GalleryFragment.mDiskLruCache.clearCache();
 			//reload the adapter
 			customGridAdapter = new GridViewAdapter(getActivity(), R.layout.row_grid, getData());
 			gridView.invalidateViews();
 			gridView.setAdapter(customGridAdapter);
+			
 			return true;
 		}
 
@@ -239,7 +236,7 @@ public class GalleryFragment extends Fragment {
 		}
 
 	}
-	
+	*/
 	class InitDiskCacheTask extends AsyncTask<File, Void, Void> {
 	    @Override
 	    protected Void doInBackground(File... params) {
