@@ -196,35 +196,24 @@ public class GalleryFragment extends Fragment {
 				mode.finish();
 			}
 			GalleryFragment.mDiskLruCache.clearCache();
-			//reload the adapter
+			
+			//reload the adapter, including reloading memory and disk caches
 			customGridAdapter = new GridViewAdapter(getActivity(), R.layout.row_grid, getData());
 			gridView.invalidateViews();
 			gridView.setAdapter(customGridAdapter);
 			
-			// Get max available VM memory, exceeding this amount will throw an
-		    // OutOfMemory exception. Stored in kilobytes as LruCache takes an
-		    // int in its constructor.
-		    final int maxMemory = (int) (Runtime.getRuntime().maxMemory() / 1024);
-
-		    // Use 1/8th of the available memory for this memory cache.
+			final int maxMemory = (int) (Runtime.getRuntime().maxMemory() / 1024);
 		    final int cacheSize = maxMemory / 8;
 
-		    //RetainFragment retainFragment = RetainFragment.findOrCreateRetainFragment(getFragmentManager());
-		    //mMemoryCache = retainFragment.mRetainedCache;
-		    //if (mMemoryCache == null) {
-		    	mMemoryCache = new LruCache<String, Bitmap>(cacheSize) {
-		    		@Override
-		    		protected int sizeOf(String key, Bitmap bitmap) {
-		    			// The cache size will be measured in kilobytes rather than
-		    			// number of items.
-		    			return bitmap.getByteCount() / 1024;
-		    		}
-		    	};
-		    	//retainFragment.mRetainedCache = mMemoryCache;
-		    //}
-		    
-		    
-		    // Initialize disk cache on background thread
+		    mMemoryCache = new LruCache<String, Bitmap>(cacheSize) {
+		    	@Override
+		    	protected int sizeOf(String key, Bitmap bitmap) {
+		    		// The cache size will be measured in kilobytes rather than
+		    		// number of items.
+		    		return bitmap.getByteCount() / 1024;
+		    	}
+		    };
+		    		    
 		    File cacheDir = getDiskCacheDir(getActivity(), DISK_CACHE_SUBDIR);
 		    new InitDiskCacheTask().execute(cacheDir);
 			return true;
@@ -232,6 +221,9 @@ public class GalleryFragment extends Fragment {
 
 		@Override
 		public void onDestroyActionMode(ActionMode mode) {
+			customGridAdapter = new GridViewAdapter(getActivity(), R.layout.row_grid, getData());
+			gridView.invalidateViews();
+			gridView.setAdapter(customGridAdapter);
 		}
 
 		@Override
