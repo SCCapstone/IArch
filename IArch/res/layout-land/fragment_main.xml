@@ -30,7 +30,9 @@
         android:textColor="#FFFFFF"
         android:textSize="44sp"
         android:textStyle="bold" 
-        android:layout_marginBottom="8dp"/>
+        android:layout_marginBottom="8dp"
+        android:layout_marginTop="-8dp"
+        />
        
     <ImageButton
         android:id="@+id/camera_button"
@@ -46,6 +48,7 @@
         android:shadowDx="1"
         android:shadowDy="1"
         android:shadowRadius="2"
+
         android:src="@drawable/camera_only"
         android:scaleType="fitCenter"
         android:adjustViewBounds="true"
