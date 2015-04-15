@@ -28,19 +28,20 @@
        
     <Button
         android:id="@+id/camera_button"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
         android:layout_below="@+id/app_title"
         android:layout_marginTop="8dp"
-        android:text="@string/camera"
-        android:background="@drawable/button_main"
-        android:textColor="#FFFFFF"
+        android:background="@drawable/button_round"
         android:shadowColor="#000000"
         android:shadowDx="1"
         android:shadowDy="1"
         android:shadowRadius="2"
-        android:textSize="22sp"
-        android:onClick="takePicture" />
+        android:onClick="takePicture" 
+        android:gravity="center_horizontal"
+        
+        android:contentDescription="Take Picture"
+        />
 
     <Button
         android:id="@+id/map_button"

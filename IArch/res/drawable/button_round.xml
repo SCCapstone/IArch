@@ -1,0 +1,16 @@
+<!--  round button  -->
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+
+  <item>
+            <shape android:shape="oval">
+    			<stroke android:width="4px" android:color="#CCCCCC" />
+		   		<gradient
+        		android:startColor="#333333"
+       			android:endColor="#555555"
+		        android:angle="270"
+		        android:dither="true"
+		        >
+    			</gradient>
+            </shape>
+	</item>
+</selector>
