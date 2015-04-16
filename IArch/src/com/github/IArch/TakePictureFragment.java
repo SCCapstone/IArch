@@ -3,7 +3,9 @@ package com.github.IArch;
 import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.Locale;
 
 import com.dropbox.sync.android.DbxDatastore;
@@ -18,8 +20,11 @@ import com.dropbox.sync.android.DbxTable;
 
 import android.annotation.SuppressLint;
 import android.app.ActionBar;
+import android.app.AlertDialog;
+import android.app.AlertDialog.Builder;
 import android.app.Fragment;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -70,6 +75,8 @@ import android.widget.Toast;
 	int RESULT_OK = -1;
 	int RESULT_CANCELED = 0;
 	Boolean fileSynced = false;
+	Spinner pSpinner;
+	static List<String> list;
 	
 	
 	
@@ -80,7 +87,7 @@ import android.widget.Toast;
 		view = inflater.inflate(R.layout.fragment_take_picture, container, false);
 		getActionBar().setTitle(R.string.title_fragment_take_picture);
 		
-		//Set up spinner
+		//Set up spinners
 		Spinner afct = (Spinner) view.findViewById(R.id.artifact_name);
 		afct.setOnItemSelectedListener(this);
 		ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(getActivity(),
@@ -88,6 +95,19 @@ import android.widget.Toast;
 	    adapter.setDropDownViewResource(R.layout.spinner_dropdown_layout);
 	    afct.setAdapter(adapter);
 		
+	    getProjectsForSpinner();
+	    pSpinner = (Spinner) view.findViewById(R.id.project_name);
+		ArrayAdapter<String> pAdapter = new ArrayAdapter<String>(getActivity(), R.layout.spinner_layout_map, list);
+	    //ArrayAdapter<CharSequence> pAdapter = ArrayAdapter.createFromResource(getActivity(), R.array.artifacts, R.layout.spinner_layout);
+	    pAdapter.setDropDownViewResource(R.layout.spinner_dropdown_layout);
+	    pSpinner.setPrompt("Select your Project");
+	    pSpinner.setAdapter(
+	    		new NothingSelectedSpinnerAdapter(
+	    				pAdapter,
+	    				R.layout.project_spinner_row_nothing_selected,
+	    				// R.layout.project_spinner_row_nothing_selected_dropdown, //Optional
+	    				getActivity()));
+	    
 		dropboxButton = (Button) view.findViewById(R.id.sync);	
 		dropboxButton.setOnClickListener(this);
 		
@@ -245,13 +265,16 @@ import android.widget.Toast;
 	
 	private void capturePictureData()
 	{
-		EditText projectEditText = (EditText) view.findViewById(R.id.project_name);
-	    projectName = projectEditText.getText().toString();
-	    projectTitle = projectName; // So we can add unedited name to datastore
-	    //convert projectName to something dropbox will accept as a datastore name
-	    projectName = projectName.toLowerCase(Locale.US);
-	    projectName = projectName.replace(" ", "_");
-	    
+		//prevent crash when nothing is selected on spinner
+		if (pSpinner.getSelectedItem() != null) {
+			projectName = pSpinner.getSelectedItem().toString();
+			projectTitle = projectName; // So we can add unedited name to datastore
+			//convert projectName to something dropbox will accept as a datastore name
+			projectName = projectName.toLowerCase(Locale.US);
+			projectName = projectName.replace(" ", "_");
+		} 
+		System.out.println("PROJECT NAME: " + projectName);
+	
 	    EditText locationEditText = (EditText) view.findViewById(R.id.location_name);
 	    location = locationEditText.getText().toString();
 	    
@@ -262,7 +285,8 @@ import android.widget.Toast;
 	    artifact = afct.getSelectedItem().toString();
 	    
 	    EditText descriptionEditText = (EditText) view.findViewById(R.id.description);
-	    description = descriptionEditText.getText().toString();	    
+	    description = descriptionEditText.getText().toString();
+		
 	}
 	
 	//sync to dropbox click
@@ -270,7 +294,7 @@ import android.widget.Toast;
 		String[] splitLoc = fileLocation.split("/");
 		capturePictureData();
 		
-		if (projectName.isEmpty()) {
+		if (pSpinner.getSelectedItem() == null) {
 			//projectName was null, give error since it is a required field
 			Toast.makeText(getActivity(), "Error: Project Name is required", Toast.LENGTH_SHORT).show();
 			
@@ -495,4 +519,17 @@ import android.widget.Toast;
 		//dropbox button click event
 		syncToDropbox();
 	}
+	
+	static void getProjectsForSpinner() {
+		list = new ArrayList<String>();
+		File mediaStorageDir = new File(Environment.getExternalStoragePublicDirectory(
+				Environment.DIRECTORY_PICTURES), "iArch");
+		File[] projectList = mediaStorageDir.listFiles();
+		for (int i=0; i<projectList.length; i++) {
+			System.out.println("LIST: " + projectList[i].toString());
+			String[] splitList = projectList[i].toString().split("/");
+			list.add(splitList[6]);
+		}
+	}
+	
 }

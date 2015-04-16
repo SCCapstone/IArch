@@ -56,8 +56,9 @@
     <string name="title_fragment_chooser">Projects</string>
     <string name="title_fragment_main">iArch</string>
     
-    <!-- Dialog Handler -->
+    <!-- Dialog Handlers -->
     <string name="title_delete">Really delete?</string>
+    <string name="title_add">Enter New Project Name</string>
     
     <!-- Artifacts -->
     <string-array name="artifacts">

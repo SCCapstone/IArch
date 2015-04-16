@@ -13,6 +13,7 @@ import android.os.Environment;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.view.GravityCompat;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -20,6 +21,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.dropbox.sync.android.DbxAccount;
@@ -392,12 +394,12 @@ public class MainActivity extends Activity {
 	
 	public void deleteImage() {
 		File file = new File(ImageDetailsFragment.fileLocation);
-		DialogHandler dialogHandler = new DialogHandler(file);
+		DeleteDialogHandler dialogHandler = new DeleteDialogHandler(file);
 		dialogHandler.show(getFragmentManager(), "deleteImage");
 	}
 	
 	public void deleteProject() {
-		DialogHandler dialogHandler = new DialogHandler(ChooserFragment.folderName);
+		DeleteDialogHandler dialogHandler = new DeleteDialogHandler(ChooserFragment.folderName);
 		dialogHandler.show(getFragmentManager(), "deleteProject");
 	}
 	
@@ -576,6 +578,13 @@ public class MainActivity extends Activity {
     private void showUnlinkedView() {
     	MainFragment.mLinkButton.setText("Connect to Dropbox");
     	navDrawerItems[4] = "Login";
+    }
+    
+    //create a new project for TakePictureFragment project name dropdown
+    public void newProject(View v) {
+    	//TakePictureFragment.newProject(v);
+    	AddDialogHandler dialogHandler = new AddDialogHandler();
+		dialogHandler.show(this.getFragmentManager(), "addImage");
     }
     
 }

@@ -8,10 +8,10 @@ import android.app.DialogFragment;
 import android.content.DialogInterface;
 import android.os.Bundle;
 
-public class DialogHandler extends DialogFragment {
+public class DeleteDialogHandler extends DialogFragment {
 	File myLocation;
 	
-    public DialogHandler(File fileLocation) {
+    public DeleteDialogHandler(File fileLocation) {
     	myLocation = fileLocation;
 	}
 
