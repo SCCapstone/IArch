@@ -524,8 +524,10 @@ import android.widget.Toast;
 		File[] projectList = mediaStorageDir.listFiles();
 		for (int i=0; i<projectList.length; i++) {
 			System.out.println("LIST: " + projectList[i].toString());
-			String[] splitList = projectList[i].toString().split("/");
-			list.add(splitList[6]);
+			if (projectList[i].isDirectory()){
+				String[] splitList = projectList[i].toString().split("/");
+				list.add(splitList[6]);
+			}
 		}
 	}
 	
