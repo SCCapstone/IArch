@@ -64,24 +64,42 @@
         />
     
     
-    <EditText
+    <Spinner
         android:id="@+id/project_name"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_toRightOf="@+id/imageView1"
         android:layout_below="@+id/longitude"
-        android:hint="@string/project_hint"
-        android:textColorHint="#AAAAAA"
-        android:inputType="text" 
-        android:textColor="#FFFFFF"
+        android:layout_toLeftOf="@+id/new_project"
+        android:layout_toRightOf="@+id/imageView1"
+        android:drawSelectorOnTop="true"
+        android:prompt="@string/project_hint" 
+        style="@style/spinner_style"
+        android:popupBackground="#000000"
         android:background="@drawable/text_border"
-        android:digits="0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ
-        	abcdefghijklmnopqrstvwxyz-_. "
-        android:paddingLeft="10dp"
         android:textSize="22sp"
-        android:textCursorDrawable="@drawable/cursor_style"
         android:layout_marginTop="8dp"
         android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        	 />
+    
+    <Button
+        android:id="@+id/new_project"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_below="@+id/longitude"
+        android:text="@string/new_project" 
+        android:textColor="#FFFFFF"
+        android:background="@drawable/button_sub"
+        android:shadowColor="#000000"
+        android:shadowDx="1"
+        android:shadowDy="1"
+        android:shadowRadius="2"
+        android:textSize="18sp"
+        android:layout_marginTop="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:onClick="newProject"
         />
     
     <EditText
@@ -89,7 +107,7 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_toRightOf="@+id/imageView1"
-        android:layout_below="@+id/project_name"
+        android:layout_below="@+id/new_project"
         android:hint="@string/location_hint"
         android:textColorHint="#AAAAAA"
         android:inputType="text" 
