@@ -63,7 +63,6 @@
         android:textSize="18sp"
         />
     
-    
     <Spinner
         android:id="@+id/project_name"
         android:layout_width="fill_parent"

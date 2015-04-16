@@ -24,7 +24,9 @@ public class DeleteDialogHandler extends DialogFragment {
                    public void onClick(DialogInterface dialog, int id) {
                 	   DeleteRecursive(myLocation);
                 	   getActivity().getFragmentManager().popBackStack();
-                	   GalleryFragment.mDiskLruCache.clearCache();
+                	   if (GalleryFragment.mDiskLruCache != null) {
+                		   GalleryFragment.mDiskLruCache.clearCache();
+                	   }
                    }
                })
                .setNegativeButton(R.string.decline, new DialogInterface.OnClickListener() {

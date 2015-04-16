@@ -121,6 +121,7 @@ public class ImageDetailsFragment extends Fragment implements OnClickListener {
 			String[] splitFile = fileLocation.split("/");
 			
 			try {
+				if (splitFile.length == 6) {
 				//open datastore and get fresh data
 				DbxDatastore datastore = MainActivity.mDatastoreManager.openDatastore(splitFile[6]);
 				datastore.sync();
@@ -181,6 +182,7 @@ public class ImageDetailsFragment extends Fragment implements OnClickListener {
 				} else {
 					//picture clicked had no data attached to it, do something here
 					datastore.close();
+				}
 				}
 			} catch (DbxException e) {
 				// TODO Auto-generated catch block
