@@ -1,30 +1,37 @@
 package com.github.IArch;
 
-import java.io.File;
-
+import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.widget.EditText;
+import android.widget.Toast;
 
-public class DialogHandler extends DialogFragment {
-	File myLocation;
+public class AddDialogHandler extends DialogFragment {
 	
-    public DialogHandler(File fileLocation) {
-    	myLocation = fileLocation;
+    public AddDialogHandler() {
 	}
 
-	@Override
+	@SuppressLint("InflateParams") @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         // Use the Builder class for convenient dialog construction
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-        builder.setMessage(R.string.title_delete)
+        LayoutInflater inflater = getActivity().getLayoutInflater();
+        final View inflator = inflater.inflate(R.layout.dialog_add_project, null);
+        
+        final EditText et1 = (EditText) inflator.findViewById(R.id.new_project_name);
+        builder.setView(inflator);
+        builder.setMessage(R.string.title_add)
                .setPositiveButton(R.string.accept, new DialogInterface.OnClickListener() {
                    public void onClick(DialogInterface dialog, int id) {
-                	   DeleteRecursive(myLocation);
-                	   getActivity().getFragmentManager().popBackStack();
-                	   GalleryFragment.mDiskLruCache.clearCache();
+                	   //add new project to spinner
+                	   String s1 = et1.getText().toString();
+                	   TakePictureFragment.list.add(s1);
+                	   Toast.makeText(getActivity(), s1 + " added to project list!", Toast.LENGTH_SHORT).show();
                    }
                })
                .setNegativeButton(R.string.decline, new DialogInterface.OnClickListener() {
@@ -35,13 +42,5 @@ public class DialogHandler extends DialogFragment {
         // Create the AlertDialog object and return it
         return builder.create();
     }
-	
-	void DeleteRecursive(File fileOrDirectory) {
-	    if (fileOrDirectory.isDirectory())
-	        for (File child : fileOrDirectory.listFiles())
-	            DeleteRecursive(child);
-
-	    fileOrDirectory.delete();
-	}
 	
 }

@@ -392,12 +392,12 @@ public class MainActivity extends Activity {
 	
 	public void deleteImage() {
 		File file = new File(ImageDetailsFragment.fileLocation);
-		DialogHandler dialogHandler = new DialogHandler(file);
+		DeleteDialogHandler dialogHandler = new DeleteDialogHandler(file);
 		dialogHandler.show(getFragmentManager(), "deleteImage");
 	}
 	
 	public void deleteProject() {
-		DialogHandler dialogHandler = new DialogHandler(ChooserFragment.folderName);
+		DeleteDialogHandler dialogHandler = new DeleteDialogHandler(ChooserFragment.folderName);
 		dialogHandler.show(getFragmentManager(), "deleteProject");
 	}
 	
@@ -576,6 +576,13 @@ public class MainActivity extends Activity {
     private void showUnlinkedView() {
     	MainFragment.mLinkButton.setText("Connect to Dropbox");
     	navDrawerItems[4] = "Login";
+    }
+    
+    //create a new project for TakePictureFragment project name dropdown
+    public void newProject(View v) {
+    	//TakePictureFragment.newProject(v);
+    	AddDialogHandler dialogHandler = new AddDialogHandler();
+		dialogHandler.show(this.getFragmentManager(), "addImage");
     }
     
 }

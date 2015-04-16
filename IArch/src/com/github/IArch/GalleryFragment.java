@@ -44,7 +44,7 @@ public class GalleryFragment extends Fragment {
 	private static final String DISK_CACHE_SUBDIR = "iarch_thumbs";
 	List<CharSequence> list = new ArrayList<CharSequence>();
 	
-
+	
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState) {

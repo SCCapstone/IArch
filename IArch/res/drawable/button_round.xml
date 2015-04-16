@@ -1,0 +1,24 @@
+<!--  round button  -->
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+      <item>  
+    <layer-list>
+        <item android:top="3dp">
+            <shape android:shape="oval">
+                <solid android:color="#444444" />
+            </shape>
+        </item>
+            <item android:bottom="3dp">
+            <shape android:shape="oval">
+    			<stroke android:width="4px" android:color="#CCCCCC" />
+		   		<gradient
+        		android:startColor="#111111"
+       			android:endColor="#444444"
+		        android:angle="270"
+		        android:dither="true"
+		        >
+    			</gradient>
+            </shape>
+            </item>
+	</layer-list>
+</item>
+</selector>
