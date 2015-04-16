@@ -1,20 +1,29 @@
 <!-- Button for the main screen with drop shadows -->
 <selector xmlns:android="http://schemas.android.com/apk/res/android">
 
-<item android:bottom="2dp" android:right="2dp">
+  <item>  
+    <layer-list>
+        <item android:top="3dp">
             <shape>
-				<corners android:radius="10dp"/>
-    			<stroke android:width="4px" android:color="#CCCCCC" />
-		   		<gradient
-        		android:startColor="#111111"
-       			android:endColor="#444444"
-		        android:angle="270"
-		        android:dither="true"
-		        >
-    			</gradient>
+                <corners android:radius="15dp" />
+                <solid android:color="#444444" />
             </shape>
+        </item>
+	<item android:bottom="3dp">
+	            <shape>
+					<corners android:radius="10dp"/>
+	    			<stroke android:width="4px" android:color="#CCCCCC" />
+			   		<gradient
+	        		android:startColor="#111111"
+	       			android:endColor="#444444"
+			        android:angle="270"
+			        android:dither="true"
+			        >
+	    			</gradient>
+	            </shape>
 	</item>
-
+	</layer-list>
+</item>
 <!--
 <item>
     <layer-list>
