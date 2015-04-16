@@ -59,7 +59,7 @@
     <Button
         android:id="@+id/map_button"
         android:layout_width="fill_parent"
-        android:layout_height="64dp"
+        android:layout_height="62dp"
         android:layout_below="@+id/app_title"
         android:layout_toRightOf="@+id/camera_button"
         android:layout_alignTop="@+id/camera_button"
@@ -78,7 +78,7 @@
     <Button
         android:id="@+id/project_mgmt_button"
         android:layout_width="fill_parent"
-        android:layout_height="64dp"
+        android:layout_height="62dp"
         android:layout_alignLeft="@+id/map_button"
         android:layout_below="@+id/map_button"
         android:layout_marginTop="8dp"
@@ -96,7 +96,7 @@
     <Button
         android:id="@+id/link_button"
         android:layout_width="fill_parent"
-        android:layout_height="64dp"
+        android:layout_height="62dp"
         android:layout_below="@+id/project_mgmt_button"
         android:layout_alignLeft="@+id/map_button"
         android:layout_centerHorizontal="true"
