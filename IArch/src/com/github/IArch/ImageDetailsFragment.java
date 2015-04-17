@@ -121,68 +121,70 @@ public class ImageDetailsFragment extends Fragment implements OnClickListener {
 			String[] splitFile = fileLocation.split("/");
 			System.out.println("SPLITFILE LENGTH: " + splitFile.length);
 			try {
+				//only show image data if image is in a project
+				//this allows user to open and delete crashed images if they happen
 				if (splitFile.length == 8) {
-				//open datastore and get fresh data
-				DbxDatastore datastore = MainActivity.mDatastoreManager.openDatastore(splitFile[6]);
-				datastore.sync();
+					//open datastore and get fresh data
+					DbxDatastore datastore = MainActivity.mDatastoreManager.openDatastore(splitFile[6]);
+					datastore.sync();
 				
-				//open table
-				DbxTable tasksTbl = datastore.getTable("Picture_Data");
+					//open table
+					DbxTable tasksTbl = datastore.getTable("Picture_Data");
 				
-				//query table for results
-				DbxFields queryParams = new DbxFields().set("LOCAL_FILENAME", fileLocation);
-				DbxTable.QueryResult results = tasksTbl.query(queryParams);
-				if (results.hasResults()) {
-					DbxRecord firstResult = results.iterator().next();
+					//query table for results
+					DbxFields queryParams = new DbxFields().set("LOCAL_FILENAME", fileLocation);
+					DbxTable.QueryResult results = tasksTbl.query(queryParams);
+					if (results.hasResults()) {
+						DbxRecord firstResult = results.iterator().next();
 				
-					//get data for variables
-					String date = firstResult.getString("DATE");
-					String projectName = firstResult.getString("PROJECT_NAME");
-					String description = firstResult.getString("DESCRIPTION");
-					Double longitude = firstResult.getDouble("LONGITUDE");
-					Double latitude = firstResult.getDouble("LATITUDE");
-					String latStr = "Latitude: " + latitude;
-					String longStr = "Longitude: " + longitude;
-					//String latLong = "Latitude: " + latitude + " Longitude: " + longitude;
-					String artifactType = firstResult.getString("ARTIFACT_TYPE");
-					String location = firstResult.getString("LOCATION");
+						//get data for variables
+						String date = firstResult.getString("DATE");
+						String projectName = firstResult.getString("PROJECT_NAME");
+						String description = firstResult.getString("DESCRIPTION");
+						Double longitude = firstResult.getDouble("LONGITUDE");
+						Double latitude = firstResult.getDouble("LATITUDE");
+						String latStr = "Latitude: " + latitude;
+						String longStr = "Longitude: " + longitude;
+						//String latLong = "Latitude: " + latitude + " Longitude: " + longitude;
+						String artifactType = firstResult.getString("ARTIFACT_TYPE");
+						String location = firstResult.getString("LOCATION");
 				
-					//set text for textViews
-					if (date != null) {
-						TextView dateField = (TextView) galleryView.findViewById(R.id.date);
-						dateField.setText(date);
-					}
-					if (projectName != null) {
-						TextView nameField = (TextView) galleryView.findViewById(R.id.project_name);
-						nameField.setText("Project: " + projectName);
-					}
-					if (description != null) {
-						TextView descriptionField = (TextView) galleryView.findViewById(R.id.description);
-						descriptionField.setText("Description: " + description);
-					}
-					if (latitude != null) {
-						TextView latField = (TextView) galleryView.findViewById(R.id.latitude);
-						latField.setText(latStr);
-					}
-					if (longitude != null) {
-						TextView longField = (TextView) galleryView.findViewById(R.id.longitude);
-						longField.setText(longStr);
-					}
-					if (artifactType != null) {
-						TextView artifactField = (TextView) galleryView.findViewById(R.id.artifact_name);
-						artifactField.setText("Artifact: " + artifactType);
-					}
-					if (location != null) {
-						TextView locationField = (TextView) galleryView.findViewById(R.id.location_name);
-						locationField.setText("Location: " + location);
-					}
+						//set text for textViews
+						if (date != null) {
+							TextView dateField = (TextView) galleryView.findViewById(R.id.date);
+							dateField.setText(date);
+						}
+						if (projectName != null) {
+							TextView nameField = (TextView) galleryView.findViewById(R.id.project_name);
+							nameField.setText("Project: " + projectName);
+						}
+						if (description != null) {
+							TextView descriptionField = (TextView) galleryView.findViewById(R.id.description);
+							descriptionField.setText("Description: " + description);
+						}
+						if (latitude != null) {
+							TextView latField = (TextView) galleryView.findViewById(R.id.latitude);
+							latField.setText(latStr);
+						}
+						if (longitude != null) {
+							TextView longField = (TextView) galleryView.findViewById(R.id.longitude);
+							longField.setText(longStr);
+						}
+						if (artifactType != null) {
+							TextView artifactField = (TextView) galleryView.findViewById(R.id.artifact_name);
+							artifactField.setText("Artifact: " + artifactType);
+						}
+						if (location != null) {
+							TextView locationField = (TextView) galleryView.findViewById(R.id.location_name);
+							locationField.setText("Location: " + location);
+						}
 				
-					//close datastores
-					datastore.close();
-				} else {
-					//picture clicked had no data attached to it, do something here
-					datastore.close();
-				}
+						//close datastores
+						datastore.close();
+					} else {
+						//picture clicked had no data attached to it, do something here
+						datastore.close();
+					}
 				}
 			} catch (DbxException e) {
 				// TODO Auto-generated catch block
