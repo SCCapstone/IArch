@@ -120,15 +120,6 @@
         android:layout_marginLeft="8dp"
         android:layout_marginRight="8dp"
          />
-    
-    <!--<EditText
-        android:id="@+id/artifact_name"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/imageView1"
-        android:layout_below="@+id/location_name"
-        android:hint="@string/artifact_hint"
-        android:inputType="text" />-->
         
     <Spinner
         android:id="@+id/artifact_name"

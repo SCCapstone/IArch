@@ -13,6 +13,6 @@
         android:layout_marginBottom="4dp"
         android:hint="@string/project_hint"
         android:digits="0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ
-        	abcdefghijklmnopqrstvwxyz-_. " />
+        	abcdefghijklmnopqrstuvwxyz-_. " />
     
 </LinearLayout>
