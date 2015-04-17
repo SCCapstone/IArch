@@ -530,7 +530,9 @@ import android.widget.Toast;
 				list.add(splitList[6]);
 			}
 		}
-		list.add("");
+		if (list.isEmpty()) {
+			list.add("");
+		}
 	}
 	
 }
