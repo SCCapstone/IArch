@@ -340,49 +340,50 @@ import android.widget.Toast;
 			if (projectName != "") {
 				testFile = dbxFs.create(new DbxPath(projectName + "/" + splitFile[6]));
 				fileLocation = newFileLocation.toString();
-			}
-			else {
-				testFile = dbxFs.create(new DbxPath(splitFile[6]));
-			}
-			try {
-			    //create remote file and assign it to photo
-				File fileVar = new File(fileLocation);
-			    testFile.writeFromExistingFile(fileVar, false);
-			    //set up dropbox datastores
-			    //DbxDatastore datastore = MainActivity.mDatastoreManager.openDefaultDatastore();		    
-			    DbxDatastore datastore = MainActivity.mDatastoreManager.openOrCreateDatastore(projectName);
-			    
-			    if (datastore.getTitle() == null) // check if a title already exists (aka datastore already exists)
-			    {
-			    	datastore.setTitle(projectTitle); // set the datastore title
-			    }
-			    
-			    DbxTable dataTbl = datastore.getTable("Picture_Data");
-			    
-				@SuppressWarnings("unused")
-				DbxRecord task = dataTbl.insert().set("LOCAL_FILENAME", fileLocation).
-						set("DATE", date).
-						set("LATITUDE", latitude).set("LONGITUDE", longitude).
-						set("PROJECT_NAME", projectName).
-						set("LOCATION", location).
-						set("ARTIFACT_TYPE", artifact).
-						set("DESCRIPTION", description);
-				
-				//sync datastore
-				datastore.sync();
-				
-				//close datastore
-				datastore.close();
-				
-				return true;
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} finally {
-				//close remote file so other things can be done
-			    testFile.close();
-			    //return true;
-			}
+						
+				try {
+				    //create remote file and assign it to photo
+					File fileVar = new File(fileLocation);
+				    testFile.writeFromExistingFile(fileVar, false);
+				    //set up dropbox datastores
+				    //DbxDatastore datastore = MainActivity.mDatastoreManager.openDefaultDatastore();		    
+				    DbxDatastore datastore = MainActivity.mDatastoreManager.openOrCreateDatastore(projectName);
+				    
+				    if (datastore.getTitle() == null) // check if a title already exists (aka datastore already exists)
+				    {
+				    	datastore.setTitle(projectTitle); // set the datastore title
+				    }
+				    
+				    DbxTable dataTbl = datastore.getTable("Picture_Data");
+				    
+					@SuppressWarnings("unused")
+					DbxRecord task = dataTbl.insert().set("LOCAL_FILENAME", fileLocation).
+							set("DATE", date).
+							set("LATITUDE", latitude).set("LONGITUDE", longitude).
+							set("PROJECT_NAME", projectName).
+							set("LOCATION", location).
+							set("ARTIFACT_TYPE", artifact).
+							set("DESCRIPTION", description);
+					
+					//sync datastore
+					datastore.sync();
+					
+					//close datastore
+					datastore.close();
+					
+					return true;
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} finally {
+					//close remote file so other things can be done
+				    testFile.close();
+				    //return true;
+				}
+				} else {
+					//user did not enter a valid project name
+		    		Toast.makeText(getActivity(), "Enter a valid Project Name", Toast.LENGTH_SHORT).show();
+				}
 			} catch (Unauthorized e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -529,6 +530,7 @@ import android.widget.Toast;
 				list.add(splitList[6]);
 			}
 		}
+		list.add("");
 	}
 	
 }
