@@ -97,5 +97,24 @@
         android:layout_marginBottom="8dp"
         />
 
+    <TextView
+        android:id="@+id/camera_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+		android:layout_centerHorizontal="true"
+		android:layout_alignLeft="@+id/camera_button"
+		android:layout_alignRight="@+id/camera_button"
+		android:layout_alignBottom="@+id/camera_button"
+		android:layout_centerInParent="true"
+		android:gravity="center"
+        android:text="@string/camera"
+        android:textColor="#FFFFFF"
+        android:textSize="22sp"
+        android:shadowColor="#000000"
+        android:shadowDx="1"
+        android:shadowDy="1"
+        android:shadowRadius="4"
+        android:paddingBottom="20dp"
+        />
 
 </RelativeLayout>
