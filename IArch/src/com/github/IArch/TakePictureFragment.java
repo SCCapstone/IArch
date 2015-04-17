@@ -529,6 +529,7 @@ import android.widget.Toast;
 				list.add(splitList[6]);
 			}
 		}
+		list.add(" ");
 	}
 	
 }
