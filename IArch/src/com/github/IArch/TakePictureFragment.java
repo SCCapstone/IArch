@@ -151,10 +151,12 @@ import android.widget.Toast;
       	textDate.setText(date);
       	
       	TextView latText = (TextView) view.findViewById(R.id.latitude);
-      	latText.setText("Latitude: " + latitude);
+      	String tempLat = " " + latitude;
+      	latText.setText("Latitude:" + tempLat.substring(0, 16));
       	
       	TextView longText = (TextView) view.findViewById(R.id.longitude);
-      	longText.setText("Longitude: " + longitude);
+      	String tempLong = " " + longitude;
+      	longText.setText("Longitude:" + tempLong.substring(0, 16));
     }
 	
 	@Override
