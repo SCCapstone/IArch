@@ -119,9 +119,9 @@ public class ImageDetailsFragment extends Fragment implements OnClickListener {
 			//show picture that was taken
 			setPic(fileLocation);
 			String[] splitFile = fileLocation.split("/");
-			
+			System.out.println("SPLITFILE LENGTH: " + splitFile.length);
 			try {
-				if (splitFile.length == 6) {
+				if (splitFile.length == 8) {
 				//open datastore and get fresh data
 				DbxDatastore datastore = MainActivity.mDatastoreManager.openDatastore(splitFile[6]);
 				datastore.sync();
