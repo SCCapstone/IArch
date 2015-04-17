@@ -1,19 +1,18 @@
 package com.github.IArch;
 
+import java.io.File;
 import android.app.Fragment;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
+import android.webkit.WebView;
 
 public class FullscreenImageFragment extends Fragment {
 
 	String fileLocation;
 	View galleryView;
-	
+	File filename;
 	
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -21,7 +20,7 @@ public class FullscreenImageFragment extends Fragment {
 		
 		galleryView = inflater.inflate(R.layout.fragment_fullscreen_image, container, false);
 		
-		fileLocation = ImageDetailsFragment.fileLocation.toString();
+		fileLocation = ImageDetailsFragment.fileLocation;
 		setPic(fileLocation);
 		
 		getActivity().getActionBar().hide();
@@ -31,8 +30,10 @@ public class FullscreenImageFragment extends Fragment {
 
 	private void setPic(String file) {
 		//get dimensions of view
-		ImageView myImage = (ImageView) galleryView.findViewById(R.id.imageViewFS);
-		
+		WebView myImage = (WebView) galleryView.findViewById(R.id.imageViewFS);
+		myImage.getSettings().setBuiltInZoomControls(true);
+		myImage.setInitialScale(40);
+		/*
 		//this works for now... hard coded scale factor
 		int targetW = 900;//myImage.getWidth();
 		int targetH = 600;//myImage.getHeight();
@@ -40,9 +41,11 @@ public class FullscreenImageFragment extends Fragment {
 		System.out.println("targetW: " + targetW + " targetH: " + targetH);
 		
 		Bitmap myBitmap = decodeSampledBitmapFromFile(file, targetW, targetH);
-		myImage.setImageBitmap(myBitmap);
+		System.out.println("FILE LOCATION: " + fileLocation);
+		 */	
+		myImage.loadUrl("file:///" + fileLocation);
 	}	
-		
+	/*	
 	public static Bitmap decodeSampledBitmapFromFile(String file, int reqWidth, int reqHeight) {
 
 	    // First decode with inJustDecodeBounds=true to check dimensions
@@ -79,6 +82,6 @@ public class FullscreenImageFragment extends Fragment {
 	    System.out.println("INSAMPLE SIZE: " + inSampleSize);
 	    return inSampleSize;
 	}
-	
+	*/
 	
 }
