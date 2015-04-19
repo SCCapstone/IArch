@@ -94,7 +94,7 @@ import android.widget.Toast;
 		
 	    getProjectsForSpinner();
 	    pSpinner = (Spinner) view.findViewById(R.id.project_name);
-		ArrayAdapter<String> pAdapter = new ArrayAdapter<String>(getActivity(), R.layout.spinner_layout_map, list);
+		ArrayAdapter<String> pAdapter = new ArrayAdapter<String>(getActivity(), R.layout.spinner_layout, list);
 	    //ArrayAdapter<CharSequence> pAdapter = ArrayAdapter.createFromResource(getActivity(), R.array.artifacts, R.layout.spinner_layout);
 	    pAdapter.setDropDownViewResource(R.layout.spinner_dropdown_layout);
 	    pSpinner.setPrompt("Select your Project");
