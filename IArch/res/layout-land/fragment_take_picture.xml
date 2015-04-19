@@ -69,7 +69,7 @@
     <Spinner
         android:id="@+id/project_name"
         android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="36dp"
         android:layout_below="@+id/longitude"
         android:layout_toLeftOf="@+id/new_project"
         android:layout_toRightOf="@+id/imageView1"
@@ -87,7 +87,7 @@
     <Button
         android:id="@+id/new_project"
         android:layout_width="wrap_content"
-        android:layout_height="34dp"
+        android:layout_height="36dp"
         android:layout_alignParentRight="true"
         android:layout_below="@+id/longitude"
         android:text="@string/new_project" 
