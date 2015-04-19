@@ -87,19 +87,17 @@
     <Button
         android:id="@+id/new_project"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="34dp"
         android:layout_alignParentRight="true"
         android:layout_below="@+id/longitude"
         android:text="@string/new_project" 
         android:textColor="#FFFFFF"
-        android:background="@drawable/button_sub"
+        android:background="@drawable/new_project_button"
         android:textSize="18sp"
         android:layout_marginTop="8dp"
         android:onClick="newProject"
-        android:paddingLeft="4dp"
-        android:paddingRight="4dp"
-        android:paddingTop="-4dp"
-        android:paddingBottom="-4dp"
+        android:paddingLeft="6dp"
+        android:paddingRight="6dp"
         />
     
     <EditText
@@ -107,7 +105,7 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_toRightOf="@+id/imageView1"
-        android:layout_below="@+id/new_project"
+        android:layout_below="@+id/project_name"
         android:hint="@string/location_hint"
         android:textColorHint="#AAAAAA"
         android:inputType="text" 
