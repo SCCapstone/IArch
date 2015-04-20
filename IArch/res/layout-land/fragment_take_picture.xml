@@ -28,8 +28,7 @@
     	android:layout_gravity="top"
         android:gravity="top"
         android:scaleType="fitCenter"
-        android:adjustViewBounds="true"
-        
+        android:adjustViewBounds="true"    
          />
     
     <TextView
@@ -84,6 +83,19 @@
         android:layout_marginRight="8dp"
         	 />
     
+        <ImageView
+    	android:id="@+id/project_arrow"	
+        android:layout_width="30dp"
+    	android:layout_height="30dp"
+		android:layout_alignRight="@+id/project_name"
+		android:layout_alignBottom="@+id/project_name"
+		android:src="@drawable/arrow"
+        android:scaleType="fitCenter"
+        android:adjustViewBounds="true" 
+        android:paddingBottom="6dp"
+        android:paddingRight="4dp"
+         />
+    
     <Button
         android:id="@+id/new_project"
         android:layout_width="wrap_content"
@@ -132,6 +144,19 @@
         android:layout_marginTop="8dp"
         android:layout_marginLeft="8dp"
         />
+	
+	<ImageView
+    	android:id="@+id/artifact_arrow"	
+        android:layout_width="30dp"
+    	android:layout_height="30dp"
+		android:layout_alignRight="@+id/artifact_name"
+		android:layout_alignBottom="@+id/artifact_name"
+		android:src="@drawable/arrow"
+        android:scaleType="fitCenter"
+        android:adjustViewBounds="true" 
+        android:paddingBottom="6dp"
+        android:paddingRight="4dp"
+         />
 	
 	<EditText
         android:id="@+id/description"
