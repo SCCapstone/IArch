@@ -39,6 +39,13 @@ import com.dropbox.sync.android.DbxTable;
 import com.dropbox.sync.android.DbxException.Unauthorized;
 import com.dropbox.sync.android.DbxPath.InvalidPathException;
 
+import android.os.Bundle;
+import android.graphics.Color;
+import android.text.Spannable;
+import android.text.SpannableString;
+import android.text.style.ForegroundColorSpan;
+import android.text.style.BackgroundColorSpan;
+
 @SuppressWarnings("deprecation")
 public class MainActivity extends Activity {
 	
@@ -140,6 +147,19 @@ public class MainActivity extends Activity {
 		return super.onCreateOptionsMenu(menu);
 	}
 
+	@Override
+    public boolean onPrepareOptionsMenu(Menu menu) {
+    	for (int i=0; i<menu.size(); i++) {
+    		MenuItem mi = menu.getItem(i);
+    		String title = mi.getTitle().toString();
+    		Spannable newTitle = new SpannableString(title);        
+    		newTitle.setSpan(new ForegroundColorSpan(Color.BLACK), 0, newTitle.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+    		newTitle.setSpan(new BackgroundColorSpan(Color.TRANSPARENT), 0, newTitle.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+    		mi.setTitle(newTitle);
+    	}
+    	return true;
+	}
+	
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		// Handle action bar item clicks here. The action bar will
@@ -584,5 +604,7 @@ public class MainActivity extends Activity {
     	AddDialogHandler dialogHandler = new AddDialogHandler();
 		dialogHandler.show(this.getFragmentManager(), "addImage");
     }
+    
+    
     
 }

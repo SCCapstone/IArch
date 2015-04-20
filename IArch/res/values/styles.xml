@@ -15,6 +15,10 @@
     <!-- Application theme. -->
     <style name="AppTheme" parent="AppBaseTheme">
         <item name="android:textColor">#FFFFFF</item>
+        <item name="android:panelFullBackground">@android:color/black</item>
+        <!--item name="android:popupMenuStyle">@style/SpinnerDropDownItem</item--> 
+        <!--item name="android:panelBackground">@style/SpinnerDropDownItem</item-->
+        <!--item name="android:actionBarWidgetTheme">@style/SpinnerDropDownItem</item-->
         <!-- All customizations that are NOT specific to a particular API-level can go here. -->
     </style>
 
