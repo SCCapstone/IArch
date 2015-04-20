@@ -6,6 +6,6 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:ellipsize="marquee"
-    android:textSize="18sp"
-    android:textColor="#808080"
+    android:textSize="22sp"
+    android:textColor="#AAAAAA"
     android:text="@+string/project_hint" />
