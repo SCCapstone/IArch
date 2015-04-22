@@ -33,6 +33,7 @@ public class FullscreenImageFragment extends Fragment {
 		WebView myImage = (WebView) galleryView.findViewById(R.id.imageViewFS);
 		myImage.getSettings().setBuiltInZoomControls(true);
 		myImage.setInitialScale(40);
+		
 		/*
 		//this works for now... hard coded scale factor
 		int targetW = 900;//myImage.getWidth();

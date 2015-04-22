@@ -39,7 +39,6 @@ import com.dropbox.sync.android.DbxTable;
 import com.dropbox.sync.android.DbxException.Unauthorized;
 import com.dropbox.sync.android.DbxPath.InvalidPathException;
 
-import android.os.Bundle;
 import android.graphics.Color;
 import android.text.Spannable;
 import android.text.SpannableString;

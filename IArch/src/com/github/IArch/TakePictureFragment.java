@@ -66,6 +66,7 @@ import android.widget.Toast;
 	static double longitude;
 	static LocationManager locationManager;
 	static LocationListener locationListener;
+	static Location currentBestLocation;
 	static Location lastKnownLocation;
 	View view;
 	Button dropboxButton;
@@ -74,7 +75,7 @@ import android.widget.Toast;
 	Boolean fileSynced = false;
 	Spinner pSpinner;
 	static List<String> list;
-	
+	private static final int TWO_MINUTES = 1000 * 60 * 2;
 	
 	
 	@Override
@@ -109,7 +110,7 @@ import android.widget.Toast;
 		dropboxButton.setOnClickListener(this);
 		
 		if (savedInstanceState == null) {
-			
+			//create Intent to take a picture
 			Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
 		
 			getLocation();
@@ -124,8 +125,9 @@ import android.widget.Toast;
 				if (fileUri != null) {
 					//store file path to variable
 					fileLocation = fileUri.getPath();
-					
 					takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, fileUri);
+					
+					//start the image capture Intent
 					startActivityForResult(takePictureIntent,CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE);
 				}
 			}
@@ -186,12 +188,8 @@ import android.widget.Toast;
 	public void onActivityResult(int requestCode, int resultCode, Intent data) {
 		//stop getting location updates; saves battery
 		stopLocation();
-				
-		System.out.println("RESULT CODE: " + resultCode);
-		
+								
 		if (requestCode == CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE && resultCode == RESULT_OK) {
-			
-			
 			//show picture that was taken
 			setPic(fileLocation);
 				
@@ -477,8 +475,11 @@ import android.widget.Toast;
 			@Override
 			public void onLocationChanged(Location location) {
 				// called when new location is found by network location provider
-				latitude = location.getLatitude();
-				longitude = location.getLongitude();
+				if (isBetterLocation(location, currentBestLocation)) {
+					latitude = location.getLatitude();
+					longitude = location.getLongitude();
+					currentBestLocation = location;
+				}
 			}
 
 			@Override
@@ -506,7 +507,7 @@ import android.widget.Toast;
 	
 	void stopLocation() {
 		locationManager = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
-		if (locationManager != null) {
+		if (locationManager != null && locationListener != null) {
 			//stop looking for location updates; saves battery
 			locationManager.removeUpdates(locationListener);
 		}
@@ -533,6 +534,60 @@ import android.widget.Toast;
 		if (list.isEmpty()) {
 			list.add("");
 		}
+	}
+	
+	/** Determines whether one Location reading is better than the current Location fix
+	  * @param location  The new Location that you want to evaluate
+	  * @param currentBestLocation  The current Location fix, to which you want to compare the new one
+	  */
+	protected boolean isBetterLocation(Location location, Location currentBestLocation) {
+	    if (currentBestLocation == null) {
+	        // A new location is always better than no location
+	        return true;
+	    }
+
+	    // Check whether the new location fix is newer or older
+	    long timeDelta = location.getTime() - currentBestLocation.getTime();
+	    boolean isSignificantlyNewer = timeDelta > TWO_MINUTES;
+	    boolean isSignificantlyOlder = timeDelta < -TWO_MINUTES;
+	    boolean isNewer = timeDelta > 0;
+
+	    // If it's been more than two minutes since the current location, use the new location
+	    // because the user has likely moved
+	    if (isSignificantlyNewer) {
+	        return true;
+	    // If the new location is more than two minutes older, it must be worse
+	    } else if (isSignificantlyOlder) {
+	        return false;
+	    }
+
+	    // Check whether the new location fix is more or less accurate
+	    int accuracyDelta = (int) (location.getAccuracy() - currentBestLocation.getAccuracy());
+	    boolean isLessAccurate = accuracyDelta > 0;
+	    boolean isMoreAccurate = accuracyDelta < 0;
+	    boolean isSignificantlyLessAccurate = accuracyDelta > 200;
+
+	    // Check if the old and new location are from the same provider
+	    boolean isFromSameProvider = isSameProvider(location.getProvider(),
+	            currentBestLocation.getProvider());
+
+	    // Determine location quality using a combination of timeliness and accuracy
+	    if (isMoreAccurate) {
+	        return true;
+	    } else if (isNewer && !isLessAccurate) {
+	        return true;
+	    } else if (isNewer && !isSignificantlyLessAccurate && isFromSameProvider) {
+	        return true;
+	    }
+	    return false;
+	}
+
+	/** Checks whether two providers are the same */
+	private boolean isSameProvider(String provider1, String provider2) {
+	    if (provider1 == null) {
+	      return provider2 == null;
+	    }
+	    return provider1.equals(provider2);
 	}
 	
 }
