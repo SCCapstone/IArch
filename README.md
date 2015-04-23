@@ -5,6 +5,7 @@ IArch is an Android application developed for Archaeologists to quickly document
 on the fly using their phones camera and GPS. These finds are then synced to their Dropbox account for storage.
 
 Webapp: https://dl.dropboxusercontent.com/u/109119699/www/iarch/index.html
+Project Site: http://sccapstone.github.io/IArch/
 
 #### Current Features:
 ##### Camera:
