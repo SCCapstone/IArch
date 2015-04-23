@@ -286,6 +286,7 @@ function updateAuthenticationStatus(err, client) {
         // changes to the datastore.
         function updateList() {
             console.log("starting updateList");
+            //getPictureUrl();
             //var items = datastore.getTable('items').query();
             var items = datastore.getTable(tableName).query();
             var numItems = 0;
@@ -303,12 +304,9 @@ function updateAuthenticationStatus(err, client) {
                     var fileName = record.get('LOCAL_FILENAME').split('/');
                     var filePath = projectName + '/' + fileName[fileName.length-1];
                     var thumbnail_url = client.thumbnailUrl(filePath, {size: "large"});
-                    /*picture_url = "";
-                    
-                    finished = false;
-                    console.log("finished before= " + finished);
-                    
-                    client.makeUrl(filePath, {
+                    picture_url = "";
+                               
+                    /*client.makeUrl(filePath, {
                         downloadHack: false,
                         long: true
                     }, function (error, data) {
@@ -317,20 +315,19 @@ function updateAuthenticationStatus(err, client) {
                         }
                         console.log("data.url= " + data.url);
                         picture_url = data.url.replace("www.dropbox.com","dl.dropboxusercontent.com");
-                        console.log("picture_url inside= " + picture_url);
-                        finished = true;                    
-                    });
+                        record.set('INTERNET_URL', picture_url);
+                        console.log("picture_url inside= " + picture_url);              
+                    });*/
 
 
                                 
-                    console.log("finished after= " + finished);
-                    console.log("Picture URL outside2= " + picture_url);*/
+                    console.log("Picture URL outside2= " + picture_url);
                     
                     numItems++;
                     var html = _.template('<tr id="${id}"><td id="num">${number}.</td><td id="thumb"><a href="${pictureUrl}" target="_blank"><img src="${thumbnail}" alt="Thumbnail"></a></td><td id="date">${date}</td><td id="location">${location}</td><td id="artifact">${artifact}</td><td id="description">${description}</td><td id="gps">${GPS}</td><td id="edit"><a href="#" id="record_edit"><span class="glyphicon glyphicon-pencil"></span></a><a href="#" id="record_delete"><span class="glyphicon glyphicon-trash"></span></a></td></tr>', {
                         id: record.getId(),
                         number: numItems,
-                        pictureUrl: "", //record.get('INTERNET_URL'),
+                        pictureUrl: record.get('INTERNET_URL'),
                         thumbnail: thumbnail_url,
                         date: record.get('DATE'),
                         location: record.get('LOCATION'),
@@ -438,27 +435,7 @@ function updateAuthenticationStatus(err, client) {
                     var fileName = record.get('LOCAL_FILENAME').split('/');
                     var filePath = projectName + '/' + fileName[fileName.length-1];
                     var thumbnail_url = client.thumbnailUrl(filePath, {size: "large"});
-                    picture_url = "";
-                    
-                    /*finished = false;
-                    console.log("finished before= " + finished);
-                    
-                    client.makeUrl(filePath, {
-                        downloadHack: false,
-                        long: true
-                    }, function (error, data) {
-                        if (error) {
-                            return console.log("ERROR: " + error); // Something went wrong.
-                        }
-                        console.log("data.url= " + data.url);
-                        picture_url = data.url.replace("www.dropbox.com","dl.dropboxusercontent.com");
-                        console.log("picture_url inside= " + picture_url);
-                        finished = true;                    
-                    });
-                                
-                    console.log("finished after= " + finished);
-                    console.log("Picture URL outside2= " + picture_url);*/
-                    
+                   
                     numItems++;
                     var html = _.template('<tr id="${id}"><td id="num">${number}.</td><td id="thumb"><a href="${picture_url}" target="_blank"><img src="${thumbnail}" alt="Thumbnail"></a></td><td id="date">${date}</td><td id="location">${location}</td><td id="artifact">${artifact}</td><td id="description">${description}</td><td id="gps">${GPS}</td><td id="edit"><a href="#" id="record_edit"><span class="glyphicon glyphicon-pencil"></span></a><a href="#" id="record_delete"><span class="glyphicon glyphicon-trash"></span></a></td></tr>', {
                         id: record.getId(),
@@ -543,12 +520,16 @@ function updateAuthenticationStatus(err, client) {
     }
 
     $("#export_csv").click(function (e) {
-        //e.preventDefault();
         exportCSV.apply(this);
     });
 
     function exportCSV() {
-        console.log("starting export");
+
+        if (datastore == null)
+        {
+            alert("Please select a project");
+            return;
+        }
         var projectName = datastore.getTitle();
         var filename = projectName + ".csv";
         var header = "Project Name,Date,Location,Artifact Type,Description,Longitude,Latitude";
@@ -556,7 +537,7 @@ function updateAuthenticationStatus(err, client) {
         csvDataArray.push(header);
 
         var items = datastore.getTable(tableName).query();
-        
+
                 _.chain(items)
                 // Sort by created date
                 .sortBy(function (record) {
@@ -586,13 +567,11 @@ function updateAuthenticationStatus(err, client) {
             'href': csvData,
             'target': '_blank'
         });
-
-        console.log('finished export');
     }
 
     // Get picture url
-   /* function getPictureUrl() {
-        //$('#items h1').text(datastore.getTitle());
+    function getPictureUrl() {
+        console.log("inside getPictureUrl");
         var projectName = datastore.getId();
         var projectTitle = datastore.getTitle();
         var items = datastore.getTable(tableName).query();
@@ -611,14 +590,10 @@ function updateAuthenticationStatus(err, client) {
                             return console.log("ERROR: " + error); // Something went wrong.
                         }
                         var picture_url = data.url.replace("www.dropbox.com","dl.dropboxusercontent.com");
-                        pictureArray.push(picture_url);
-                        console.log(pictureArray[0]);
-                        console.log(pictureArray[1]);
+                        record.set("INTERNET_URL", picture_url);
                     });   
                 })  
-         console.log(pictureArray[0]);
-         console.log("done getting urls");
-    }*/
+    }
 
 
 
@@ -718,6 +693,7 @@ function updateAuthenticationStatus(err, client) {
 
                 // Update the UI with items from this datastore.
                 populateItems();
+                getPictureUrl();
             });
         }
     }
