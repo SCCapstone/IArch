@@ -282,7 +282,7 @@ public class MainActivity extends Activity {
 				DbxFile exportFile = dbxFs.create(remotePath);
 				
 				try {
-				    finalString += "Date,Project Name,Description,Longitude,Latitude,Artifact Type,Location\n";
+				    finalString += "Project Name,Date,Location,Artifact Type,Description,Longitude,Latitude,Image\n";
 					
 					for(int i = 0; i<imageFiles.length;i++)
 					{
@@ -301,10 +301,16 @@ public class MainActivity extends Activity {
 						
 						if (results.hasResults()) {
 							DbxRecord firstResult = results.iterator().next();
+							String[] fileName = firstResult.getString("LOCAL_FILENAME").split("/");
+							String imageName = fileName[fileName.length-1];
 							
+							finalString += firstResult.getString("PROJECT_NAME");
+							finalString += ",";
 							finalString += firstResult.getString("DATE");
 							finalString += ",";
-							finalString += firstResult.getString("PROJECT_NAME");
+							finalString += firstResult.getString("LOCATION");
+							finalString += ",";
+							finalString += firstResult.getString("ARTIFACT_TYPE");
 							finalString += ",";
 							finalString += firstResult.getString("DESCRIPTION");
 							finalString += ",";
@@ -312,9 +318,7 @@ public class MainActivity extends Activity {
 							finalString += ",";
 							finalString += firstResult.getDouble("LATITUDE");
 							finalString += ",";
-							finalString += firstResult.getString("ARTIFACT_TYPE");
-							finalString += ",";
-							finalString += firstResult.getString("LOCATION");
+							finalString += imageName;
 							finalString += "\n";
 							
 							//close datastores
