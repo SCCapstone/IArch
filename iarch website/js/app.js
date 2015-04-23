@@ -50,12 +50,13 @@ function updateAuthenticationStatus(err, client) {
     var selectedRecId = null;
     var sortParameter = 'DATE';
     var date_ascending = true;
-    var location_ascending = true;
-    var artifact_ascending = true;
-    var description_ascending = true;
-    var gps_ascending = true;
+    var location_ascending = false;
+    var artifact_ascending = false;
+    var description_ascending = false;
+    var gps_ascending = false;
     var tableName = "Picture_Data"
     var previousList = [];
+    var pictureArray = [];
     datastoreManager.datastoreListChanged.addListener(function (e) {
     var infos = e.getDatastoreInfos();
 
@@ -284,6 +285,7 @@ function updateAuthenticationStatus(err, client) {
         // Update the list, once on inital open and subsequently on
         // changes to the datastore.
         function updateList() {
+            console.log("starting updateList");
             //var items = datastore.getTable('items').query();
             var items = datastore.getTable(tableName).query();
             var numItems = 0;
@@ -301,9 +303,9 @@ function updateAuthenticationStatus(err, client) {
                     var fileName = record.get('LOCAL_FILENAME').split('/');
                     var filePath = projectName + '/' + fileName[fileName.length-1];
                     var thumbnail_url = client.thumbnailUrl(filePath, {size: "large"});
-                    picture_url = "";
+                    /*picture_url = "";
                     
-                    /*finished = false;
+                    finished = false;
                     console.log("finished before= " + finished);
                     
                     client.makeUrl(filePath, {
@@ -318,15 +320,17 @@ function updateAuthenticationStatus(err, client) {
                         console.log("picture_url inside= " + picture_url);
                         finished = true;                    
                     });
+
+
                                 
                     console.log("finished after= " + finished);
                     console.log("Picture URL outside2= " + picture_url);*/
                     
                     numItems++;
-                    var html = _.template('<tr id="${id}"><td id="num">${number}.</td><td id="thumb"><a href="${picture_url}" target="_blank"><img src="${thumbnail}" alt="Thumbnail"></a></td><td id="date">${date}</td><td id="location">${location}</td><td id="artifact">${artifact}</td><td id="description">${description}</td><td id="gps">${GPS}</td><td id="edit"><a href="#" id="record_edit"><span class="glyphicon glyphicon-pencil"></span></a><a href="#" id="record_delete"><span class="glyphicon glyphicon-trash"></span></a></td></tr>', {
+                    var html = _.template('<tr id="${id}"><td id="num">${number}.</td><td id="thumb"><a href="${pictureUrl}" target="_blank"><img src="${thumbnail}" alt="Thumbnail"></a></td><td id="date">${date}</td><td id="location">${location}</td><td id="artifact">${artifact}</td><td id="description">${description}</td><td id="gps">${GPS}</td><td id="edit"><a href="#" id="record_edit"><span class="glyphicon glyphicon-pencil"></span></a><a href="#" id="record_delete"><span class="glyphicon glyphicon-trash"></span></a></td></tr>', {
                         id: record.getId(),
                         number: numItems,
-                        pictureUrl: record.get('INTERNET_URL'),
+                        pictureUrl: "", //record.get('INTERNET_URL'),
                         thumbnail: thumbnail_url,
                         date: record.get('DATE'),
                         location: record.get('LOCATION'),
@@ -393,7 +397,7 @@ function updateAuthenticationStatus(err, client) {
 
                 // Display current values in form
                 $('#form_location').val(location);
-                $('#form_artifact').val(artifact);
+                $('#form_artifact_dropdown').val(artifact);
                 $('#form_description').val(description);
             });
         }
@@ -526,7 +530,7 @@ function updateAuthenticationStatus(err, client) {
 
                 // Display current values in form
                 $('#form_location').val(location);
-                $('#form_artifact').val(artifact);
+                $('#form_artifact_dropdown').val(artifact);
                 $('#form_description').val(description);
             });
         }
@@ -536,15 +540,46 @@ function updateAuthenticationStatus(err, client) {
         
         // Update UI with initial data.
         updateList();
-
     }
+
+    // Get picture url
+   /* function getPictureUrl() {
+        //$('#items h1').text(datastore.getTitle());
+        var projectName = datastore.getId();
+        var projectTitle = datastore.getTitle();
+        var items = datastore.getTable(tableName).query();
+         _.chain(items)
+         .sortBy(function (record) {
+                    return record.get(sortParameter);
+                })
+         .map(function (record) {
+                    var fileName = record.get('LOCAL_FILENAME').split('/');
+                    var filePath = projectName + '/' + fileName[fileName.length-1];
+                    client.makeUrl(filePath, {
+                        downloadHack: false,
+                        long: true
+                    }, function (error, data) {
+                        if (error) {
+                            return console.log("ERROR: " + error); // Something went wrong.
+                        }
+                        var picture_url = data.url.replace("www.dropbox.com","dl.dropboxusercontent.com");
+                        pictureArray.push(picture_url);
+                        console.log(pictureArray[0]);
+                        console.log(pictureArray[1]);
+                    });   
+                })  
+         console.log(pictureArray[0]);
+         console.log("done getting urls");
+    }*/
+
+
 
     // Update record when user has confirmed edits
     $( "#record_form_edit" ).submit(function (event) {
         event.preventDefault();
         // Grab the form values
         var location = $('#form_location').val();
-        var artifact = $('#form_artifact').val();
+        var artifact = $('#form_artifact_dropdown').val();
         var description = $('#form_description').val();
 
         // Get the proper record
