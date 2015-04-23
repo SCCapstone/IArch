@@ -277,7 +277,6 @@ function updateAuthenticationStatus(err, client) {
     // Populate the right-hand side of the screen in ascending order (default)
     function populateItems() {
         $("#dvLoading").show();
-        //$('#items h1').text(datastore.getTitle());
         var projectName = datastore.getId();
         var projectTitle = datastore.getTitle();
         $('#project-data h2').text(projectTitle);
@@ -286,8 +285,6 @@ function updateAuthenticationStatus(err, client) {
         // changes to the datastore.
         function updateList() {
             console.log("starting updateList");
-            //getPictureUrl();
-            //var items = datastore.getTable('items').query();
             var items = datastore.getTable(tableName).query();
             var numItems = 0;
             
@@ -304,24 +301,6 @@ function updateAuthenticationStatus(err, client) {
                     var fileName = record.get('LOCAL_FILENAME').split('/');
                     var filePath = projectName + '/' + fileName[fileName.length-1];
                     var thumbnail_url = client.thumbnailUrl(filePath, {size: "large"});
-                    picture_url = "";
-                               
-                    /*client.makeUrl(filePath, {
-                        downloadHack: false,
-                        long: true
-                    }, function (error, data) {
-                        if (error) {
-                            return console.log("ERROR: " + error); // Something went wrong.
-                        }
-                        console.log("data.url= " + data.url);
-                        picture_url = data.url.replace("www.dropbox.com","dl.dropboxusercontent.com");
-                        record.set('INTERNET_URL', picture_url);
-                        console.log("picture_url inside= " + picture_url);              
-                    });*/
-
-
-                                
-                    console.log("Picture URL outside2= " + picture_url);
                     
                     numItems++;
                     var html = _.template('<tr id="${id}"><td id="num">${number}.</td><td id="thumb"><a href="${pictureUrl}" target="_blank"><img src="${thumbnail}" alt="Thumbnail"></a></td><td id="date">${date}</td><td id="location">${location}</td><td id="artifact">${artifact}</td><td id="description">${description}</td><td id="gps">${GPS}</td><td id="edit"><a href="#" id="record_edit"><span class="glyphicon glyphicon-pencil"></span></a><a href="#" id="record_delete"><span class="glyphicon glyphicon-trash"></span></a></td></tr>', {
@@ -532,7 +511,7 @@ function updateAuthenticationStatus(err, client) {
         }
         var projectName = datastore.getTitle();
         var filename = projectName + ".csv";
-        var header = "Project Name,Date,Location,Artifact Type,Description,Longitude,Latitude";
+        var header = "Project Name,Date,Location,Artifact Type,Description,Longitude,Latitude, Image";
         var csvDataArray = [];
         csvDataArray.push(header);
 
@@ -550,8 +529,10 @@ function updateAuthenticationStatus(err, client) {
                     var description = record.get('DESCRIPTION');
                     var longitude = record.get('LONGITUDE').toString();
                     var latitude = record.get('LATITUDE').toString();
+                    var fileName = record.get('LOCAL_FILENAME').split('/');
+                    var image = fileName[fileName.length-1]
 
-                    var tempString = projectName + "," + date + "," + location + "," + artifact + "," + description + "," + longitude + "," + latitude;
+                    var tempString = projectName + "," + date + "," + location + "," + artifact + "," + description + "," + longitude + "," + latitude + "," + image;
 
                     csvDataArray.push(tempString);
                 }).value()
