@@ -416,7 +416,7 @@ function updateAuthenticationStatus(err, client) {
                     var thumbnail_url = client.thumbnailUrl(filePath, {size: "large"});
                    
                     numItems++;
-                    var html = _.template('<tr id="${id}"><td id="num">${number}.</td><td id="thumb"><a href="${picture_url}" target="_blank"><img src="${thumbnail}" alt="Thumbnail"></a></td><td id="date">${date}</td><td id="location">${location}</td><td id="artifact">${artifact}</td><td id="description">${description}</td><td id="gps">${GPS}</td><td id="edit"><a href="#" id="record_edit"><span class="glyphicon glyphicon-pencil"></span></a><a href="#" id="record_delete"><span class="glyphicon glyphicon-trash"></span></a></td></tr>', {
+                    var html = _.template('<tr id="${id}"><td id="num">${number}.</td><td id="thumb"><a href="${pictureUrl}" target="_blank"><img src="${thumbnail}" alt="Thumbnail"></a></td><td id="date">${date}</td><td id="location">${location}</td><td id="artifact">${artifact}</td><td id="description">${description}</td><td id="gps">${GPS}</td><td id="edit"><a href="#" id="record_edit"><span class="glyphicon glyphicon-pencil"></span></a><a href="#" id="record_delete"><span class="glyphicon glyphicon-trash"></span></a></td></tr>', {
                         id: record.getId(),
                         number: numItems,
                         pictureUrl: record.get('INTERNET_URL'),
