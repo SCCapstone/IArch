@@ -336,7 +336,7 @@ function updateAuthenticationStatus(err, client) {
                         location: record.get('LOCATION'),
                         artifact: record.get('ARTIFACT_TYPE'),
                         description: record.get('DESCRIPTION'),
-                        GPS: record.get('LATITUDE').toString() + " " + record.get('LONGITUDE').toString()
+                        GPS: record.get('LONGITUDE').toString() + " " + record.get('LATITUDE').toString()
                     });
 
                     return $(html);
@@ -469,7 +469,7 @@ function updateAuthenticationStatus(err, client) {
                         location: record.get('LOCATION'),
                         artifact: record.get('ARTIFACT_TYPE'),
                         description: record.get('DESCRIPTION'),
-                        GPS: record.get('LATITUDE').toString() + " " + record.get('LONGITUDE').toString()
+                        GPS: record.get('LONGITUDE').toString() + " " + record.get('LATITUDE').toString()
                     });
 
                     return $(html);
@@ -540,6 +540,54 @@ function updateAuthenticationStatus(err, client) {
         
         // Update UI with initial data.
         updateList();
+    }
+
+    $("#export_csv").click(function (e) {
+        //e.preventDefault();
+        exportCSV.apply(this);
+    });
+
+    function exportCSV() {
+        console.log("starting export");
+        var projectName = datastore.getTitle();
+        var filename = projectName + ".csv";
+        var header = "Project Name,Date,Location,Artifact Type,Description,Longitude,Latitude";
+        var csvDataArray = [];
+        csvDataArray.push(header);
+
+        var items = datastore.getTable(tableName).query();
+        
+                _.chain(items)
+                // Sort by created date
+                .sortBy(function (record) {
+                    return record.get("DATE");
+                })
+                .map(function (record) {
+                    var date = record.get('DATE');
+                    var location = record.get('LOCATION');
+                    var artifact = record.get('ARTIFACT_TYPE');
+                    var description = record.get('DESCRIPTION');
+                    var longitude = record.get('LONGITUDE').toString();
+                    var latitude = record.get('LATITUDE').toString();
+
+                    var tempString = projectName + "," + date + "," + location + "," + artifact + "," + description + "," + longitude + "," + latitude;
+
+                    csvDataArray.push(tempString);
+                }).value()
+
+        // Convert csvData array into string
+        var output = csvDataArray.join('\n');
+
+        // Data URI
+        csvData = 'data:application/csv;charset=UTF-8,' + encodeURIComponent(output);
+
+        $(this).attr({
+            'download': filename,
+            'href': csvData,
+            'target': '_blank'
+        });
+
+        console.log('finished export');
     }
 
     // Get picture url
@@ -674,10 +722,6 @@ function updateAuthenticationStatus(err, client) {
         }
     }
 
-    $('#export').click(function (e) {
-        e.preventDefault();
-        alert("Coming soon!");
-    });
 
     $('#share').click(function (e) {
         e.preventDefault();
