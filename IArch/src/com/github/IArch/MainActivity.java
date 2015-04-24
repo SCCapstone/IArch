@@ -48,7 +48,6 @@ import android.text.style.BackgroundColorSpan;
 @SuppressWarnings("deprecation")
 public class MainActivity extends Activity {
 	
-
 	private static final String appKey = "fapxgsf7glvwkb0";
 	private static final String appSecret = "1swwbsarfhraqab";
     

@@ -526,11 +526,13 @@ import android.widget.Toast;
 		File mediaStorageDir = new File(Environment.getExternalStoragePublicDirectory(
 				Environment.DIRECTORY_PICTURES), "iArch");
 		File[] projectList = mediaStorageDir.listFiles();
-		for (int i=0; i<projectList.length; i++) {
-			System.out.println("LIST: " + projectList[i].toString());
-			if (projectList[i].isDirectory()){
-				String[] splitList = projectList[i].toString().split("/");
-				list.add(splitList[6]);
+		if (projectList != null) {
+			for (int i=0; i<projectList.length; i++) {
+				System.out.println("LIST: " + projectList[i].toString());
+				if (projectList[i].isDirectory()){
+					String[] splitList = projectList[i].toString().split("/");
+					list.add(splitList[6]);
+				}
 			}
 		}
 		if (list.isEmpty()) {
