@@ -152,7 +152,7 @@ public class MainActivity extends Activity {
     		MenuItem mi = menu.getItem(i);
     		String title = mi.getTitle().toString();
     		Spannable newTitle = new SpannableString(title);        
-    		newTitle.setSpan(new ForegroundColorSpan(Color.BLACK), 0, newTitle.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+    		newTitle.setSpan(new ForegroundColorSpan(Color.GRAY), 0, newTitle.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
     		newTitle.setSpan(new BackgroundColorSpan(Color.TRANSPARENT), 0, newTitle.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
     		mi.setTitle(newTitle);
     	}
