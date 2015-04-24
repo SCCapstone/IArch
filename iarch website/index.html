@@ -57,8 +57,8 @@
                 <span class="caret"></span>
               </a>
               <ul class="dropdown-menu" role="menu">
-                <li><a href="#" id="export">Export</a></li>
-                <li><a href="#" id="share">Share</a></li>
+                <li><a href="#" id="export_csv">Download CSV File</a></li>
+                <!--<li><a href="#" id="share">Share</a></li>-->
                 <li><a href="#" id="project_delete">Delete current project</a></li>
               </ul>
             </li>
@@ -105,8 +105,26 @@
                 <div class="form-group">
                   <label for="location">Location:</label>
                   <input type="text" class="form-control" id="form_location">
+                  <br>
                   <label for="artifact">Artifact:</label>
-                  <input type="text" class="form-control" id="form_artifact">
+                  <select id="form_artifact_dropdown">
+                    <option value="Bead">Bead</option>
+                    <option value="Bone">Bone</option>
+                    <option value="Brick">Brick</option>
+                    <option value="Charcoal">Charcoal</option>
+                    <option value="Clay">Clay</option>
+                    <option value="Coin">Coin</option>
+                    <option value="Glass">Glass</option>
+                    <option value="Inscription">Inscription</option>
+                    <option value="Lithic">Lithic</option>
+                    <option value="Metal">Metal</option>
+                    <option value="Pottery">Pottery</option>
+                    <option value="Shell">Shell</option>
+                    <option value="Stone">Stone</option>
+                    <option value="Wood">Wood</option>
+                    <option value="Other Artifact"></option>
+                    <option value="Other Ecofact">Other Ecofact</option>
+                </select>
                 </div>
                 <div class="form-group">
                   <label for="description">Description:</label>

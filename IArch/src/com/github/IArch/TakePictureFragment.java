@@ -358,7 +358,7 @@ import android.widget.Toast;
 					DbxRecord task = dataTbl.insert().set("LOCAL_FILENAME", fileLocation).
 							set("DATE", date).
 							set("LATITUDE", latitude).set("LONGITUDE", longitude).
-							set("PROJECT_NAME", projectName).
+							set("PROJECT_NAME", projectTitle).
 							set("LOCATION", location).
 							set("ARTIFACT_TYPE", artifact).
 							set("DESCRIPTION", description);
@@ -451,7 +451,7 @@ import android.widget.Toast;
 	
 	void getDate()
 	{
-		date = new SimpleDateFormat("MM/dd/yyyy").format(new Date());
+		date = new SimpleDateFormat("EEE, MMM dd, yyyy HH:mm:ss z").format(new Date());
 	}
 	
 	void getLocation() {

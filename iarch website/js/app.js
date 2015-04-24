@@ -50,12 +50,13 @@ function updateAuthenticationStatus(err, client) {
     var selectedRecId = null;
     var sortParameter = 'DATE';
     var date_ascending = true;
-    var location_ascending = true;
-    var artifact_ascending = true;
-    var description_ascending = true;
-    var gps_ascending = true;
+    var location_ascending = false;
+    var artifact_ascending = false;
+    var description_ascending = false;
+    var gps_ascending = false;
     var tableName = "Picture_Data"
     var previousList = [];
+    var pictureArray = [];
     datastoreManager.datastoreListChanged.addListener(function (e) {
     var infos = e.getDatastoreInfos();
 
@@ -276,7 +277,6 @@ function updateAuthenticationStatus(err, client) {
     // Populate the right-hand side of the screen in ascending order (default)
     function populateItems() {
         $("#dvLoading").show();
-        //$('#items h1').text(datastore.getTitle());
         var projectName = datastore.getId();
         var projectTitle = datastore.getTitle();
         $('#project-data h2').text(projectTitle);
@@ -284,7 +284,7 @@ function updateAuthenticationStatus(err, client) {
         // Update the list, once on inital open and subsequently on
         // changes to the datastore.
         function updateList() {
-            //var items = datastore.getTable('items').query();
+            console.log("starting updateList");
             var items = datastore.getTable(tableName).query();
             var numItems = 0;
             
@@ -301,29 +301,9 @@ function updateAuthenticationStatus(err, client) {
                     var fileName = record.get('LOCAL_FILENAME').split('/');
                     var filePath = projectName + '/' + fileName[fileName.length-1];
                     var thumbnail_url = client.thumbnailUrl(filePath, {size: "large"});
-                    picture_url = "";
-                    
-                    /*finished = false;
-                    console.log("finished before= " + finished);
-                    
-                    client.makeUrl(filePath, {
-                        downloadHack: false,
-                        long: true
-                    }, function (error, data) {
-                        if (error) {
-                            return console.log("ERROR: " + error); // Something went wrong.
-                        }
-                        console.log("data.url= " + data.url);
-                        picture_url = data.url.replace("www.dropbox.com","dl.dropboxusercontent.com");
-                        console.log("picture_url inside= " + picture_url);
-                        finished = true;                    
-                    });
-                                
-                    console.log("finished after= " + finished);
-                    console.log("Picture URL outside2= " + picture_url);*/
                     
                     numItems++;
-                    var html = _.template('<tr id="${id}"><td id="num">${number}.</td><td id="thumb"><a href="${picture_url}" target="_blank"><img src="${thumbnail}" alt="Thumbnail"></a></td><td id="date">${date}</td><td id="location">${location}</td><td id="artifact">${artifact}</td><td id="description">${description}</td><td id="gps">${GPS}</td><td id="edit"><a href="#" id="record_edit"><span class="glyphicon glyphicon-pencil"></span></a><a href="#" id="record_delete"><span class="glyphicon glyphicon-trash"></span></a></td></tr>', {
+                    var html = _.template('<tr id="${id}"><td id="num">${number}.</td><td id="thumb"><a href="${pictureUrl}" target="_blank"><img src="${thumbnail}" alt="Thumbnail"></a></td><td id="date">${date}</td><td id="location">${location}</td><td id="artifact">${artifact}</td><td id="description">${description}</td><td id="gps">${GPS}</td><td id="edit"><a href="#" id="record_edit"><span class="glyphicon glyphicon-pencil"></span></a><a href="#" id="record_delete"><span class="glyphicon glyphicon-trash"></span></a></td></tr>', {
                         id: record.getId(),
                         number: numItems,
                         pictureUrl: record.get('INTERNET_URL'),
@@ -332,7 +312,7 @@ function updateAuthenticationStatus(err, client) {
                         location: record.get('LOCATION'),
                         artifact: record.get('ARTIFACT_TYPE'),
                         description: record.get('DESCRIPTION'),
-                        GPS: record.get('LATITUDE').toString() + " " + record.get('LONGITUDE').toString()
+                        GPS: record.get('LONGITUDE').toString() + " " + record.get('LATITUDE').toString()
                     });
 
                     return $(html);
@@ -393,7 +373,7 @@ function updateAuthenticationStatus(err, client) {
 
                 // Display current values in form
                 $('#form_location').val(location);
-                $('#form_artifact').val(artifact);
+                $('#form_artifact_dropdown').val(artifact);
                 $('#form_description').val(description);
             });
         }
@@ -434,29 +414,9 @@ function updateAuthenticationStatus(err, client) {
                     var fileName = record.get('LOCAL_FILENAME').split('/');
                     var filePath = projectName + '/' + fileName[fileName.length-1];
                     var thumbnail_url = client.thumbnailUrl(filePath, {size: "large"});
-                    picture_url = "";
-                    
-                    /*finished = false;
-                    console.log("finished before= " + finished);
-                    
-                    client.makeUrl(filePath, {
-                        downloadHack: false,
-                        long: true
-                    }, function (error, data) {
-                        if (error) {
-                            return console.log("ERROR: " + error); // Something went wrong.
-                        }
-                        console.log("data.url= " + data.url);
-                        picture_url = data.url.replace("www.dropbox.com","dl.dropboxusercontent.com");
-                        console.log("picture_url inside= " + picture_url);
-                        finished = true;                    
-                    });
-                                
-                    console.log("finished after= " + finished);
-                    console.log("Picture URL outside2= " + picture_url);*/
-                    
+                   
                     numItems++;
-                    var html = _.template('<tr id="${id}"><td id="num">${number}.</td><td id="thumb"><a href="${picture_url}" target="_blank"><img src="${thumbnail}" alt="Thumbnail"></a></td><td id="date">${date}</td><td id="location">${location}</td><td id="artifact">${artifact}</td><td id="description">${description}</td><td id="gps">${GPS}</td><td id="edit"><a href="#" id="record_edit"><span class="glyphicon glyphicon-pencil"></span></a><a href="#" id="record_delete"><span class="glyphicon glyphicon-trash"></span></a></td></tr>', {
+                    var html = _.template('<tr id="${id}"><td id="num">${number}.</td><td id="thumb"><a href="${pictureUrl}" target="_blank"><img src="${thumbnail}" alt="Thumbnail"></a></td><td id="date">${date}</td><td id="location">${location}</td><td id="artifact">${artifact}</td><td id="description">${description}</td><td id="gps">${GPS}</td><td id="edit"><a href="#" id="record_edit"><span class="glyphicon glyphicon-pencil"></span></a><a href="#" id="record_delete"><span class="glyphicon glyphicon-trash"></span></a></td></tr>', {
                         id: record.getId(),
                         number: numItems,
                         pictureUrl: record.get('INTERNET_URL'),
@@ -465,7 +425,7 @@ function updateAuthenticationStatus(err, client) {
                         location: record.get('LOCATION'),
                         artifact: record.get('ARTIFACT_TYPE'),
                         description: record.get('DESCRIPTION'),
-                        GPS: record.get('LATITUDE').toString() + " " + record.get('LONGITUDE').toString()
+                        GPS: record.get('LONGITUDE').toString() + " " + record.get('LATITUDE').toString()
                     });
 
                     return $(html);
@@ -526,7 +486,7 @@ function updateAuthenticationStatus(err, client) {
 
                 // Display current values in form
                 $('#form_location').val(location);
-                $('#form_artifact').val(artifact);
+                $('#form_artifact_dropdown').val(artifact);
                 $('#form_description').val(description);
             });
         }
@@ -536,15 +496,94 @@ function updateAuthenticationStatus(err, client) {
         
         // Update UI with initial data.
         updateList();
-
     }
+
+    $("#export_csv").click(function (e) {
+        exportCSV.apply(this);
+    });
+
+    function exportCSV() {
+
+        if (datastore == null)
+        {
+            alert("Please select a project");
+            return;
+        }
+        var projectName = datastore.getTitle();
+        var filename = projectName + ".csv";
+        var header = "Project Name,Date,Location,Artifact Type,Description,Longitude,Latitude, Image";
+        var csvDataArray = [];
+        csvDataArray.push(header);
+
+        var items = datastore.getTable(tableName).query();
+
+                _.chain(items)
+                // Sort by created date
+                .sortBy(function (record) {
+                    return record.get("DATE");
+                })
+                .map(function (record) {
+                    var date = record.get('DATE');
+                    var location = record.get('LOCATION');
+                    var artifact = record.get('ARTIFACT_TYPE');
+                    var description = record.get('DESCRIPTION');
+                    var longitude = record.get('LONGITUDE').toString();
+                    var latitude = record.get('LATITUDE').toString();
+                    var fileName = record.get('LOCAL_FILENAME').split('/');
+                    var image = fileName[fileName.length-1]
+
+                    var tempString = projectName + "," + date + "," + location + "," + artifact + "," + description + "," + longitude + "," + latitude + "," + image;
+
+                    csvDataArray.push(tempString);
+                }).value()
+
+        // Convert csvData array into string
+        var output = csvDataArray.join('\n');
+
+        // Data URI
+        csvData = 'data:application/csv;charset=UTF-8,' + encodeURIComponent(output);
+
+        $(this).attr({
+            'download': filename,
+            'href': csvData,
+            'target': '_blank'
+        });
+    }
+
+    // Get picture url
+    function getPictureUrl() {
+        console.log("inside getPictureUrl");
+        var projectName = datastore.getId();
+        var projectTitle = datastore.getTitle();
+        var items = datastore.getTable(tableName).query();
+         _.chain(items)
+         .sortBy(function (record) {
+                    return record.get(sortParameter);
+                })
+         .map(function (record) {
+                    var fileName = record.get('LOCAL_FILENAME').split('/');
+                    var filePath = projectName + '/' + fileName[fileName.length-1];
+                    client.makeUrl(filePath, {
+                        downloadHack: false,
+                        long: true
+                    }, function (error, data) {
+                        if (error) {
+                            return console.log("ERROR: " + error); // Something went wrong.
+                        }
+                        var picture_url = data.url.replace("www.dropbox.com","dl.dropboxusercontent.com");
+                        record.set("INTERNET_URL", picture_url);
+                    });   
+                })  
+    }
+
+
 
     // Update record when user has confirmed edits
     $( "#record_form_edit" ).submit(function (event) {
         event.preventDefault();
         // Grab the form values
         var location = $('#form_location').val();
-        var artifact = $('#form_artifact').val();
+        var artifact = $('#form_artifact_dropdown').val();
         var description = $('#form_description').val();
 
         // Get the proper record
@@ -635,14 +674,11 @@ function updateAuthenticationStatus(err, client) {
 
                 // Update the UI with items from this datastore.
                 populateItems();
+                getPictureUrl();
             });
         }
     }
 
-    $('#export').click(function (e) {
-        e.preventDefault();
-        alert("Coming soon!");
-    });
 
     $('#share').click(function (e) {
         e.preventDefault();
