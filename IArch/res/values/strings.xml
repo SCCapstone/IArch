@@ -30,7 +30,7 @@
         <item>Camera</item>
         <item>Map</item>
         <item>Project Management</item>
-        <item>Options</item>
+        <!-- <item>Options</item> -->
         <item>Logout</item>
     </string-array>
     <string name="drawer_open">iArch</string>

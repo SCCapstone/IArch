@@ -187,10 +187,10 @@ public class MainActivity extends Activity {
 				System.out.println("FINISHED EXPORTING");
 			}
 			return true;
-		case R.id.action_settings:
-			Toast.makeText(this, "No settings yet", 
-					Toast.LENGTH_LONG).show();
-			return true;
+		//case R.id.action_settings:
+		//	Toast.makeText(this, "No settings yet", 
+		//			Toast.LENGTH_LONG).show();
+		//	return true;
 		case R.id.action_share:
 			shareImage();
 			return true;
@@ -567,11 +567,11 @@ public class MainActivity extends Activity {
         	gallery(view);
         	mTitle = "Projects";
         break;
-        case 3: // Options
-        	Toast.makeText(MainActivity.this, "Options", 
-					Toast.LENGTH_LONG).show();
-        break;
-        case 4: // Login/Logout
+        //case 3: // Options
+        //	Toast.makeText(MainActivity.this, "Options", 
+		//			Toast.LENGTH_LONG).show();
+        //break;
+        case 3: // Login/Logout
         	onClickLinkToDropbox();
         break;
         default:
@@ -592,12 +592,12 @@ public class MainActivity extends Activity {
 
     private void showLinkedView() {
     	MainFragment.mLinkButton.setText("Unlink from Dropbox");
-    	navDrawerItems[4] = "Logout";	
+    	navDrawerItems[3] = "Logout";	
     }
 
     private void showUnlinkedView() {
     	MainFragment.mLinkButton.setText("Connect to Dropbox");
-    	navDrawerItems[4] = "Login";
+    	navDrawerItems[3] = "Login";
     }
     
     //create a new project for TakePictureFragment project name dropdown
