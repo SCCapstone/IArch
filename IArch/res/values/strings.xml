@@ -59,6 +59,8 @@
     <!-- Dialog Handlers -->
     <string name="title_delete">Really delete?</string>
     <string name="title_add">Enter New Project Name</string>
+    <string name="title_accept">Accept</string>
+    <string name="title_decline">Decline</string>
     
     <!-- Artifacts -->
     <string-array name="artifacts">

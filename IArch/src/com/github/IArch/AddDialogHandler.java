@@ -26,7 +26,7 @@ public class AddDialogHandler extends DialogFragment {
         final EditText et1 = (EditText) inflator.findViewById(R.id.new_project_name);
         builder.setView(inflator);
         builder.setMessage(R.string.title_add)
-               .setPositiveButton(R.string.accept, new DialogInterface.OnClickListener() {
+               .setPositiveButton(R.string.title_accept, new DialogInterface.OnClickListener() {
                    public void onClick(DialogInterface dialog, int id) {
                 	   //add new project to spinner
                 	   String s1 = et1.getText().toString();
@@ -34,7 +34,7 @@ public class AddDialogHandler extends DialogFragment {
                 	   Toast.makeText(getActivity(), s1 + " added to project list!", Toast.LENGTH_SHORT).show();
                    }
                })
-               .setNegativeButton(R.string.decline, new DialogInterface.OnClickListener() {
+               .setNegativeButton(R.string.title_decline, new DialogInterface.OnClickListener() {
                    public void onClick(DialogInterface dialog, int id) {
                        // User cancelled the dialog
                    }

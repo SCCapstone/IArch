@@ -413,13 +413,19 @@ public class MainActivity extends Activity {
 	}
 	
 	public void deleteImage() {
-		File file = new File(ImageDetailsFragment.fileLocation);
-		DeleteDialogHandler dialogHandler = new DeleteDialogHandler(file);
+		Bundle args = new Bundle();
+		args.putString("file", ImageDetailsFragment.fileLocation);
+		//File file = new File(ImageDetailsFragment.fileLocation);
+		DeleteDialogHandler dialogHandler = new DeleteDialogHandler();
+		dialogHandler.setArguments(args);
 		dialogHandler.show(getFragmentManager(), "deleteImage");
 	}
 	
 	public void deleteProject() {
-		DeleteDialogHandler dialogHandler = new DeleteDialogHandler(ChooserFragment.folderName);
+		Bundle args = new Bundle();
+		args.putString("file", ChooserFragment.folderName.toString());
+		DeleteDialogHandler dialogHandler = new DeleteDialogHandler();
+		dialogHandler.setArguments(args);
 		dialogHandler.show(getFragmentManager(), "deleteProject");
 	}
 	

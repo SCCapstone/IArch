@@ -55,38 +55,18 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity
-            android:name=".TakePicture"
-            android:label="@string/title_fragment_take_picture" >
-        </activity>
-        <activity
-            android:name=".DisplayMapActivity"
-            android:label="@string/title_fragment_display_map" >
-        </activity>
-
+<!--
         <meta-data
             android:name="com.google.android.gms.version"
             android:value="@integer/google_play_services_version" />
+    -->
         <meta-data
             android:name="com.google.android.maps.v2.API_KEY"
             android:value="AIzaSyC61itEgIZGI-sB0H_4T-AW7tZNcew6Z1A" />
-
-        <activity
-            android:name=".Gallery"
-            android:label="@string/title_fragment_gallery" >
-        </activity>
-        <activity
-            android:name=".ImageDetails"
-            android:label="@string/title_fragment_image_details" >
-        </activity>
-        <activity
-            android:name=".Chooser"
-            android:label="@string/title_fragment_chooser" >
-        </activity>
     </application>
-    
+    <!--
     <instrumentation android:name="android.test.InstrumentationTestRunner"
     	android:targetPackage="com.github.IArch"
     	android:label="Tests for com.github.IArch" />
-
+    -->
 </manifest>
